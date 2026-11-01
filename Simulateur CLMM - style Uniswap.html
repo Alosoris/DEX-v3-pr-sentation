@@ -1,0 +1,1164 @@
+<title>Simulateur CLMM · style Uniswap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@400;485;535;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<script>
+window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']] }, svg:{ fontCache:'global' } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+<style>
+/* Layout : cours en une colonne de lecture (≈70 caractères) entrecoupé de « laboratoires » pleine largeur ; une colonne sur téléphone */
+:root{
+  /* Palette inspirée de la documentation développeurs d'Uniswap : blanc, gris neutres, rose vif */
+  --bg:#ffffff; --surface:#ffffff; --field:#f9f9f9; --hover:#f5f5f5; --ink:#131313; --text:#0a0a0a; --muted:rgba(19,19,19,.63); --faint:#737373; --line:#e5e5e5;
+  --accent:#ff37c7; --accent-ink:#ffffff; --accent-soft:#ffeffb; --grid:rgba(19,19,19,.045);
+  --eth:#4c82fb; --usd:#f5a524; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
+  --t-pink:#fff0fa; --t-blue:#eef4ff; --t-orange:#fff4ea; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#d6e4ff; --blue-head:#dfeaff;
+  --g1:#ffe0f4; --g2:#ffbde8; --g3:#ff96da;
+  --f-display:"Bricolage Grotesque", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-body:"Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-read:"Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131313; --surface:#131313; --field:#1b1b1b; --hover:#222222; --ink:#ffffff; --text:#f5f5f5; --muted:rgba(255,255,255,.65); --faint:#9b9b9b; --line:#2a2a2a;
+    --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
+    --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
+    --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131313; --surface:#131313; --field:#1b1b1b; --hover:#222222; --ink:#ffffff; --text:#f5f5f5; --muted:rgba(255,255,255,.65); --faint:#9b9b9b; --line:#2a2a2a;
+  --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
+  --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
+  --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 56px}
+.wrap{max-width:1480px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+.layout{display:block}
+.content{display:flex;flex-direction:column;gap:34px;min-width:0}
+nav.side{display:none}
+header{display:flex;flex-direction:column;gap:8px}
+header h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.02em;margin:0;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:70ch;font-family:var(--f-read);font-size:1.08rem;line-height:1.6}
+.pair{font-family:var(--f-mono);font-size:.8rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:10px}
+nav.toc a{color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc a b{font-family:var(--f-mono);font-weight:500;color:var(--accent);margin-right:5px}
+
+/* cours */
+.chap{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 28px;scroll-margin-top:16px}
+@media (max-width:760px){.chap{grid-template-columns:minmax(0,1fr)}}
+.chap-n{font-family:var(--f-mono);font-size:1.7rem;line-height:1;color:var(--accent);padding-top:4px}
+.chap-n span{display:block;color:var(--muted);font-family:var(--f-body);font-size:.7rem;margin-bottom:4px;text-transform:uppercase;letter-spacing:.09em;font-weight:600}
+.prose{max-width:70ch;font-family:var(--f-read);font-size:1.08rem;line-height:1.65;min-width:0}
+.prose h2{font-family:var(--f-display);font-size:1.45rem;letter-spacing:-.01em;margin:0 0 10px;line-height:1.25;text-wrap:balance}
+.prose h3{font-family:var(--f-display);font-size:1.05rem;margin:22px 0 4px}
+.prose p{margin:0 0 12px}
+.prose ul{margin:0 0 12px;padding-left:1.2em}
+.prose li{margin-bottom:4px}
+.prose strong{font-weight:500;color:var(--ink)}
+.prose h3[id]{scroll-margin-top:24px}
+a.ref{color:var(--accent);text-decoration:none;font-family:var(--f-body);font-weight:600;font-size:.8em;vertical-align:super;line-height:0;padding:0 2px}
+a.ref:hover{text-decoration:underline}
+.refnote{font-family:var(--f-body);font-size:.86rem;color:var(--muted)}
+.refnote a{color:var(--accent)}
+.math{overflow-x:auto;overflow-y:hidden;padding:4px 0 6px;margin:6px 0 14px}
+.box{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--f-body);font-size:.95rem;line-height:1.55}
+.box .lbl{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:600;margin-bottom:4px}
+.box.live{border-color:var(--accent)}
+.box.ex{border-style:dashed}
+.box.ex .lbl{color:var(--usd)}
+.box.ex .math{margin:4px 0 8px}
+.math.deriv{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.math.deriv mjx-container{color:var(--ink)}
+.box.ex table{border-collapse:collapse;font-family:var(--f-mono);font-size:.84rem;margin:6px 0;min-width:420px}
+.box.ex th,.box.ex td{border-bottom:1px solid var(--line);padding:4px 10px;text-align:right}
+.box.ex th:first-child,.box.ex td:first-child{text-align:left}
+.box.ex th{font-family:var(--f-body);font-weight:600;color:var(--muted);font-size:.78rem}
+.tw{overflow-x:auto}
+.live-n{font-family:var(--f-mono);color:var(--accent);font-weight:500}
+.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 16px;font-family:var(--f-body);font-size:.9rem;line-height:1.45}
+@media (max-width:640px){.roles{grid-template-columns:minmax(0,1fr)}}
+.roles div{border-top:3px solid var(--accent);background:var(--surface);padding:10px 12px;border-radius:0 0 8px 8px}
+.roles div:nth-child(2){border-color:var(--eth)} .roles div:nth-child(3){border-color:var(--usd)}
+.roles b{display:block;font-weight:600;margin-bottom:2px}
+
+/* labo */
+.lab{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+.lab-head{display:flex;flex-direction:column;gap:4px}
+.lab-head .tag{font-family:var(--f-mono);font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.lab-head h2{font-family:var(--f-display);font-size:1.45rem;margin:0;letter-spacing:-.01em}
+.lab-head h3.lab-sub{font-family:var(--f-display);font-size:1.15rem;margin:0}
+.lab-head p{margin:0;color:var(--muted);max-width:72ch}
+.grid{display:grid;grid-template-columns:330px minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+aside.panel{position:sticky;top:16px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:900px){aside.panel{position:static}}
+.ctl{display:flex;flex-direction:column;gap:6px}
+.ctl-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ctl label{font-weight:600;font-size:.92rem}
+.hint{font-size:.78rem;color:var(--muted)}
+input[type=number],select{width:118px;font-family:var(--f-mono);font-size:.9rem;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);text-align:right}
+select{text-align:left;width:auto}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input:focus-visible,button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-body);font-size:.82rem;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.on{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+hr{border:0;border-top:1px solid var(--line);margin:2px 0}
+.labmain{display:flex;flex-direction:column;gap:22px;min-width:0}
+.status{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.chip{font-size:.8rem;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.chip.in{color:var(--good)} .chip.out{color:var(--bad)}
+.note{font-size:.84rem;color:var(--muted);max-width:72ch}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stats.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.stats,.stats.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat .k{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.stat .v{font-family:var(--f-mono);font-size:1.1rem;font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat .s{font-size:.78rem;color:var(--muted);font-family:var(--f-mono)}
+.neg{color:var(--bad)} .pos{color:var(--good)}
+.mix{display:flex;flex-direction:column;gap:6px}
+.mixbar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}
+.mixbar span{display:block;height:100%;transition:width .15s}
+.mixlbl{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--f-mono);font-size:.82rem}
+.chart-card h3{font-family:var(--f-display);font-size:1.05rem;margin:0;font-weight:600}
+.chart-card .sub{margin:2px 0 10px;color:var(--muted);font-size:.86rem;max-width:72ch}
+.chart-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+canvas{display:block;width:100%;touch-action:none}
+.c-curve{height:340px}.c-value{height:290px}.c-mix{height:150px}.c-liq{height:260px}
+.kbd{font-family:var(--f-mono);font-size:.74rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--bg)}
+.desk-only{display:none}
+/* Ordinateur : sommaire latéral fixe, contenu plus large, graphiques plus hauts */
+@media (min-width:1200px){
+  body{font-size:15.5px;padding-block:36px 64px}
+  .layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px;align-items:start}
+  nav.toc{display:none}
+  nav.side{display:flex;flex-direction:column;gap:2px;position:sticky;top:24px;font-size:.88rem}
+  nav.side .section-label{margin-bottom:8px}
+  nav.side a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line);transition:color .15s,border-color .15s}
+  nav.side a b{font-family:var(--f-mono);font-weight:500;color:var(--accent);margin-right:8px}
+  nav.side a:hover{color:var(--ink)}
+  nav.side a.cur{color:var(--ink);border-left-color:var(--accent);background:var(--accent-soft)}
+  nav.side .side-note{margin-top:18px;font-size:.78rem;color:var(--muted);line-height:1.5}
+  .chap{grid-template-columns:72px minmax(0,1fr);gap:8px 32px}
+  .prose{max-width:860px;font-size:1.12rem}
+  .math.deriv{max-width:none}
+  .grid{grid-template-columns:350px minmax(0,1fr);gap:28px}
+  .c-curve{height:440px}.c-value{height:360px}.c-mix{height:200px}.c-liq{height:340px}
+  .desk-only{display:inline}
+}
+@media (min-width:1200px) and (prefers-reduced-motion:reduce){nav.side a{transition:none}}
+.drag{cursor:ew-resize}
+.formulas{font-family:var(--f-mono);font-size:.85rem;display:flex;flex-direction:column;gap:10px;overflow-x:auto}
+.f-row{display:grid;grid-template-columns:150px 1fr;gap:6px 16px;align-items:baseline;min-width:560px}
+.f-row .eq{color:var(--muted)}
+.f-row b{font-weight:500;color:var(--ink)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+@media (max-width:1100px){.two{grid-template-columns:minmax(0,1fr)}}
+.exps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:1000px){.exps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.exps button{text-align:left;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:.86rem;font-weight:600;line-height:1.3}
+.exps button small{font-weight:400;color:var(--muted);font-size:.76rem}
+.exps button.on small{color:inherit;opacity:.85}
+.obs{border-left:3px solid var(--accent);padding:10px 14px;background:var(--accent-soft);border-radius:0 8px 8px 0;font-size:.92rem;line-height:1.55;max-width:none}
+.obs b{font-weight:600}
+.gloss{display:grid;grid-template-columns:minmax(150px,max-content) minmax(0,1fr);gap:8px 20px;font-family:var(--f-body);font-size:.92rem;line-height:1.5;margin:0}
+.gloss dt{font-weight:600}
+.gloss dd{margin:0;color:var(--muted)}
+@media (max-width:560px){.gloss{grid-template-columns:minmax(0,1fr)}.gloss dd{margin-bottom:6px}}
+.foot{border-top:1px solid var(--line);padding-top:14px;font-size:.82rem;color:var(--muted);max-width:80ch}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mixbar span{transition:none}}
+
+/* ===== Habillage inspiré de la documentation développeurs Uniswap (style seulement, structure inchangée) ===== */
+body{background:var(--bg);color:var(--text);letter-spacing:-.003em}
+header{position:relative;isolation:isolate;padding-top:8px}
+header::before{content:"";position:absolute;inset:-36px 0 0 0;z-index:-1;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;-webkit-mask-image:radial-gradient(ellipse at 25% 15%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 25% 15%,#000 25%,transparent 75%)}
+.pair{font-family:var(--f-body);text-transform:none;letter-spacing:0;color:var(--faint);font-size:.85rem}
+header h1{font-weight:400;font-size:clamp(2.1rem,4.6vw,3.2rem);line-height:1.06;letter-spacing:-.02em;color:var(--ink)}
+header p{font-family:var(--f-body);font-size:1.1rem;line-height:1.55;color:var(--muted)}
+nav.toc{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+nav.toc a{color:var(--faint);border-radius:10px;padding:4px 8px;margin:-4px -8px}
+nav.toc a:hover{background:var(--hover);color:var(--ink)}
+nav.toc a b{color:var(--faint);font-family:var(--f-body);font-weight:400}
+.chap-n{font-family:var(--f-body);font-weight:400;color:var(--ink)}
+.chap-n span{font-family:var(--f-body);color:var(--faint);text-transform:none;letter-spacing:0;font-size:.82rem;font-weight:400}
+.prose{font-family:var(--f-body);font-size:1rem;line-height:1.7;color:var(--text)}
+.prose h2,.lab-head h2{font-weight:400;font-size:1.9rem;letter-spacing:-.02em;color:var(--ink);line-height:1.2}
+.prose h3{font-weight:535;font-size:1.12rem;color:var(--ink)}
+.prose strong{font-weight:535}
+.lab-head .tag{font-family:var(--f-body);font-size:.85rem;color:var(--faint);text-transform:none;letter-spacing:0}
+.lab-head p{color:var(--muted)}
+.lab-head h3.lab-sub{font-weight:535}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.box{background:var(--field);border:1px solid var(--line);border-radius:12px}
+.box .lbl{color:var(--faint);letter-spacing:.01em;text-transform:none;font-size:.82rem;font-weight:535}
+.box.live{background:var(--accent-soft);border-color:transparent}
+.box.live .lbl,.live-n{color:var(--accent)}
+.box.ex{border:1px solid var(--line);background:var(--surface)}
+.box.ex table{border:1px solid var(--line);border-radius:12px;border-collapse:separate;border-spacing:0;overflow:hidden;font-family:var(--f-body);font-size:.88rem}
+.box.ex th{background:var(--field);color:var(--ink);font-weight:535}
+.box.ex th,.box.ex td{border-bottom:1px solid var(--line);padding:9px 14px}
+.box.ex tr:last-child td{border-bottom:0}
+.math.deriv{background:var(--field);border:1px solid var(--line);border-radius:12px}
+.roles div{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.roles div:nth-child(1) b{color:var(--accent)} .roles div:nth-child(2) b{color:var(--eth)} .roles div:nth-child(3) b{color:var(--usd)}
+.roles b{font-weight:535}
+.roles div:nth-child(2),.roles div:nth-child(3){border-color:var(--line)}
+.box.ex .lbl{color:var(--faint)}
+button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:7px 12px;color:var(--ink);font-weight:485}
+button:hover{background:var(--hover);color:var(--ink);border-color:var(--line)}
+button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.exps button{border-radius:14px;padding:14px 16px;background:var(--field)}
+.exps button.on small{color:inherit}
+#reset{background:var(--accent-soft);color:var(--accent);border-color:transparent;padding:11px;border-radius:14px;font-weight:535}
+#reset:hover{background:var(--accent);color:var(--accent-ink)}
+input[type=number],select{background:var(--field);border:1px solid var(--line);border-radius:10px;font-size:.88rem;padding:6px 10px}
+input[type=number]:focus,select:focus{border-color:var(--accent);outline:none}
+input[type=range]{accent-color:var(--accent)}
+.ctl label{font-weight:535}
+.section-label{text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--ink);font-weight:535}
+.stats,.stats.three{background:var(--line);border:1px solid var(--line);border-radius:12px}
+.stat{background:var(--surface)}
+.stat .k{text-transform:none;letter-spacing:0;font-size:.8rem;color:var(--faint)}
+.stat .v{font-family:var(--f-body);font-weight:535;font-size:1.2rem;letter-spacing:-.01em}
+.chip{border:0;padding:3px 10px;border-radius:8px}
+.chip.in{background:color-mix(in srgb,var(--good) 13%,transparent)} .chip.out{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.obs{border:1px solid var(--line);border-left:1px solid var(--line);border-radius:12px;background:var(--t-pink)}
+.formulas{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.chart-card h3{font-weight:535}
+.gloss dt{font-weight:535;color:var(--ink)}
+.kbd{background:var(--field);border-color:var(--line)}
+.foot{color:var(--faint)}
+a.ref,.refnote a{color:var(--accent)}
+@media (min-width:1200px){
+  nav.side .section-label{color:var(--ink);padding:0 10px}
+  nav.side a{border-left:0;border-radius:10px;padding:7px 10px;color:var(--faint);font-weight:400}
+  nav.side a b{color:var(--faint);font-family:var(--f-body);font-weight:400}
+  nav.side a:hover{background:var(--hover);color:var(--ink)}
+  nav.side a.cur{background:var(--hover);color:var(--ink);font-weight:485}
+  nav.side a.cur b{color:var(--accent)}
+  nav.side .side-note{color:var(--faint);padding:0 10px}
+}
+
+/* ===== Touches de couleur ===== */
+.box.ex{background:var(--t-blue);border:1px solid var(--blue-line)}
+.box.ex .lbl{color:var(--eth)}
+.box.ex .math.deriv{background:var(--surface);border-color:var(--blue-line)}
+.box.ex table{background:var(--surface);border-color:var(--blue-line)}
+.box.ex th{background:var(--blue-head)}
+.box.ex th,.box.ex td{border-bottom-color:var(--blue-line)}
+.math.deriv{background:var(--pink-faint);border-color:var(--pink-line)}
+.box:not(.ex):not(.live){background:var(--pink-faint);border-color:var(--pink-line)}
+.box:not(.ex):not(.live) .lbl{color:var(--accent)}
+.roles div:nth-child(1){background:var(--t-pink);border-color:var(--pink-line)}
+.roles div:nth-child(2){background:var(--t-blue);border-color:var(--blue-line)}
+.roles div:nth-child(3){background:var(--t-orange);border-color:transparent}
+.exps button{background:var(--pink-faint);border-color:var(--pink-line)}
+.exps button:hover{background:var(--t-pink);border-color:var(--accent)}
+.exps button.on{background:var(--accent);border-color:var(--accent)}
+.formulas{background:var(--pink-faint);border-color:var(--pink-line)}
+.stat{background:var(--surface)}
+#labo .stats .stat:nth-child(4) .v,#labo .stats .stat:nth-child(1) .v{color:var(--accent)}
+nav.toc a b{color:var(--accent)}
+.chap-n{color:var(--accent)}
+@media (min-width:1200px){ nav.side a.cur{background:var(--t-pink);color:var(--ink)} nav.side a b{color:var(--accent)} }
+
+/* ===== Curseurs roses ===== */
+input[type=range]{-webkit-appearance:none;appearance:none;height:22px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--accent) 0 var(--fill,50%),var(--g1) var(--fill,50%) 100%)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin-top:-6px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--g2)}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:var(--g1)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:999px;background:var(--accent)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--g2)}
+input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+
+/* ===== Titres : police d'affichage distincte ===== */
+header h1,.prose h2,.prose h3,.lab-head h2,.lab-head h3.lab-sub,.chart-card h3,.chap-n,.gloss dt,.side-title{font-family:var(--f-display)}
+header h1{font-weight:600;letter-spacing:-.035em;font-variation-settings:"opsz" 96}
+.prose h2,.lab-head h2{font-weight:600;letter-spacing:-.03em;font-size:2rem;font-variation-settings:"opsz" 60}
+.prose h3,.lab-head h3.lab-sub{font-weight:600;letter-spacing:-.01em;font-size:1.2rem}
+.chart-card h3{font-weight:600;font-size:1.12rem;letter-spacing:-.01em}
+.chap-n{font-weight:700;font-size:2.2rem;letter-spacing:-.04em}
+.chap-n span{font-family:var(--f-body);font-weight:485;letter-spacing:0}
+/* ===== Sommaire latéral : rail de progression ===== */
+@media (min-width:1200px){
+  .layout{grid-template-columns:260px minmax(0,1fr);gap:44px}
+  nav.side{gap:0;background:var(--pink-faint);border:1px solid var(--pink-line);border-radius:20px;padding:16px 12px 14px;max-height:calc(100vh - 48px);overflow:auto}
+  .side-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 8px;padding:0 6px 14px;margin-bottom:8px;border-bottom:1px solid var(--pink-line)}
+  .side-title{font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:var(--ink)}
+  .prog-t{font-size:.76rem;color:var(--faint)}
+  .prog-t b{color:var(--accent);font-weight:600}
+  .prog-bar{flex-basis:100%;height:4px;border-radius:999px;background:var(--g1);overflow:hidden}
+  .prog-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .12s linear}
+  nav.side a{position:relative;display:flex;align-items:center;gap:10px;padding:7px 10px 7px 6px;border-radius:12px;color:var(--faint);font-size:.88rem;line-height:1.3;background:transparent}
+  nav.side a::before{content:"";position:absolute;left:17px;top:0;bottom:0;width:2px;background:var(--g1);z-index:0}
+  nav.side a:first-of-type::before{top:50%}
+  nav.side a:last-of-type::before{bottom:50%}
+  nav.side a.done::before{background:var(--g3)}
+  nav.side a.cur::before{background:linear-gradient(var(--g3) 50%,var(--g1) 50%)}
+  nav.side a:first-of-type.cur::before{background:var(--g1)}
+  nav.side a b{position:relative;z-index:1;flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--surface);border:2px solid var(--g2);color:var(--faint);font-size:.72rem;font-weight:600;font-family:var(--f-body);margin:0;transition:transform .15s}
+  nav.side a.done b{background:var(--g2);border-color:var(--g2);color:var(--accent-ink)}
+  nav.side a.cur{background:var(--surface);color:var(--ink);font-weight:535;box-shadow:0 1px 0 var(--pink-line),0 6px 18px -10px var(--accent)}
+  nav.side a.cur b{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:scale(1.12);box-shadow:0 0 0 4px var(--t-pink)}
+  nav.side a:hover{background:var(--surface);color:var(--ink)}
+  nav.side a:hover b{border-color:var(--accent)}
+  nav.side a[href="#labo"]::after,nav.side a[href="#swap"]::after{content:"Labo";margin-left:auto;flex:none;font-size:.66rem;font-weight:600;color:var(--accent);background:var(--t-pink);border:1px solid var(--pink-line);border-radius:999px;padding:1px 7px}
+  nav.side .side-note{margin-top:12px;padding:10px 6px 0;border-top:1px solid var(--pink-line)}
+}
+@media (min-width:1200px) and (prefers-reduced-motion:reduce){ nav.side a b,.prog-bar i{transition:none} }
+
+/* ===== Sommaire plus sobre ===== */
+@media (min-width:1200px){
+  .layout{grid-template-columns:240px minmax(0,1fr)}
+  nav.side{background:transparent;border:0;border-radius:0;padding:4px 0 0}
+  .side-head{padding:0 0 12px 12px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .side-title{font-size:1rem;font-weight:600}
+  .prog-t{font-size:.74rem}
+  .prog-t b{color:var(--faint);font-weight:485}
+  .prog-bar{height:2px;background:var(--line)}
+  nav.side a{gap:12px;padding:6px 10px 6px 12px;border-radius:8px;font-size:.88rem;box-shadow:none}
+  nav.side a::before{left:15px;width:1px;background:var(--line)}
+  nav.side a.done::before{background:var(--line)}
+  nav.side a.cur::before,nav.side a:first-of-type.cur::before{background:var(--line)}
+  nav.side a b{width:7px;height:7px;border:0;background:var(--g2);font-size:0;color:transparent;transform:none;box-shadow:none;margin-left:0}
+  nav.side a.done b{background:var(--g2)}
+  nav.side a.cur{background:transparent;box-shadow:none;color:var(--ink);font-weight:535}
+  nav.side a.cur b{background:var(--accent);transform:none;box-shadow:0 0 0 3px var(--t-pink)}
+  nav.side a:hover{background:var(--hover)}
+  nav.side a:hover b{border:0}
+  nav.side a[href="#labo"]::after,nav.side a[href="#swap"]::after{content:"labo";background:transparent;border:0;color:var(--faint);font-weight:400;padding:0}
+  nav.side .side-note{border-top:1px solid var(--line);padding:10px 0 0 12px}
+}
+
+/* ===== Sans progression ni rail ===== */
+@media (min-width:1200px){
+  .prog-t,.prog-bar{display:none}
+  nav.side a::before{display:none}
+}
+
+/* ===== Sous-chapitres dans le sommaire ===== */
+.subs{display:none}
+.sub-anchor{scroll-margin-top:24px}
+@media (min-width:1200px){
+  nav.side > a.cur + .subs{display:flex;flex-direction:column;gap:1px;margin:2px 0 8px 18px;padding-left:10px;border-left:1px solid var(--line)}
+  nav.side a.sub{display:block;padding:4px 8px;border-radius:6px;font-size:.8rem;line-height:1.35;color:var(--faint);font-weight:400}
+  nav.side a.sub::before,nav.side a.sub::after{display:none}
+  nav.side a.sub:hover{background:var(--hover);color:var(--ink)}
+  nav.side a.sub.cur{color:var(--accent);font-weight:485;background:transparent}
+}
+
+/* ===== Transitions douces du sommaire ===== */
+@media (min-width:1200px){
+  nav.side > a{transition:color .3s ease,background-color .3s ease}
+  nav.side > a b{transition:background-color .3s ease,box-shadow .3s ease,transform .3s ease}
+  nav.side > .subs{display:grid;grid-template-rows:0fr;opacity:0;margin:0 0 0 18px;padding-left:10px;border-left:1px solid transparent;transition:grid-template-rows .35s cubic-bezier(.2,.7,.2,1),opacity .25s ease,margin .35s ease,border-color .35s ease,visibility 0s linear .35s}
+  nav.side > .subs > .subs-in{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:1px;transform:translateY(-4px);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  nav.side > a.cur + .subs{display:grid;grid-template-rows:1fr;opacity:1;margin:2px 0 8px 18px;border-left-color:var(--line);transition-delay:0s,.05s,0s,0s,0s}
+  nav.side > a.cur + .subs > .subs-in{transform:none}
+  nav.side a.sub{transition:color .25s ease,background-color .25s ease}
+}
+@media (min-width:1200px){ nav.side > .subs{visibility:hidden} nav.side > a.cur + .subs{visibility:visible} }
+@media (prefers-reduced-motion:reduce){
+  nav.side > a, nav.side > a b, nav.side > .subs, nav.side > .subs > .subs-in, nav.side a.sub{transition:none}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="pair">Pool ETH / USDC · Uniswap v3</div>
+    <h1>Comprendre la liquidité concentrée</h1>
+    <p>Un cours interactif sur les CLMM (<i>Concentrated Liquidity Market Makers</i>). On part d'une seule équation, x·y = k, on la déforme pas à pas, et chaque formule peut être manipulée dans les laboratoires. Aucune connaissance en cryptomonnaies n'est nécessaire : le vocabulaire est expliqué au fur et à mesure et rassemblé dans le lexique final.</p>
+    <nav class="toc" aria-label="Sommaire">
+      <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#lexique"><b>9</b>Lexique</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <nav class="side" aria-label="Sommaire"><div class="side-head"><span class="side-title">Sommaire</span><span class="prog-t"><b id="progN">0 %</b> parcouru</span><span class="prog-bar"><i id="progB"></i></span></div><a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#lexique"><b>9</b>Lexique</a><p class="side-note">Dans le laboratoire, les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier font bouger le prix (<span class="kbd">Maj</span> pour aller plus vite).</p></nav>
+    <div class="content">
+
+  <!-- 1 -->
+  <section class="chap" id="c1">
+    <div class="chap-n"><span>Chapitre</span>1</div>
+    <div class="prose">
+      <h2>Échanger sans intermédiaire</h2>
+      <p>À la bourse, un acheteur et un vendeur se rencontrent dans un <strong>carnet d'ordres</strong> : chacun annonce un prix, et un échange a lieu quand deux ordres se croisent. Sur une blockchain comme Ethereum, chaque opération coûte des frais et prend du temps. Maintenir un carnet d'ordres y est très coûteux.</p>
+      <p>Une plateforme décentralisée comme Uniswap remplace le carnet par un <strong>programme</strong> (un « contrat intelligent ») qui garde deux réserves de jetons et applique une formule mathématique. On appelle ce mécanisme un <strong>AMM</strong>, pour <i>Automated Market Maker</i>. Trois rôles interviennent :</p>
+      <div class="roles">
+        <div><b>Fournisseur de liquidité (LP)</b>Dépose les deux jetons dans la réserve (la « pool ») et touche une part des frais.</div>
+        <div><b>Trader</b>Apporte un jeton à la pool et repart avec l'autre. Il paie un petit frais, par exemple 0,05 % ou 0,3 %.</div>
+        <div><b>La formule</b>Décide combien le trader reçoit. C'est elle qui fixe le prix, sans intervention humaine.</div>
+      </div>
+      <p>Dans tout ce document, la pool contient de l'<strong>ETH</strong> (quantité notée \(x\)) et de l'<strong>USDC</strong>, un jeton qui vaut 1 dollar (quantité notée \(y\)). Le prix \(P\) est donc exprimé en USDC pour 1 ETH.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Dans tous les chapitres, on suit la même pool : elle contient <strong>10 ETH</strong> et <strong>20 000 USDC</strong>. Les mêmes nombres reviennent à chaque étape, ce qui permet de vérifier chaque formule à la main.</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="chap" id="c2">
+    <div class="chap-n"><span>Chapitre</span>2</div>
+    <div class="prose">
+      <h2>Le produit constant (Uniswap v2)</h2>
+      <p>Uniswap v2 impose qu'après chaque échange (frais mis à part), le produit des réserves reste le même :</p>
+      <div class="math">\[ x \cdot y = k \]</div>
+      <p>Si un trader apporte \(\Delta x\) ETH, il reçoit \(\Delta y\) USDC tel que \((x+\Delta x)(y-\Delta y) = k\). On isole \(\Delta y\) :</p>
+      <div class="math deriv">\[ \begin{aligned} (x+\Delta x)(y-\Delta y) &= k \\[3pt] xy - x\,\Delta y + \Delta x\,y - \Delta x\,\Delta y &= k && \small\text{on développe} \\[3pt] -x\,\Delta y + \Delta x\,y - \Delta x\,\Delta y &= 0 && \small\text{on soustrait } xy = k \text{ des deux côtés} \\[3pt] \Delta x\,y &= x\,\Delta y + \Delta x\,\Delta y && \small\text{on fait passer les termes en } \Delta y \text{ à droite} \\[3pt] \Delta x\,y &= \Delta y\,(x+\Delta x) && \small\text{on met } \Delta y \text{ en évidence} \\[3pt] \Delta y &= \frac{y\,\Delta x}{x+\Delta x} && \small\text{on divise par } x+\Delta x \end{aligned} \]</div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Avec \(x = 10\) et \(y = 20\,000\) :<div class="math">\[ k = 10 \times 20\,000 = 200\,000 \]</div>Un trader apporte 1 ETH. La réserve d'ETH passe à 11, donc la réserve d'USDC doit devenir \(200\,000 / 11 \approx 18\,181{,}82\) pour que le produit reste égal à \(k\). Le trader repart avec la différence :<div class="math">\[ \Delta y = 20\,000 - 18\,181{,}82 = 1\,818{,}18 \text{ USDC} \]</div>La formule donne le même résultat : \(\Delta y = \dfrac{20\,000 \times 1}{10 + 1} = 1\,818{,}18\).</div>
+      <h3>2.1 Le prix est une pente</h3>
+      <p>Pour un échange infiniment petit, le prix est le rapport \(-\,dy/dx\). On exprime \(y\) en fonction de \(x\), puis on dérive :</p>
+      <div class="math deriv">\[ \begin{aligned} xy = k \;\Longrightarrow\; y &= \frac{k}{x} = k\,x^{-1} && \small\text{on divise par } x \\[3pt] \frac{dy}{dx} &= -k\,x^{-2} = -\frac{k}{x^2} && \small\text{dérivée de } x^{-1} \text{ : } -x^{-2} \\[3pt] P = -\frac{dy}{dx} &= \frac{k}{x^2} && \small\text{on change le signe} \\[3pt] &= \frac{xy}{x^2} && \small\text{on remplace } k \text{ par } xy \\[3pt] &= \frac{y}{x} && \small\text{on simplifie par } x \end{aligned} \]</div>
+      <p>Le prix est donc la valeur absolue de la pente de l'hyperbole au point où se trouve la pool. Plus un échange est gros, plus on glisse le long de la courbe et plus le prix moyen obtenu s'éloigne du prix de départ : c'est le <strong>glissement</strong> (<i>slippage</i>).</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Avant l'échange, \(P = 20\,000 / 10 = 2\,000\) USDC par ETH. Comparons deux tailles d'échange :<div class="tw"><table><thead><tr><th>ETH apportés</th><th>USDC reçus</th><th>Prix moyen obtenu</th><th>Nouveau prix y/x</th></tr></thead><tbody><tr><td>0,1</td><td>198,02</td><td>1 980,20</td><td>1 960,59</td></tr><tr><td>1</td><td>1 818,18</td><td>1 818,18</td><td>1 652,89</td></tr></tbody></table></div>Avec 0,1 ETH, le trader perd 1 % par rapport au prix affiché. Avec 1 ETH (10 % de la réserve), il perd plus de 9 %. Le glissement grandit avec la taille de l'échange par rapport aux réserves.</div>
+      <h3>2.2 Une variable plus naturelle : L</h3>
+      <p>On pose \(L = \sqrt{k}\), appelée <strong>liquidité</strong><a class="ref" href="#pourquoi-l" title="Pourquoi choisir L = √k plutôt que k ?">*</a>. Des deux relations \(xy = L^2\) et \(y/x = P\), on tire \(x\) et \(y\) :</p>
+      <p class="refnote">* Pourquoi prendre la racine carrée de k plutôt que k lui-même ? La réponse est donnée un peu plus bas, dans la section <a href="#pourquoi-l">2.3 « Pourquoi choisir L = √k plutôt que k ? »</a>.</p>
+      <div class="math deriv">\[ \begin{aligned} \frac{y}{x} = P \;\Longrightarrow\; y &= P\,x && \small\text{on multiplie par } x \\[3pt] x \cdot (P\,x) &= L^2 && \small\text{on remplace } y \text{ dans } xy = L^2 \\[3pt] x^2 &= \frac{L^2}{P} && \small\text{on divise par } P \\[3pt] x &= \frac{L}{\sqrt{P}} && \small\text{racine carrée, avec } x > 0 \\[3pt] y = P\,x &= P \cdot \frac{L}{\sqrt{P}} = \frac{\sqrt{P}\,\sqrt{P}\,L}{\sqrt{P}} = L\sqrt{P} && \small\text{car } P = \sqrt{P}\cdot\sqrt{P} \end{aligned} \]</div>
+      <p>\(L\) mesure la profondeur du marché : plus \(L\) est grand, moins un échange donné fait bouger le prix.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>\(L = \sqrt{200\,000} \approx 447{,}21\) et \(\sqrt{2\,000} \approx 44{,}72\). On retrouve bien les réserves :<div class="math">\[ x = \frac{447{,}21}{44{,}72} = 10 \text{ ETH} \qquad y = 447{,}21 \times 44{,}72 = 20\,000 \text{ USDC} \]</div>Si le prix monte à 2 500 (\(\sqrt{2\,500} = 50\)), la pool reçoit \(\Delta y = 447{,}21 \times (50 - 44{,}72) \approx 2\,360{,}68\) USDC, sans avoir à calculer \(k\) ni les réserves intermédiaires.</div>
+      <h3 id="pourquoi-l">2.3 Pourquoi choisir L = √k plutôt que k ?</h3>
+      <p>On pourrait tout écrire avec \(k\). On préfère \(L = \sqrt{k}\) pour trois raisons.</p>
+      <p><strong>1. L est proportionnel à ce qu'on dépose.</strong> \(k\) est le produit de deux quantités : si l'on multiplie les deux réserves par un même nombre \(c\), \(k\) est multiplié par \(c^2\), alors que \(L\) n'est multiplié que par \(c\) :</p>
+      <div class="math deriv">\[ \begin{aligned} k' &= (c\,x)(c\,y) = c^2\,xy = c^2\,k && \small\text{on remplace } x, y \text{ par } cx, cy \\[3pt] L' &= \sqrt{c^2\,k} = \sqrt{c^2}\,\sqrt{k} = c\,L && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \text{ et } c > 0 \end{aligned} \]</div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>On double les réserves de la pool (\(c = 2\)) :<div class="tw"><table><thead><tr><th></th><th>Réserves</th><th>k</th><th>L = √k</th></tr></thead><tbody><tr><td>Départ</td><td>10 ETH + 20 000 USDC</td><td>200 000</td><td>447,21</td></tr><tr><td>Tout × 2</td><td>20 ETH + 40 000 USDC</td><td>800 000 (× 4)</td><td>894,43 (× 2)</td></tr></tbody></table></div>Le capital double, \(L\) double, mais \(k\) est multiplié par 4.</div>
+      <p><strong>2. Les L s'additionnent, pas les k.</strong> Deux LP déposent chacun 10 ETH et 20 000 USDC. La pool totale contient 20 ETH et 40 000 USDC :</p>
+      <div class="math deriv">\[ \begin{aligned} L_1 + L_2 &= 447{,}21 + 447{,}21 = 894{,}43 = \sqrt{20 \times 40\,000} = L_{\text{pool}} && \small\text{correct} \\[3pt] k_1 + k_2 &= 200\,000 + 200\,000 = 400\,000 \;\neq\; 20 \times 40\,000 = 800\,000 = k_{\text{pool}} && \small\text{faux} \end{aligned} \]</div>
+      <p>Toute la mécanique de v3 repose sur cette addition : la liquidité active est la <strong>somme</strong> des \(L\) des positions dont la plage contient le prix (chapitre 7), et chaque LP reçoit des frais au prorata de son \(L\). Avec \(k\), on ne pourrait ni additionner les positions ni calculer les parts aussi simplement.</p>
+      <p><strong>3. Les formules deviennent linéaires.</strong> Avec \(k\), on aurait \(x = \sqrt{k/P}\) et \(y = \sqrt{kP}\) : la racine de \(k\) apparaît de toute façon. Avec \(L\), on obtient \(x = L/\sqrt{P}\), \(y = L\sqrt{P}\) et \(\Delta y = L\,\Delta\sqrt{P}\) (chapitre 4), des relations proportionnelles à \(L\).</p>
+      <div class="box"><span class="lbl">Interprétation</span>\(L = \sqrt{xy}\) est la <strong>moyenne géométrique</strong> des deux réserves. Si le prix valait 1, on aurait \(x = y = L\) : \(L\) serait simplement la quantité de chaque jeton dans la pool.</div>
+      <h3>2.4 Le défaut de v2</h3>
+      <p>Comme \(x = L/\sqrt{P}\) ne s'annule jamais, la pool garde des réserves pour tous les prix entre 0 et l'infini. Si l'ETH vaut 2000 USDC, une grande partie du capital attend un prix de 10 ou de 100 000 qui n'arrivera sans doute jamais. Ce capital immobilisé touche quand même sa part des frais, mais il dilue celle du capital vraiment utile.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Supposons que le prix reste entre 1 800 et 2 200. Avec \(x = L/\sqrt{P}\) et \(y = L\sqrt{P}\) :<ul><li>pour monter de 2 000 à 2 200, la pool cède \(447{,}21 \times \left(\tfrac{1}{\sqrt{2000}} - \tfrac{1}{\sqrt{2200}}\right) \approx 0{,}465\) ETH, soit <strong>4,7 %</strong> de ses 10 ETH ;</li><li>pour descendre de 2 000 à 1 800, elle cède \(447{,}21 \times (\sqrt{2000} - \sqrt{1800}) \approx 1\,026\) USDC, soit <strong>5,1 %</strong> de ses 20 000 USDC.</li></ul>Environ 95 % des 40 000 $ déposés ne servent jamais dans ce scénario.</div>
+      <div class="box live"><span class="lbl">Avec les réglages du chapitre 5</span>Pour une plage de <span class="live-n" id="l2range"></span>, seuls <span class="live-n" id="l2pct"></span> du capital d'une position v2 servent réellement quand le prix reste dans cette plage. Le reste ne travaille jamais.</div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="chap" id="c3">
+    <div class="chap-n"><span>Chapitre</span>3</div>
+    <div class="prose">
+      <h2>La liquidité concentrée (Uniswap v3)</h2>
+      <p>Uniswap v3 laisse chaque LP choisir un intervalle de prix \([p_a\,;\,p_b]\). L'idée est de ne déposer que ce qui sera consommé si le prix reste dans cet intervalle.</p>
+      <p>Partons de la courbe v2 \(X \cdot Y = L^2\), avec \(X = L/\sqrt{P}\) et \(Y = L\sqrt{P}\). Les majuscules désignent maintenant des réserves <strong>virtuelles</strong>.</p>
+      <ul>
+        <li>Si le prix monte jusqu'à \(p_b\), \(X\) descend jusqu'à \(L/\sqrt{p_b}\). Ces \(L/\sqrt{p_b}\) ETH ne sont jamais vendus : inutile de les déposer.</li>
+        <li>Si le prix baisse jusqu'à \(p_a\), \(Y\) descend jusqu'à \(L\sqrt{p_a}\). Même raisonnement pour l'USDC.</li>
+      </ul>
+      <p>Les réserves <strong>réelles</strong> sont donc les réserves virtuelles moins ces parts inutiles :</p>
+      <div class="math">\[ x = X - \frac{L}{\sqrt{p_b}} \qquad y = Y - L\sqrt{p_a} \]</div>
+      <p>On isole \(X\) et \(Y\), puis on les remplace dans \(XY = L^2\) :</p>
+      <div class="math deriv">\[ \begin{aligned} x = X - \frac{L}{\sqrt{p_b}} \;\Longrightarrow\; X &= x + \frac{L}{\sqrt{p_b}} && \small\text{on ajoute } L/\sqrt{p_b} \\[3pt] y = Y - L\sqrt{p_a} \;\Longrightarrow\; Y &= y + L\sqrt{p_a} && \small\text{on ajoute } L\sqrt{p_a} \\[3pt] X \cdot Y &= L^2 && \small\text{courbe v2 des réserves virtuelles} \\[3pt] \left(x + \frac{L}{\sqrt{p_b}}\right)\left(y + L\sqrt{p_a}\right) &= L^2 && \small\text{on remplace } X \text{ et } Y \end{aligned} \]</div>
+      <p>C'est l'équation de la courbe d'une position v3.</p>
+      <p>Géométriquement, c'est la même hyperbole <strong>translatée</strong> du vecteur \(\left(-L/\sqrt{p_b}\,;\,-L\sqrt{p_a}\right)\). La partie utile se termine sur l'axe \(y = 0\) (en \(P = p_a\)) et sur l'axe \(x = 0\) (en \(P = p_b\)). Le bouton « Réserves virtuelles » du chapitre 5 montre cette translation.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>On garde \(L = 447{,}21\) et on choisit la plage \([1\,800\,;\,2\,200]\), avec \(\sqrt{1800} \approx 42{,}43\) et \(\sqrt{2200} \approx 46{,}90\). Les parts inutiles valent :<div class="math">\[ \frac{L}{\sqrt{p_b}} = \frac{447{,}21}{46{,}90} \approx 9{,}535 \text{ ETH} \qquad L\sqrt{p_a} = 447{,}21 \times 42{,}43 \approx 18\,973{,}67 \text{ USDC} \]</div>Les réserves réelles à déposer sont donc :<div class="math">\[ x = 10 - 9{,}535 = 0{,}465 \text{ ETH} \qquad y = 20\,000 - 18\,973{,}67 = 1\,026{,}33 \text{ USDC} \]</div>Vérification dans l'équation translatée :<div class="math">\[ (0{,}465 + 9{,}535)(1\,026{,}33 + 18\,973{,}67) = 10 \times 20\,000 = 200\,000 = L^2 \]</div></div>
+      <h3>3.1 Les réserves en fonction du prix</h3>
+      <p>On remplace \(X\) et \(Y\) par leurs expressions en \(\sqrt{P}\), en bloquant \(\sqrt{P}\) dans \([\sqrt{p_a}\,;\,\sqrt{p_b}]\) :</p>
+      <div class="math deriv">\[ \begin{aligned} x(P) &= X - \frac{L}{\sqrt{p_b}} && \small\text{définition des réserves réelles} \\[3pt] &= \frac{L}{\sqrt{P}} - \frac{L}{\sqrt{p_b}} && \small\text{car } X = L/\sqrt{P} \\[3pt] &= L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) && \small\text{on met } L \text{ en évidence} \\[3pt] y(P) &= Y - L\sqrt{p_a} = L\sqrt{P} - L\sqrt{p_a} && \small\text{car } Y = L\sqrt{P} \\[3pt] &= L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on met } L \text{ en évidence} \end{aligned} \]</div>
+      <p>Sous \(p_a\), la position ne contient que de l'ETH. Au-dessus de \(p_b\), elle ne contient que de l'USDC.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Pour la même position :<div class="tw"><table><thead><tr><th>Prix</th><th>ETH x(P)</th><th>USDC y(P)</th><th>Valeur</th></tr></thead><tbody><tr><td>1 800 (= p<sub>a</sub>)</td><td>1,006</td><td>0</td><td>1 811 $</td></tr><tr><td>2 000</td><td>0,465</td><td>1 026,33</td><td>1 957 $</td></tr><tr><td>2 200 (= p<sub>b</sub>)</td><td>0</td><td>2 002,51</td><td>2 003 $</td></tr></tbody></table></div>Entre 1 800 et 2 200, la position est passée de 100 % ETH à 100 % USDC.</div>
+      <h3>3.2 Combien de liquidité pour un capital donné ?</h3>
+      <p>Un LP dépose une somme \(V\) (en USDC) quand le prix vaut \(P_0\). Sa liquidité \(L\) s'obtient en écrivant la valeur de la position et en isolant \(L\). C'est exactement le calcul fait par le chapitre 5 :</p>
+      <div class="math deriv">\[ \begin{aligned} V &= x\,P_0 + y && \small\text{valeur = ETH × prix + USDC} \\[3pt] V &= L\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + L\left(\sqrt{P_0} - \sqrt{p_a}\right) && \small\text{on remplace } x(P_0) \text{ et } y(P_0) \\[3pt] V &= L\left[\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}\right] && \small\text{on met } L \text{ en évidence} \\[3pt] L &= \frac{V}{\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}} && \small\text{on divise par le crochet} \end{aligned} \]</div>
+      <h3>3.3 Le gain d'efficacité</h3>
+      <p>On compare deux positions de même liquidité \(L\) : une v3 sur \([p_a\,;\,p_b]\) et une v2. On se place au prix central \(P = \sqrt{p_a p_b}\) (moyenne géométrique des bornes). Une propriété utile de ce prix :</p>
+      <div class="math deriv">\[ \begin{aligned} \frac{P}{\sqrt{p_b}} &= \frac{\sqrt{p_a}\,\sqrt{p_b}}{\sqrt{p_b}} = \sqrt{p_a} && \small\text{car } \sqrt{p_a p_b} = \sqrt{p_a}\sqrt{p_b} \end{aligned} \]</div>
+      <p>Valeur de la position v3 :</p>
+      <div class="math deriv">\[ \begin{aligned} V_{v3} &= x\,P + y \\[3pt] &= L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right)P + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } x \text{ et } y \\[3pt] &= L\left(\frac{P}{\sqrt{P}} - \frac{P}{\sqrt{p_b}}\right) + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on distribue } P \\[3pt] &= L\left(\sqrt{P} - \sqrt{p_a}\right) + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{car } P/\sqrt{P} = \sqrt{P} \text{ et } P/\sqrt{p_b} = \sqrt{p_a} \\[3pt] &= 2L\left(\sqrt{P} - \sqrt{p_a}\right) \end{aligned} \]</div>
+      <p>Valeur de la position v2 :</p>
+      <div class="math deriv">\[ \begin{aligned} V_{v2} &= x\,P + y = \frac{L}{\sqrt{P}}\,P + L\sqrt{P} && \small\text{réserves v2 du chapitre 2} \\[3pt] &= L\sqrt{P} + L\sqrt{P} = 2L\sqrt{P} \end{aligned} \]</div>
+      <p>Rapport des deux :</p>
+      <div class="math deriv">\[ \begin{aligned} \frac{V_{v2}}{V_{v3}} &= \frac{2L\sqrt{P}}{2L\left(\sqrt{P} - \sqrt{p_a}\right)} = \frac{\sqrt{P}}{\sqrt{P} - \sqrt{p_a}} && \small\text{on simplifie par } 2L \\[3pt] &= \frac{1}{1 - \dfrac{\sqrt{p_a}}{\sqrt{P}}} && \small\text{on divise haut et bas par } \sqrt{P} \\[3pt] \frac{\sqrt{p_a}}{\sqrt{P}} &= \sqrt{\frac{p_a}{\sqrt{p_a p_b}}} = \sqrt{\frac{\sqrt{p_a}}{\sqrt{p_b}}} = \left(\frac{p_a}{p_b}\right)^{1/4} && \small\text{car } p_a / \sqrt{p_a} = \sqrt{p_a} \\[3pt] \frac{V_{v2}}{V_{v3}} &= \frac{1}{1 - \left(p_a/p_b\right)^{1/4}} \end{aligned} \]</div>
+      <p>Avec la même somme, une position v3 obtient donc un \(L\) beaucoup plus grand, et touche les frais en proportion.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>À 2 000, la position v3 vaut \(0{,}465 \times 2\,000 + 1\,026{,}33 \approx 1\,957\) $, alors que la pool v2 de même \(L\) vaut \(10 \times 2\,000 + 20\,000 = 40\,000\) $. Le rapport vaut \(40\,000 / 1\,957 \approx 20{,}4\). La formule donne la même chose :<div class="math">\[ \left(\tfrac{1\,800}{2\,200}\right)^{1/4} \approx 0{,}951 \quad\Rightarrow\quad \frac{1}{1 - 0{,}951} \approx 20{,}4 \]</div>Avec 1 957 $ placés dans cette plage, on fournit autant de liquidité qu'avec 40 000 $ en v2.</div>
+      <div class="box live"><span class="lbl">Avec les réglages du chapitre 5</span>La plage choisie donne une efficacité de <span class="live-n" id="l3eff"></span> : à capital égal, la liquidité \(L\) vaut <span class="live-n" id="l3L"></span> contre <span class="live-n" id="l3L2"></span> en v2.</div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="chap" id="c4">
+    <div class="chap-n"><span>Chapitre</span>4</div>
+    <div class="prose">
+      <h2>Pourquoi tout s'écrit avec √P</h2>
+      <p>Dans une plage où \(L\) est constant, les formules précédentes donnent des relations <strong>linéaires</strong> :</p>
+      <div class="math deriv">\[ \begin{aligned} \Delta y = y(P') - y(P) &= L\left(\sqrt{P'} - \sqrt{p_a}\right) - L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } y(P) \text{ et } y(P') \\[3pt] &= L\left(\sqrt{P'} - \sqrt{P}\right) = L\,\Delta\sqrt{P} && \small\text{les } \sqrt{p_a} \text{ s'annulent} \\[3pt] \Delta x = x(P') - x(P) &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{p_b}}\right) - L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) \\[3pt] &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) && \small\text{les } 1/\sqrt{p_b} \text{ s'annulent} \end{aligned} \]</div>
+      <p>Pour exécuter un échange, le contrat n'a donc pas besoin de résoudre d'équation : une addition et une division suffisent. Si un trader vend \(\Delta x\) ETH, la réserve d'ETH augmente de \(\Delta x\). On en déduit le nouveau prix \(P'\) :</p>
+      <div class="math deriv">\[ \begin{aligned} L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) &= \Delta x && \small\text{relation linéaire ci-dessus} \\[3pt] \frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}} &= \frac{\Delta x}{L} && \small\text{on divise par } L \\[3pt] \frac{1}{\sqrt{P'}} &= \frac{1}{\sqrt{P}} + \frac{\Delta x}{L} && \small\text{on ajoute } 1/\sqrt{P} \end{aligned} \]</div>
+      <p>Le trader reçoit ensuite \(|\Delta y| = L\left(\sqrt{P} - \sqrt{P'}\right)\) USDC.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Un trader vend 0,1 ETH à la position v3 du chapitre 3 (\(L = 447{,}21\), \(P = 2\,000\)) :<div class="math">\[ \frac{1}{\sqrt{P'}} = \frac{1}{44{,}721} + \frac{0{,}1}{447{,}21} = 0{,}022361 + 0{,}000224 = 0{,}022585 \]</div>donc \(\sqrt{P'} \approx 44{,}278\) et \(P' \approx 1\,960{,}59\). Le trader reçoit \(\Delta y = 447{,}21 \times (44{,}721 - 44{,}278) \approx 198{,}02\) USDC.<br><br>C'est exactement le résultat de la pool v2 du chapitre 2, car les deux ont le même \(L\). La différence : la position v3 ne mobilise que 1 957 $ au lieu de 40 000 $.</div>
+      <p>C'est pourquoi Uniswap v3 stocke \(\sqrt{P}\) et non \(P\). Il le stocke en nombre à virgule fixe, \(\sqrt{P} \cdot 2^{96}\), parce que la blockchain ne manipule que des entiers. Le chapitre 6 applique exactement cette formule.</p>
+    </div>
+  </section>
+
+  <!-- 5 : LABO -->
+  <section class="lab" id="labo">
+    <div class="lab-head">
+      <span class="tag">Chapitre 5</span>
+      <h2>Laboratoire : une position</h2>
+      <p>Choisissez le prix au dépôt, la plage et le capital, puis faites bouger le prix actuel. Les frais ne sont pas comptés ici : on isole la mécanique. Pour commencer, essayez une expérience guidée.</p>
+    </div>
+
+    <div class="exps" id="exps">
+      <button data-e="0">Un ordre étalé<small>La position se convertit</small></button>
+      <button data-e="1">L'effet loupe<small>Plage étroite vs large</small></button>
+      <button data-e="2">Ordre limite<small>Plage au-dessus du prix</small></button>
+      <button data-e="3">Sortie de plage<small>Le prix s'effondre</small></button>
+      <button data-e="4">Perte « impermanente »<small>Aller-retour du prix</small></button>
+    </div>
+    <div class="obs" id="obs" hidden></div>
+
+    <div class="grid">
+      <aside class="panel" aria-label="Réglages">
+        <div class="section-label">Dépôt</div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="p0n">Prix au dépôt P₀</label><input id="p0n" type="number" min="1" step="1"></div>
+          <span class="hint">USDC pour 1 ETH. Change l'échelle de tous les curseurs.</span>
+        </div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="v0n">Capital déposé V</label><input id="v0n" type="number" min="1" step="1"></div>
+          <input id="v0r" type="range" min="100" max="50000" step="5" aria-label="Capital déposé">
+        </div>
+        <hr>
+        <div class="section-label">Plage de prix</div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="pan">Borne basse p<sub>a</sub></label><input id="pan" type="number" step="1"></div>
+          <input id="par" type="range" aria-label="Borne basse">
+        </div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="pbn">Borne haute p<sub>b</sub></label><input id="pbn" type="number" step="1"></div>
+          <input id="pbr" type="range" aria-label="Borne haute">
+        </div>
+        <div class="ctl">
+          <span class="hint">Plage autour de P₀ :</span>
+          <div class="presets" id="presets">
+            <button data-w="0.01">± 1 %</button><button data-w="0.05">± 5 %</button>
+            <button data-w="0.1">± 10 %</button><button data-w="0.25">± 25 %</button><button data-w="0.6">± 60 %</button>
+          </div>
+        </div>
+        <hr>
+        <div class="section-label">Le marché bouge</div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="pn">Prix actuel P</label><input id="pn" type="number" step="1"></div>
+          <input id="pr" type="range" aria-label="Prix actuel">
+          <span class="hint">On peut aussi glisser directement sur les graphiques « Valeur » et « Composition »<span class="desk-only">, ou utiliser les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier</span>.</span>
+        </div>
+        <button id="reset">Remettre P = P₀</button>
+      </aside>
+
+      <div class="labmain">
+        <section class="panel" style="display:flex;flex-direction:column;gap:14px">
+          <div class="status">
+            <span class="chip in" id="chip">Dans la plage</span>
+            <span class="note" id="chipnote"></span>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="k">Liquidité L</span><span class="v" id="sL"></span><span class="s" id="sLv2"></span></div>
+            <div class="stat"><span class="k">ETH dans la position</span><span class="v" id="sX"></span><span class="s" id="sX0"></span></div>
+            <div class="stat"><span class="k">USDC dans la position</span><span class="v" id="sY"></span><span class="s" id="sY0"></span></div>
+            <div class="stat"><span class="k">Efficacité vs v2</span><span class="v" id="sEff"></span><span class="s">à capital égal</span></div>
+            <div class="stat"><span class="k">Valeur position</span><span class="v" id="sVal"></span><span class="s" id="sValPct"></span></div>
+            <div class="stat"><span class="k">Valeur si gardé (HODL)</span><span class="v" id="sHold"></span><span class="s">jetons de départ</span></div>
+            <div class="stat"><span class="k">Perte impermanente</span><span class="v" id="sIL"></span><span class="s" id="sILd"></span></div>
+            <div class="stat"><span class="k">Ticks p<sub>a</sub> → p<sub>b</sub></span><span class="v" id="sTick"></span><span class="s" id="sTickN"></span></div>
+          </div>
+          <div class="mix">
+            <div class="mixlbl"><span style="color:var(--eth)" id="mEth"></span><span style="color:var(--usd)" id="mUsd"></span></div>
+            <div class="mixbar" role="img" aria-label="Répartition en valeur"><span id="bEth" style="background:var(--eth)"></span><span id="bUsd" style="background:var(--usd)"></span></div>
+            <span class="note">Répartition de la valeur de la position au prix actuel.</span>
+          </div>
+        </section>
+
+        <section class="panel chart-card">
+          <div class="chart-top">
+            <div>
+              <h3>La courbe des réserves</h3>
+              <p class="sub" id="curveSub"></p>
+            </div>
+            <div class="presets" role="group" aria-label="Vue de la courbe">
+              <button id="vReal" class="on">Réserves réelles</button><button id="vVirt">Réserves virtuelles</button>
+            </div>
+          </div>
+          <div class="legend" id="curveLegend"></div>
+          <canvas id="cCurve" class="c-curve" aria-label="Courbe des réserves"></canvas>
+        </section>
+
+        <div class="two">
+          <section class="panel chart-card">
+            <h3>Valeur selon le prix</h3>
+            <p class="sub">Valeur de la position (en USDC) pour chaque prix de l'ETH, comparée à garder ses jetons ou à une position v2 de même capital.</p>
+            <div class="legend">
+              <span><i style="background:var(--accent)"></i>Position v3</span>
+              <span><i style="background:var(--hold)"></i>Garder (HODL)</span>
+              <span><i style="background:var(--usd)"></i>Position v2</span>
+            </div>
+            <canvas id="cValue" class="c-value drag" aria-label="Valeur de la position selon le prix"></canvas>
+          </section>
+          <section class="panel chart-card">
+            <h3>Composition selon le prix</h3>
+            <p class="sub">Part de la valeur en ETH (bas) et en USDC (haut). Hors de la plage, il ne reste qu'un seul jeton.</p>
+            <div class="legend">
+              <span><i style="background:var(--eth)"></i>ETH</span>
+              <span><i style="background:var(--usd)"></i>USDC</span>
+            </div>
+            <canvas id="cMix" class="c-mix drag" aria-label="Composition selon le prix"></canvas>
+            <p class="note" style="margin-top:10px">Quand le prix monte, la position vend de l'ETH ; quand il baisse, elle en achète. Plus la plage est étroite, plus la bascule est brutale.</p>
+          </section>
+        </div>
+
+        <section class="panel chart-card">
+          <h3>Les formules avec les valeurs choisies</h3>
+          <p class="sub">Recalculées à chaque changement. √P est bloqué entre √p<sub>a</sub> et √p<sub>b</sub> quand le prix sort de la plage.</p>
+          <div class="formulas" id="formulas"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 : SWAP -->
+  <section class="lab" id="swap">
+    <div class="lab-head">
+      <span class="tag">Chapitre 6</span>
+      <h2>Laboratoire : un échange</h2>
+      <p>Un trader échange uniquement contre la position du chapitre 5 (comme si c'était la seule de la pool), en partant du prix actuel du chapitre 5. On compare avec une position v2 du même capital. Plus L est grand, moins le prix bouge : c'est tout l'intérêt de concentrer.</p>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div class="presets" role="group" aria-label="Sens de l'échange">
+        <button id="dSell" class="on">Le trader vend de l'ETH</button><button id="dBuy">Le trader achète de l'ETH</button>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><label for="dxr">Quantité d'ETH échangée Δx</label><span class="live-n" id="dxv"></span></div>
+        <input id="dxr" type="range" min="0" max="1" step="0.001" value="0.25" aria-label="Quantité d'ETH échangée">
+        <span class="hint" id="dxhint"></span>
+      </div>
+      <div class="stats three">
+        <div class="stat"><span class="k">Nouveau prix v3</span><span class="v" id="wP3"></span><span class="s" id="wI3"></span></div>
+        <div class="stat"><span class="k">Prix moyen obtenu v3</span><span class="v" id="wA3"></span><span class="s" id="wY3"></span></div>
+        <div class="stat"><span class="k">Statut</span><span class="v" id="wSt" style="font-size:.95rem"></span><span class="s" id="wSt2"></span></div>
+        <div class="stat"><span class="k">Nouveau prix v2</span><span class="v" id="wP2"></span><span class="s" id="wI2"></span></div>
+        <div class="stat"><span class="k">Prix moyen obtenu v2</span><span class="v" id="wA2"></span><span class="s" id="wY2"></span></div>
+        <div class="stat"><span class="k">Rapport des impacts</span><span class="v" id="wR"></span><span class="s">impact v2 ÷ impact v3</span></div>
+      </div>
+      <div class="formulas" id="swapF"></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="chap" id="c7">
+    <div class="chap-n"><span>Chapitre</span>7</div>
+    <div class="prose">
+      <h2>Ticks, liquidité active et frais</h2>
+      <h3>7.1 Les ticks et la liquidité active</h3>
+      <p>Les bornes d'une position ne peuvent pas être quelconques. Le prix est découpé en <strong>ticks</strong> :</p>
+      <div class="math">\[ p(i) = 1{,}0001^{\,i}, \qquad i \in \mathbb{Z} \]</div>
+      <p>Deux ticks voisins diffèrent de 0,01 %. Une position est définie par deux ticks \(i_a < i_b\). Dans le contrat réel, \(p\) est aussi corrigé du nombre de décimales des jetons (18 pour l'ETH, 6 pour l'USDC). On l'ignore ici.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Quel tick correspond au prix 2 000 ?<div class="math deriv">\[ \begin{aligned} 1{,}0001^{\,i} &= 2\,000 \\[3pt] \ln\left(1{,}0001^{\,i}\right) &= \ln 2\,000 && \small\text{on applique } \ln \text{ des deux côtés} \\[3pt] i \cdot \ln 1{,}0001 &= \ln 2\,000 && \small\text{car } \ln(a^i) = i\ln a \\[3pt] i &= \frac{\ln 2\,000}{\ln 1{,}0001} \approx \frac{7{,}6009}{0{,}0000999950} \approx 76\,012{,}8 && \small\text{on divise par } \ln 1{,}0001 \end{aligned} \]</div>Le prix 2 000 se trouve donc entre les ticks 76 012 et 76 013. La plage \([1\,800\,;\,2\,200]\) va du tick 74 959 au tick 76 965, soit environ 2 000 ticks.</div>
+      <p>Pour chaque prix, la pool additionne les \(L\) de toutes les positions dont la plage contient ce prix : c'est la <strong>liquidité active</strong>. C'est une fonction en escalier du prix, qui ne change qu'aux ticks où une position commence ou se termine. Un gros échange est exécuté tick par tick avec la formule du chapitre 4, en changeant \(L\) à chaque franchissement.</p>
+      <h3>7.2 Comment les frais sont partagés</h3>
+      <p>Chaque échange paie un taux \(f\) fixé par la pool (0,01 %, 0,05 %, 0,3 % ou 1 %). Ces frais sont partagés entre les positions actives, proportionnellement à leur \(L\) :</p>
+      <div class="math">\[ \text{frais du LP} \approx f \cdot \text{volume} \cdot \frac{L_{\text{LP}}}{L_{\text{actif}}} \]</div>
+      <p>Une position hors plage a une part nulle. Une plage étroite augmente \(L_{\text{LP}}\), donc la part, mais seulement tant que le prix y reste.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Pendant une journée, 1 000 000 $ s'échangent dans la pool avec un taux \(f = 0{,}05\,\%\). Les frais totaux valent \(1\,000\,000 \times 0{,}0005 = 500\) $. Si la liquidité d'un LP est \(L_{\text{LP}} = 447\) et que la liquidité active totale est \(L_{\text{actif}} = 4\,472\), sa part est de 10 % :<div class="math">\[ 500 \times \frac{447}{4\,472} \approx 50 \text{ \$ par jour} \]</div>Avec la même somme en v2, son \(L\) serait environ 20 fois plus petit, et sa part aussi.</div>
+    </div>
+  </section>
+
+  <section class="lab" id="liq">
+    <div class="lab-head">
+      <span class="tag">Chapitre 7 · suite</span>
+      <h3 class="lab-sub">7.3 Laboratoire : la liquidité active d'une pool fictive</h3>
+      <p>La position du chapitre 5 (en couleur) côtoie trois autres positions inventées pour l'exemple. Leur liquidité est fixée en multiples de la sienne, les montants sont donc illustratifs. Le prix actuel vient du chapitre 5.</p>
+    </div>
+    <div class="grid">
+      <aside class="panel" aria-label="Réglages des frais">
+        <div class="section-label">Hypothèses</div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="fee">Taux de frais f</label>
+            <select id="fee"><option value="0.0001">0,01 %</option><option value="0.0005" selected>0,05 %</option><option value="0.003">0,30 %</option><option value="0.01">1 %</option></select></div>
+        </div>
+        <div class="ctl">
+          <div class="ctl-head"><label for="vol">Volume par jour au prix actuel ($)</label><input id="vol" type="number" min="0" step="1000" value="100000"></div>
+          <span class="hint">Montant total échangé pendant que le prix reste près de P.</span>
+        </div>
+        <hr>
+        <div class="stats" style="grid-template-columns:minmax(0,1fr)">
+          <div class="stat"><span class="k">Liquidité active à P</span><span class="v" id="qAct"></span><span class="s" id="qYou"></span></div>
+          <div class="stat"><span class="k">Part des frais de la position</span><span class="v" id="qShare"></span><span class="s">L position ÷ L actif</span></div>
+          <div class="stat"><span class="k">Frais estimés</span><span class="v" id="qFee"></span><span class="s" id="qApr"></span></div>
+        </div>
+      </aside>
+      <section class="panel chart-card">
+        <h3>Liquidité active selon le prix</h3>
+        <p class="sub">Chaque bande est une position : sa hauteur est son L, sa largeur sa plage. La hauteur totale au trait vertical est la liquidité active au prix actuel.</p>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>Position étudiée</span>
+          <span><i style="background:var(--g1)"></i>Autre LP 1 (plage large)</span><span><i style="background:var(--g2)"></i>Autre LP 2 (plage étroite)</span><span><i style="background:var(--g3)"></i>Autre LP 3</span>
+        </div>
+        <canvas id="cLiq" class="c-liq drag" aria-label="Liquidité active selon le prix"></canvas>
+        <p class="note" style="margin-top:10px">Glisser sur le graphique change le prix : la part de la position tombe à zéro dès que P sort de sa plage.</p>
+      </section>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="chap" id="c8">
+    <div class="chap-n"><span>Chapitre</span>8</div>
+    <div class="prose">
+      <h2>Les risques de la concentration</h2>
+      <h3>8.1 La perte impermanente</h3>
+      <p>Comparons la position avec le fait de simplement garder ses jetons. Pour une position v2 déposée au prix \(P_0\), le prix devient \(P = r\,P_0\). Valeur de la position (formule du chapitre 3) :</p>
+      <div class="math deriv">\[ \begin{aligned} V_{\text{LP}} &= 2L\sqrt{P} = 2L\sqrt{r\,P_0} = 2L\sqrt{r}\,\sqrt{P_0} && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \end{aligned} \]</div>
+      <p>Valeur si l'on avait gardé les jetons déposés, \(x_0 = L/\sqrt{P_0}\) ETH et \(y_0 = L\sqrt{P_0}\) USDC :</p>
+      <div class="math deriv">\[ \begin{aligned} V_{\text{HODL}} &= x_0\,P + y_0 = \frac{L}{\sqrt{P_0}}\,r\,P_0 + L\sqrt{P_0} && \small\text{on remplace } P = rP_0 \\[3pt] &= L\,r\sqrt{P_0} + L\sqrt{P_0} && \small\text{car } P_0/\sqrt{P_0} = \sqrt{P_0} \\[3pt] &= L\sqrt{P_0}\,(1+r) && \small\text{on met } L\sqrt{P_0} \text{ en évidence} \end{aligned} \]</div>
+      <p>Rapport des deux :</p>
+      <div class="math deriv">\[ \begin{aligned} \frac{V_{\text{LP}}}{V_{\text{HODL}}} &= \frac{2L\sqrt{r}\,\sqrt{P_0}}{L\sqrt{P_0}\,(1+r)} = \frac{2\sqrt{r}}{1+r} && \small\text{on simplifie par } L\sqrt{P_0} \end{aligned} \]</div>
+      <p>Ce rapport ne dépasse jamais 1 :</p>
+      <div class="math deriv">\[ \begin{aligned} \left(\sqrt{r} - 1\right)^2 &\ge 0 && \small\text{un carré est toujours positif} \\[3pt] r - 2\sqrt{r} + 1 &\ge 0 && \small\text{on développe} \\[3pt] 1 + r &\ge 2\sqrt{r} && \small\text{on ajoute } 2\sqrt{r} \\[3pt] \frac{2\sqrt{r}}{1+r} &\le 1 && \small\text{on divise par } 1+r > 0 \end{aligned} \]</div>
+      <p>Il y a égalité seulement si \(\sqrt{r} = 1\), donc si \(r = 1\). La position est donc toujours en retard sur HODL dès que le prix bouge. La perte est dite <strong>impermanente</strong> parce qu'elle disparaît si le prix revient à \(P_0\).</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>La pool v2 du chapitre 2 (10 ETH, 20 000 USDC) voit le prix passer de 2 000 à 2 420, soit \(r = 1{,}21\).<ul><li><strong>HODL</strong> : \(10 \times 2\,420 + 20\,000 = 44\,200\) $.</li><li><strong>Pool</strong> : \(x = 447{,}21 / \sqrt{2\,420} \approx 9{,}091\) ETH et \(y = 447{,}21 \times \sqrt{2\,420} = 22\,000\) USDC, donc \(9{,}091 \times 2\,420 + 22\,000 = 44\,000\) $.</li></ul>L'écart vaut −200 $, soit −0,45 %. La formule donne bien \(\frac{2\sqrt{1{,}21}}{2{,}21} - 1 = \frac{2{,}2}{2{,}21} - 1 \approx -0{,}45\,\%\).</div>
+      <p>En v3, la position se comporte comme une position v2 avec une liquidité multipliée par l'efficacité. La perte impermanente est donc amplifiée dans le même rapport. Les frais doivent compenser cet écart pour que la stratégie soit rentable.</p>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Le prix passe de 2 000 à 2 200 (\(r = 1{,}1\)).<ul><li>Pool v2 : \(\frac{2\sqrt{1{,}1}}{2{,}1} - 1 \approx -0{,}11\,\%\).</li><li>Position v3 \([1\,800\,;\,2\,200]\) : elle contient 2 002,51 USDC, alors que garder 0,465 ETH et 1 026,33 USDC vaudrait \(0{,}465 \times 2\,200 + 1\,026{,}33 \approx 2\,050\) $. L'écart est de <strong>−2,32 %</strong>.</li></ul>La perte est environ 20 fois plus grande, comme l'efficacité.</div>
+      <h3>8.2 Sortir de la plage</h3>
+      <p>Hors plage, la position ne touche plus aucun frais et ne contient plus que le jeton qui a perdu de la valeur relativement à l'autre. Pour se remettre au travail, il faut retirer la position et en ouvrir une nouvelle autour du nouveau prix : cela coûte des frais de transaction et rend la perte définitive.</p>
+      <h3>8.3 La question d'optimisation</h3>
+      <p>Tout le problème d'optimisation tient en un compromis : une plage étroite rapporte plus de frais par franc investi mais sort plus souvent et amplifie la perte impermanente ; une plage large est plus stable mais moins rentable. La bonne largeur dépend de la volatilité du prix, du volume d'échanges et du coût d'un repositionnement.</p>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="chap" id="lexique">
+    <div class="chap-n"><span>Chapitre</span>9</div>
+    <div class="prose">
+      <h2>Lexique</h2>
+      <dl class="gloss">
+        <dt>AMM</dt><dd><i>Automated Market Maker</i> : programme qui fixe les prix d'échange à partir de ses réserves et d'une formule.</dd>
+        <dt>CLMM</dt><dd><i>Concentrated Liquidity Market Maker</i> : AMM où chaque LP choisit une plage de prix (Uniswap v3).</dd>
+        <dt>Pool</dt><dd>Réserve commune de deux jetons, ici ETH et USDC.</dd>
+        <dt>LP</dt><dd><i>Liquidity provider</i>, fournisseur de liquidité : celui qui dépose des jetons dans la pool.</dd>
+        <dt>Swap</dt><dd>Un échange d'un jeton contre l'autre réalisé avec la pool.</dd>
+        <dt>Liquidité L</dt><dd>\(\sqrt{k}\) en v2 ; mesure de la profondeur d'une position. Fixe tant qu'on ne dépose ni ne retire rien.</dd>
+        <dt>Réserves virtuelles</dt><dd>Réserves \(X, Y\) de la courbe v2 que la position imite ; seule une partie est réellement déposée.</dd>
+        <dt>Tick</dt><dd>Échelon de prix \(1{,}0001^i\). Les bornes des positions tombent sur des ticks.</dd>
+        <dt>Liquidité active</dt><dd>Somme des L des positions dont la plage contient le prix actuel.</dd>
+        <dt>Glissement</dt><dd>Écart entre le prix affiché et le prix moyen obtenu lors d'un gros échange.</dd>
+        <dt>HODL</dt><dd>Stratégie de référence : garder ses jetons sans rien faire.</dd>
+        <dt>Perte impermanente</dt><dd>Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.</dd>
+        <dt>Gas</dt><dd>Frais payés au réseau Ethereum pour chaque opération (dépôt, retrait, échange).</dd>
+        <dt>USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
+      </dl>
+    </div>
+  </section>
+  <footer class="foot">Outil pédagogique réalisé dans le cadre d'un travail de maturité. Les montants sont illustratifs et les frais de réseau (gas) ne sont pas modélisés. Ce document ne constitue pas un conseil financier. Projet indépendant, sans lien avec Uniswap Labs ; seule l'apparence s'inspire de sa documentation.</footer>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const S = { P0:2000, V:4205, pa:1800, pb:2200, P:2000, view:'real', dir:'sell', dxf:0.25 };
+
+  const nf = (d) => new Intl.NumberFormat('fr-CH',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const f = (n,d=2) => isFinite(n) ? nf(d).format(n) : '—';
+  const fp = n => (n>=0?'+':'') + f(n*100,2) + ' %';
+  function smart(n){ const a=Math.abs(n); return a>=1000?f(n,0):a>=10?f(n,2):a>=1?f(n,3):f(n,4); }
+  function compact(n){ const a=Math.abs(n);
+    if(a>=1e6) return f(n/1e6,a>=1e7?0:1)+' M';
+    if(a>=1e4) return f(n/1e3,0)+' k';
+    if(a>=10) return f(n,0);
+    if(a>=1) return f(n,1);
+    if(a===0) return '0';
+    return f(n,2); }
+
+  // ---------- Modèle ----------
+  function model(){
+    const sa=Math.sqrt(S.pa), sb=Math.sqrt(S.pb);
+    const clampS = s => Math.min(Math.max(s,sa),sb);
+    const s0=clampS(Math.sqrt(S.P0));
+    const x1=1/s0-1/sb, y1=s0-sa;
+    const L = S.V/(x1*S.P0+y1);
+    const amounts = P => { const s=clampS(Math.sqrt(P)); return {x:L*(1/s-1/sb), y:L*(s-sa), s}; };
+    const a0=amounts(S.P0);
+    const lpVal = P => { const a=amounts(P); return a.x*P+a.y; };
+    const hold = P => a0.x*P+a0.y;
+    const L2 = S.V/(2*Math.sqrt(S.P0));
+    const v2 = P => 2*L2*Math.sqrt(P);
+    return {sa,sb,s0,L,L2,amounts,a0,lpVal,hold,v2,eff:L/L2};
+  }
+
+  // ---------- Contrôles ----------
+  function ranges(){
+    const P0=S.P0, st=Math.max(P0/2000, 0.0001);
+    const set=(id,min,max)=>{ const r=$(id); r.min=min; r.max=max; r.step=st; };
+    set('par',P0*0.2,P0*1.5); set('pbr',P0*0.5,P0*3); set('pr',P0*0.2,P0*3);
+  }
+  function syncInputs(){
+    $('p0n').value=+S.P0.toFixed(4);
+    $('v0n').value=+S.V.toFixed(2); $('v0r').value=S.V;
+    $('pan').value=+S.pa.toFixed(4); $('par').value=S.pa;
+    $('pbn').value=+S.pb.toFixed(4); $('pbr').value=S.pb;
+    $('pn').value=+S.P.toFixed(4); $('pr').value=S.P;
+  }
+  function syncSliders(){ $('v0r').value=S.V; $('par').value=S.pa; $('pbr').value=S.pb; $('pr').value=S.P; }
+  function fixRange(changed){
+    if(S.pa<=0) S.pa=S.P0*0.01;
+    if(S.pb<=S.pa*1.0005){ if(changed==='pa') S.pb=S.pa*1.0005; else S.pa=S.pb/1.0005; }
+  }
+  function clearExp(){ document.querySelectorAll('#exps button').forEach(b=>b.classList.remove('on')); }
+  function on(id,fn){ $(id).addEventListener('input',e=>{ const v=parseFloat(e.target.value); if(!isFinite(v)||v<=0) return; fn(v); update(id); }); }
+  on('p0n',v=>{ const k=v/S.P0; S.P0=v; S.pa*=k; S.pb*=k; S.P=v; ranges(); });
+  on('v0n',v=>{S.V=v}); on('v0r',v=>{S.V=v});
+  on('pan',v=>{S.pa=v; fixRange('pa')}); on('par',v=>{S.pa=v; fixRange('pa')});
+  on('pbn',v=>{S.pb=v; fixRange('pb')}); on('pbr',v=>{S.pb=v; fixRange('pb')});
+  on('pn',v=>{S.P=v}); on('pr',v=>{S.P=v});
+  $('reset').addEventListener('click',()=>{S.P=S.P0; update();});
+  $('presets').addEventListener('click',e=>{ const w=parseFloat(e.target.dataset.w); if(!w) return;
+    S.pa=S.P0*(1-w); S.pb=S.P0*(1+w); update(); });
+  function setView(v){ S.view=v; $('vReal').classList.toggle('on',v==='real'); $('vVirt').classList.toggle('on',v==='virt'); }
+  $('vReal').addEventListener('click',()=>{setView('real'); draw();});
+  $('vVirt').addEventListener('click',()=>{setView('virt'); draw();});
+  $('dSell').addEventListener('click',()=>{S.dir='sell'; $('dSell').classList.add('on'); $('dBuy').classList.remove('on'); draw();});
+  $('dBuy').addEventListener('click',()=>{S.dir='buy'; $('dBuy').classList.add('on'); $('dSell').classList.remove('on'); draw();});
+  $('dxr').addEventListener('input',e=>{S.dxf=parseFloat(e.target.value); draw();});
+  $('fee').addEventListener('change',draw); $('vol').addEventListener('input',draw);
+
+  // ---------- Expériences guidées ----------
+  const EXPS = [
+    { set:{pa:0.9,pb:1.1,P:1.08,view:'real'},
+      txt:"<b>Une position est un ordre étalé.</b> Le prix est passé de 2000 à 2160. La barre de composition le montre : la position a vendu une grande partie de son ETH contre de l'USDC. En faisant glisser le prix jusqu'à 2200 (p<sub>b</sub>) : il ne reste que de l'USDC. Sur la courbe des réserves, le point a glissé jusqu'à l'axe vertical, là où x = 0." },
+    { set:{pa:0.99,pb:1.01,P:1,view:'real'},
+      txt:"<b>L'effet loupe.</b> Avec ± 1 %, l'efficacité atteint environ × 200 : le même capital fournit autant de liquidité qu'une position v2 deux cents fois plus grosse. Avec ± 60 % dans les réglages, l'efficacité retombe autour de × 3. On peut comparer la formule (p<sub>a</sub>/p<sub>b</sub>)<sup>1/4</sup> du chapitre 3 avec le nombre affiché." },
+    { set:{pa:1,pb:1.15,P:1,view:'real'},
+      txt:"<b>Une plage au-dessus du prix est un ordre de vente.</b> Ici p<sub>a</sub> = P₀ : la formule y(P) = L(√P − √p<sub>a</sub>) donne 0 : on ne dépose que de l'ETH. Si le prix monte jusqu'à 2300, cet ETH est entièrement vendu en USDC à un prix moyen entre 2000 et 2300, avec des frais en plus. C'est l'équivalent d'un ordre « limite » de la bourse classique." },
+    { set:{pa:0.9,pb:1.1,P:0.75,view:'real'},
+      txt:"<b>Sortie de plage.</b> L'ETH est tombé à 1500. La pastille est rouge : la position ne contient plus que de l'ETH et ne touche plus de frais. Sur le graphique « Valeur », la courbe v3 est devenue une droite sous p<sub>a</sub> : sa valeur suit simplement celle de l'ETH, avec plus d'ETH qu'au départ, puisque la position en a acheté pendant toute la baisse." },
+    { set:{pa:0.75,pb:1.25,P:1.2,view:'real'},
+      txt:"<b>Une perte qui peut disparaître.</b> À 2400, la position vaut moins que HODL (ligne « Perte impermanente »). En ramenant le prix vers 2000 (bouton « Remettre P = P₀ »), la perte revient exactement à 0, car x(P) et y(P) ne dépendent que du prix actuel, pas du chemin suivi. Avec les frais encaissés entre-temps, l'aller-retour aurait même été gagnant." }
+  ];
+  $('exps').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return; const ex=EXPS[+b.dataset.e];
+    S.pa=S.P0*ex.set.pa; S.pb=S.P0*ex.set.pb; S.P=S.P0*ex.set.P; setView(ex.set.view);
+    clearExp(); b.classList.add('on'); $('obs').innerHTML=ex.txt; $('obs').hidden=false; update();
+  });
+
+  // ---------- Lectures ----------
+  function readouts(m){
+    const a=m.amounts(S.P), val=a.x*S.P+a.y, h=m.hold(S.P), il=val/h-1;
+    const inR = S.P>=S.pa && S.P<=S.pb;
+    $('chip').textContent = inR ? 'Dans la plage' : (S.P<S.pa ? 'Sous la plage' : 'Au-dessus de la plage');
+    $('chip').className = 'chip ' + (inR?'in':'out');
+    $('chipnote').textContent = inR ? 'La liquidité est active : elle participe aux échanges et touche des frais.'
+      : (S.P<S.pa ? 'Position 100 % ETH. Plus aucun frais tant que le prix reste sous pₐ.' : 'Position 100 % USDC. Plus aucun frais tant que le prix reste au-dessus de p_b.');
+    $('sL').textContent=smart(m.L);
+    $('sLv2').textContent='v2 : '+smart(m.L2);
+    $('sX').textContent=smart(a.x); $('sX0').textContent='au dépôt : '+smart(m.a0.x);
+    $('sY').textContent=smart(a.y); $('sY0').textContent='au dépôt : '+smart(m.a0.y);
+    $('sEff').textContent='× '+f(m.eff, m.eff>=100?0:1);
+    $('sVal').textContent=f(val,2)+' $'; const dv=val/S.V-1; $('sValPct').textContent=fp(dv)+' vs dépôt'; $('sValPct').className='s '+(dv<-1e-9?'neg':dv>1e-9?'pos':'');
+    $('sHold').textContent=f(h,2)+' $';
+    $('sIL').textContent=fp(il); $('sIL').className='v '+(il<-1e-9?'neg':'');
+    $('sILd').textContent=f(val-h,2)+' $';
+    const ta=Math.floor(Math.log(S.pa)/Math.log(1.0001)), tb=Math.floor(Math.log(S.pb)/Math.log(1.0001));
+    $('sTick').textContent=ta+' → '+tb; $('sTickN').textContent=(tb-ta)+' ticks de 0,01 %';
+    const ev=a.x*S.P, se=val>0?ev/val:0;
+    $('bEth').style.width=(se*100)+'%'; $('bUsd').style.width=((1-se)*100)+'%';
+    $('mEth').textContent='ETH '+f(se*100,1)+' %  ·  '+f(ev,0)+' $';
+    $('mUsd').textContent=f(a.y,0)+' $  ·  '+f((1-se)*100,1)+' % USDC';
+
+    // encadrés du cours
+    $('l2range').textContent='['+f(S.pa,0)+' ; '+f(S.pb,0)+']';
+    $('l2pct').textContent=f(100/m.eff,1)+' %';
+    $('l3eff').textContent='× '+f(m.eff,1); $('l3L').textContent=smart(m.L); $('l3L2').textContent=smart(m.L2);
+
+    const sP=Math.sqrt(S.P), sc=a.s, clamped = Math.abs(sc-sP)>1e-12;
+    const row=(l,e,r)=>`<div class="f-row"><span>${l}</span><span class="eq">${e} = <b>${r}</b></span></div>`;
+    $('formulas').innerHTML = [
+      row('Racines','√pₐ = √'+f(S.pa,2)+' , √p_b = √'+f(S.pb,2), smart(m.sa)+' , '+smart(m.sb)),
+      row('Liquidité L','V ÷ [ (1/√P₀ − 1/√p_b)·P₀ + (√P₀ − √pₐ) ] = '+f(S.V,2)+' ÷ [ '+smart(1/m.s0-1/m.sb)+' × '+f(S.P0,2)+' + '+smart(m.s0-m.sa)+' ]', smart(m.L)),
+      row('√P utilisé', clamped ? '√P = '+smart(sP)+' hors plage → bloqué à' : '√'+f(S.P,2), smart(sc)),
+      row('ETH  x(P)','L·(1/√P − 1/√p_b) = '+smart(m.L)+' × ('+smart(1/sc)+' − '+smart(1/m.sb)+')', smart(a.x)),
+      row('USDC  y(P)','L·(√P − √pₐ) = '+smart(m.L)+' × ('+smart(sc)+' − '+smart(m.sa)+')', smart(a.y)),
+      row('Valeur','x·P + y = '+smart(a.x)+' × '+f(S.P,2)+' + '+smart(a.y), f(val,2)+' $'),
+      row('Courbe','(x + L/√p_b)·(y + L·√pₐ) = ('+smart(a.x)+' + '+smart(m.L/m.sb)+') × ('+smart(a.y)+' + '+smart(m.L*m.sa)+')', smart((a.x+m.L/m.sb)*(a.y+m.L*m.sa))+'  = L²'),
+      row('Efficacité','L ÷ L_v2 = '+smart(m.L)+' ÷ '+smart(m.L2), '× '+f(m.eff,2))
+    ].join('');
+    $('curveSub').textContent = S.view==='real'
+      ? "Chaque point est un couple (ETH, USDC) que la position peut contenir. La pente de la tangente au point actuel vaut −P : c'est le prix."
+      : "La position n'utilise qu'un morceau de la grande hyperbole X·Y = L². Les traits pointillés sont les vrais axes : la zone en dessous ou à gauche n'est jamais déposée.";
+  }
+
+  // ---------- Échange ----------
+  function swap(m){
+    const inR = S.P>=S.pa && S.P<=S.pb, sP=Math.sqrt(S.P);
+    const cap = S.dir==='sell' ? m.L*(1/m.sa-1/sP) : m.L*(1/sP-1/m.sb);   // ETH max avant de sortir de la plage
+    const maxDx = Math.max(cap*1.3, m.L2/sP*0.05, 1e-6);
+    const dx = S.dxf*maxDx;
+    $('dxv').textContent=smart(dx)+' ETH';
+    $('dxhint').textContent = inR ? 'La position peut absorber au plus '+smart(cap)+' ETH dans ce sens avant que le prix sorte de sa plage.' : "Le prix actuel est hors de la plage : la position ne peut rien échanger. Il faut ramener P dans la plage au chapitre 5.";
+    const sgn = S.dir==='sell' ? 1 : -1;
+    // v3
+    let s3, used=dx, ex=false;
+    if(!inR){ s3=sP; used=0; }
+    else if(dx>cap){ used=cap; ex=true; s3 = S.dir==='sell'? m.sa : m.sb; }
+    else s3 = 1/(1/sP + sgn*dx/m.L);
+    const dy3=Math.abs(m.L*(s3-sP)), P3=s3*s3, avg3=used>0?dy3/used:S.P;
+    // v2
+    const s2 = 1/(1/sP + sgn*dx/m.L2);
+    const ok2 = isFinite(s2) && s2>0;
+    const dy2=ok2?Math.abs(m.L2*(s2-sP)):NaN, P2=ok2?s2*s2:NaN, avg2=dx>0?dy2/dx:S.P;
+    const i3=P3/S.P-1, i2=P2/S.P-1;
+    $('wP3').textContent=f(P3,2); $('wI3').textContent='impact '+fp(i3);
+    $('wA3').textContent=f(avg3,2); $('wY3').textContent=(S.dir==='sell'?'reçu : ':'payé : ')+f(dy3,2)+' USDC';
+    $('wP2').textContent=ok2?f(P2,2):'—'; $('wI2').textContent=ok2?'impact '+fp(i2):'réserve vidée';
+    $('wA2').textContent=ok2?f(avg2,2):'—'; $('wY2').textContent=ok2?(S.dir==='sell'?'reçu : ':'payé : ')+f(dy2,2)+' USDC':'';
+    $('wR').textContent = (Math.abs(i3)>1e-12 && ok2 && !ex) ? '× '+f(i2/i3,3) : '—';
+    if(!inR){ $('wSt').textContent='Hors plage'; $('wSt').className='v neg'; $('wSt2').textContent='aucune liquidité active'; }
+    else if(ex){ $('wSt').textContent='Plage épuisée'; $('wSt').className='v neg'; $('wSt2').textContent='seuls '+smart(used)+' ETH échangés'; }
+    else { $('wSt').textContent='Échange complet'; $('wSt').className='v pos'; $('wSt2').textContent='le prix reste dans la plage'; }
+    const row=(l,e,r)=>`<div class="f-row"><span>${l}</span><span class="eq">${e} = <b>${r}</b></span></div>`;
+    const op = S.dir==='sell' ? '+' : '−';
+    $('swapF').innerHTML = [
+      row('1/√P′ (v3)','1/√P '+op+' Δx/L = '+smart(1/sP)+' '+op+' '+smart(used)+' ÷ '+smart(m.L), smart(1/s3)),
+      row('P′ (v3)','(√P′)²', f(P3,2)),
+      row('Δy (v3)','L·|√P′ − √P| = '+smart(m.L)+' × |'+smart(s3)+' − '+smart(sP)+'|', f(dy3,2)+' USDC'),
+      row('P′ (v2)','même calcul avec L_v2 = '+smart(m.L2), ok2?f(P2,2):'—')
+    ].join('');
+  }
+
+  // ---------- Liquidité active ----------
+  function others(){ return [ {a:0.7,b:1.4,k:0.8}, {a:0.95,b:1.06,k:1.6}, {a:0.84,b:1.0,k:0.6} ]
+    .map(o=>({pa:S.P0*o.a,pb:S.P0*o.b,k:o.k})); }
+  function liquidity(m){
+    const os=others().map(o=>({pa:o.pa,pb:o.pb,L:o.k*m.L}));
+    const act = P => os.reduce((t,o)=>t+(P>=o.pa&&P<=o.pb?o.L:0),0);
+    const mineAct = (S.P>=S.pa && S.P<=S.pb) ? m.L : 0;
+    const tot = act(S.P)+mineAct, share = tot>0?mineAct/tot:0;
+    const fee=parseFloat($('fee').value)||0, vol=Math.max(0,parseFloat($('vol').value)||0);
+    const day=fee*vol*share;
+    $('qAct').textContent=smart(tot); $('qYou').textContent='dont la position : '+smart(mineAct);
+    $('qShare').textContent=f(share*100,1)+' %';
+    $('qFee').textContent=f(day,2)+' $ / jour';
+    $('qApr').textContent='≈ '+f(day*365/S.V*100,1)+' % du capital par an';
+    return os;
+  }
+
+  // ---------- Dessin ----------
+  function col(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function prep(c){
+    const dpr=window.devicePixelRatio||1, w=c.clientWidth, h=c.clientHeight;
+    if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){ c.width=Math.round(w*dpr); c.height=Math.round(h*dpr); }
+    const ctx=c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h); return {ctx,w,h};
+  }
+  function nice(min,max,n){
+    const r=max-min; if(r<=0) return [min];
+    let st=Math.pow(10,Math.floor(Math.log10(r/n))); const e=r/n/st;
+    if(e>=7.5) st*=10; else if(e>=3.5) st*=5; else if(e>=1.5) st*=2;
+    const out=[]; for(let v=Math.ceil(min/st)*st; v<=max+st*1e-6; v+=st) out.push(+v.toPrecision(12)); return out;
+  }
+  function frame(ctx,w,h,xd,yd,opts){
+    const pad={l:opts.l||58,r:14,t:12,b:opts.b||34};
+    const X=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(w-pad.l-pad.r);
+    const Y=v=>h-pad.b-(v-yd[0])/(yd[1]-yd[0])*(h-pad.t-pad.b);
+    ctx.font='11px '+col('--f-mono'); ctx.fillStyle=col('--muted'); ctx.strokeStyle=col('--line'); ctx.lineWidth=1;
+    const nx=Math.max(3,Math.floor((w-pad.l)/90));
+    nice(xd[0],xd[1],nx).forEach(v=>{ const x=X(v); ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,h-pad.b); ctx.globalAlpha=.55; ctx.stroke(); ctx.globalAlpha=1;
+      ctx.textAlign='center'; ctx.fillText((opts.fx||compact)(v),x,h-pad.b+15); });
+    if(!opts.noY) nice(yd[0],yd[1],opts.ny||5).forEach(v=>{ const y=Y(v); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.globalAlpha=.55; ctx.stroke(); ctx.globalAlpha=1;
+      ctx.textAlign='right'; ctx.fillText((opts.fy||compact)(v),pad.l-6,y+4); });
+    ctx.fillStyle=col('--muted');
+    if(opts.xl){ ctx.textAlign='right'; ctx.fillText(opts.xl,w-pad.r,h-4); }
+    if(opts.yl){ ctx.textAlign='left'; ctx.fillText(opts.yl,4,pad.t+2); }
+    return {X,Y,pad,inv:px=>xd[0]+(px-pad.l)/(w-pad.l-pad.r)*(xd[1]-xd[0])};
+  }
+  function line(ctx,pts,color,width,dash){ ctx.strokeStyle=color; ctx.lineWidth=width; ctx.setLineDash(dash||[]); ctx.beginPath();
+    pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); ctx.setLineDash([]); }
+  function dot(ctx,x,y,r,fill,stroke){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); if(fill){ctx.fillStyle=fill;ctx.fill();} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();} }
+  function tag(ctx,x,y,txt,color,align){ ctx.font='600 11px '+col('--f-body'); ctx.fillStyle=color; ctx.textAlign=align||'left'; ctx.fillText(txt,x,y); }
+
+  function drawCurve(m){
+    const c=$('cCurve'), {ctx,w,h}=prep(c), A=col('--accent'), ink=col('--ink');
+    const a=m.amounts(S.P), a0=m.a0, leg=$('curveLegend');
+    if(S.view==='real'){
+      leg.innerHTML='<span><i style="background:var(--accent)"></i>Réserves possibles de la position</span><span><i style="background:var(--ink)"></i>Tangente (pente = −P)</span><span><i style="background:var(--hold)"></i>Point de dépôt</span>';
+      const xm=m.L*(1/m.sa-1/m.sb), ym=m.L*(m.sb-m.sa);
+      const F=frame(ctx,w,h,[0,xm*1.15],[0,ym*1.15],{xl:'ETH (x) →',yl:'↑ USDC (y)',fx:v=>v>=10?compact(v):f(v,v<0.1?3:2)});
+      const pts=[]; for(let i=0;i<=200;i++){ const s=m.sa+(m.sb-m.sa)*i/200; pts.push([F.X(m.L*(1/s-1/m.sb)),F.Y(m.L*(s-m.sa))]); }
+      line(ctx,pts,A,3);
+      const len=xm*0.28, x1=a.x-len, x2=a.x+len;
+      line(ctx,[[F.X(x1),F.Y(a.y-S.P*(x1-a.x))],[F.X(x2),F.Y(a.y-S.P*(x2-a.x))]],ink,1.2,[5,4]);
+      dot(ctx,F.X(xm),F.Y(0),4,A); dot(ctx,F.X(0),F.Y(ym),4,A);
+      tag(ctx,F.X(xm),F.Y(0)-10,'P = pₐ → 100 % ETH',A,'right');
+      tag(ctx,F.X(0)+8,F.Y(ym)+4,'P = p_b → 100 % USDC',A,'left');
+      dot(ctx,F.X(a0.x),F.Y(a0.y),5,null,col('--hold'));
+      dot(ctx,F.X(a.x),F.Y(a.y),6,A,col('--surface'));
+      tag(ctx,F.X(a.x)+10,F.Y(a.y)-10,'P = '+f(S.P,0),ink,'left');
+    } else {
+      leg.innerHTML='<span><i style="background:var(--hold)"></i>Hyperbole complète X·Y = L²</span><span><i style="background:var(--accent)"></i>Morceau utilisé [pₐ ; p_b]</span><span><i style="background:var(--usd)"></i>Axes réels (réserves = 0)</span>';
+      const Xa=m.L/m.sa, Yb=m.L*m.sb, xmax=Xa*1.5, ymax=Yb*1.5;
+      const F=frame(ctx,w,h,[0,xmax],[0,ymax],{xl:'ETH virtuel (X) →',yl:'↑ USDC virtuel (Y)'});
+      const ox=m.L/m.sb, oy=m.L*m.sa;
+      ctx.fillStyle=col('--accent-soft'); ctx.fillRect(F.X(ox),F.Y(ymax),F.X(xmax)-F.X(ox),F.Y(oy)-F.Y(ymax));
+      const hyp=[]; const x0=m.L*m.L/ymax; for(let i=0;i<=300;i++){ const X=x0*Math.pow(xmax/x0,i/300); hyp.push([F.X(X),F.Y(m.L*m.L/X)]); }
+      line(ctx,hyp,col('--hold'),1.5,[4,4]);
+      const seg=[]; for(let i=0;i<=200;i++){ const s=m.sa+(m.sb-m.sa)*i/200; seg.push([F.X(m.L/s),F.Y(m.L*s)]); }
+      line(ctx,seg,A,4);
+      const U=col('--usd');
+      line(ctx,[[F.X(ox),F.Y(0)],[F.X(ox),F.Y(ymax)]],U,1.2,[6,4]);
+      line(ctx,[[F.X(0),F.Y(oy)],[F.X(xmax),F.Y(oy)]],U,1.2,[6,4]);
+      tag(ctx,F.X(ox)+6,F.Y(ymax)+14,'x réel = 0  (X = L/√p_b)',U,'left');
+      tag(ctx,F.X(xmax)-4,F.Y(oy)-6,'y réel = 0  (Y = L·√pₐ)',U,'right');
+      const s=a.s; dot(ctx,F.X(m.L/s),F.Y(m.L*s),6,A,col('--surface'));
+      tag(ctx,F.X(m.L/s)+10,F.Y(m.L*s)-8,'P = '+f(S.P,0),ink,'left');
+    }
+  }
+
+  let dom=[1,2], invV=null, invM=null, invL=null, domL=[1,2], hovV=null, hovM=null;
+  function tip(ctx,x,y,w,h,rows){
+    ctx.font='11px '+col('--f-mono'); const lw=Math.max(...rows.map(r=>ctx.measureText(r[0]).width))+16, bw=lw+12, bh=rows.length*17+10;
+    let bx=x+12; if(bx+bw>w-6) bx=x-12-bw; let by=Math.max(6,Math.min(y-bh/2,h-bh-6));
+    ctx.fillStyle=col('--surface'); ctx.strokeStyle=col('--line'); ctx.lineWidth=1; ctx.beginPath(); ctx.rect(bx,by,bw,bh); ctx.fill(); ctx.stroke();
+    rows.forEach((r,i)=>{ ctx.fillStyle=r[1]; ctx.fillRect(bx+8,by+10+i*17,8,8); ctx.fillStyle=col('--ink'); ctx.textAlign='left'; ctx.fillText(r[0],bx+22,by+18+i*17); });
+  }
+  function drawValue(m){
+    const c=$('cValue'), {ctx,w,h}=prep(c);
+    const lo=Math.min(S.pa,S.P0,S.P)*0.75, hi=Math.max(S.pb,S.P0,S.P)*1.25; dom=[lo,hi];
+    const N=240, xs=[...Array(N+1)].map((_,i)=>lo+(hi-lo)*i/N);
+    const lp=xs.map(m.lpVal), ho=xs.map(m.hold), v2=xs.map(m.v2);
+    const all=lp.concat(ho,v2); let ymin=Math.min(...all), ymax=Math.max(...all); const pd=(ymax-ymin)*0.06; ymin-=pd; ymax+=pd;
+    const F=frame(ctx,w,h,[lo,hi],[ymin,ymax],{xl:'prix ETH →',yl:'valeur $'}); invV=F.inv;
+    ctx.fillStyle=col('--accent-soft'); ctx.fillRect(F.X(S.pa),F.pad.t,F.X(S.pb)-F.X(S.pa),h-F.pad.t-F.pad.b);
+    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(ho[i])]),col('--hold'),1.6,[5,4]);
+    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(v2[i])]),col('--usd'),1.8);
+    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(lp[i])]),col('--accent'),3);
+    line(ctx,[[F.X(S.P),F.pad.t],[F.X(S.P),h-F.pad.b]],col('--ink'),1,[2,3]);
+    dot(ctx,F.X(S.P),F.Y(m.lpVal(S.P)),5,col('--accent'),col('--surface'));
+    tag(ctx,F.X(S.pa)+4,F.pad.t+12,'pₐ',col('--accent')); tag(ctx,F.X(S.pb)-4,F.pad.t+12,'p_b',col('--accent'),'right');
+    if(hovV!=null && hovV>=lo && hovV<=hi){ const hx=F.X(hovV);
+      line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],col('--muted'),1,[3,3]);
+      [[m.lpVal(hovV),col('--accent')],[m.hold(hovV),col('--hold')],[m.v2(hovV),col('--usd')]].forEach(q=>dot(ctx,hx,F.Y(q[0]),3.5,q[1]));
+      const lp=m.lpVal(hovV), hd=m.hold(hovV);
+      tip(ctx,hx,F.Y(lp),w,h,[['P = '+f(hovV,0),col('--ink')],['v3   '+f(lp,0)+' $',col('--accent')],['HODL '+f(hd,0)+' $',col('--hold')],['v2   '+f(m.v2(hovV),0)+' $',col('--usd')],['écart '+fp(lp/hd-1),col('--bad')]]); }
+  }
+  function drawMix(m){
+    const c=$('cMix'), {ctx,w,h}=prep(c), [lo,hi]=dom;
+    const F=frame(ctx,w,h,[lo,hi],[0,1],{noY:true,l:16,b:26}); invM=F.inv;
+    const N=240, E=col('--eth'), U=col('--usd');
+    ctx.fillStyle=U; ctx.fillRect(F.X(lo),F.Y(1),F.X(hi)-F.X(lo),F.Y(0)-F.Y(1));
+    ctx.beginPath(); ctx.moveTo(F.X(lo),F.Y(0));
+    for(let i=0;i<=N;i++){ const P=lo+(hi-lo)*i/N, a=m.amounts(P), v=a.x*P+a.y; ctx.lineTo(F.X(P),F.Y(v>0?a.x*P/v:0)); }
+    ctx.lineTo(F.X(hi),F.Y(0)); ctx.closePath(); ctx.fillStyle=E; ctx.fill();
+    ctx.strokeStyle=col('--surface'); ctx.lineWidth=2; ctx.setLineDash([3,3]);
+    [S.pa,S.pb].forEach(p=>{ ctx.beginPath(); ctx.moveTo(F.X(p),F.Y(0)); ctx.lineTo(F.X(p),F.Y(1)); ctx.stroke(); }); ctx.setLineDash([]);
+    line(ctx,[[F.X(S.P),F.Y(0)-2],[F.X(S.P),F.Y(1)+2]],col('--ink'),2);
+    if(hovM!=null && hovM>=lo && hovM<=hi){ const hx=F.X(hovM), a=m.amounts(hovM), v=a.x*hovM+a.y, se=v>0?a.x*hovM/v:0;
+      line(ctx,[[hx,F.Y(0)],[hx,F.Y(1)]],col('--ink'),1,[3,3]);
+      tip(ctx,hx,h/2,w,h,[['P = '+f(hovM,0),col('--ink')],['ETH  '+f(se*100,1)+' %',col('--eth')],['USDC '+f((1-se)*100,1)+' %',col('--usd')]]); }
+  }
+  function drawLiq(m,os){
+    const c=$('cLiq'), {ctx,w,h}=prep(c);
+    const all=os.concat([{pa:S.pa,pb:S.pb,L:m.L,me:true}]);
+    const lo=Math.min(S.P0*0.6,S.pa*0.95,S.P*0.95), hi=Math.max(S.P0*1.5,S.pb*1.05,S.P*1.05); domL=[lo,hi];
+    // pile en escalier : on découpe aux bornes
+    const cuts=[...new Set([lo,hi].concat(...all.map(o=>[o.pa,o.pb])))].filter(v=>v>=lo&&v<=hi).sort((a,b)=>a-b);
+    let ymax=0; for(let i=0;i<cuts.length-1;i++){ const mid=(cuts[i]+cuts[i+1])/2; ymax=Math.max(ymax,all.reduce((t,o)=>t+(mid>=o.pa&&mid<=o.pb?o.L:0),0)); }
+    const F=frame(ctx,w,h,[lo,hi],[0,ymax*1.15||1],{xl:'prix ETH →',yl:'L actif'}); invL=F.inv;
+    const order=[all[all.length-1]].concat(os); // ta position en bas
+    const fills=[col('--g1'),col('--g2'),col('--g3')];
+    for(let i=0;i<cuts.length-1;i++){
+      const a=cuts[i], b=cuts[i+1], mid=(a+b)/2; let base=0;
+      order.forEach((o,j)=>{ if(mid>=o.pa&&mid<=o.pb){
+        ctx.fillStyle = o.me ? col('--accent') : fills[(j-1)%3]; ctx.globalAlpha = 1;
+        ctx.fillRect(F.X(a),F.Y(base+o.L),F.X(b)-F.X(a),F.Y(base)-F.Y(base+o.L)); ctx.globalAlpha=1;
+        ctx.strokeStyle=col('--surface'); ctx.lineWidth=1; ctx.strokeRect(F.X(a),F.Y(base+o.L),F.X(b)-F.X(a),F.Y(base)-F.Y(base+o.L));
+        base+=o.L; } });
+    }
+    line(ctx,[[F.X(S.P),F.pad.t],[F.X(S.P),h-F.pad.b]],col('--ink'),2);
+    tag(ctx,F.X(S.P)+6,F.pad.t+12,'P = '+f(S.P,0),col('--ink'));
+  }
+
+  function paintRanges(){ document.querySelectorAll('input[type=range]').forEach(r=>{ const mn=+r.min||0, mx=+r.max||100, v=+r.value; r.style.setProperty('--fill', (mx>mn?Math.max(0,Math.min(100,(v-mn)/(mx-mn)*100)):0)+'%'); }); }
+  document.addEventListener('input',e=>{ if(e.target.type==='range') paintRanges(); });
+  function draw(){ paintRanges(); const m=model(); readouts(m); drawCurve(m); drawValue(m); drawMix(m); swap(m); const os=liquidity(m); drawLiq(m,os); }
+  function update(src){
+    if(src && src!=='reset') { if(['p0n','pan','pbn','pn','v0n'].includes(src)) syncSliders(); else syncInputs(); clearExp(); $('obs').hidden=true; }
+    else syncInputs();
+    draw();
+  }
+  // les expériences et préréglages passent par update() sans source : on garde l'observation affichée
+  $('presets').addEventListener('click',()=>{ clearExp(); $('obs').hidden=true; });
+
+  function dragOn(c,getInv,getDom,onHover){
+    let down=false;
+    const set=e=>{ const inv=getInv(); if(!inv) return; const r=c.getBoundingClientRect(); const d=getDom(); let P=inv(e.clientX-r.left);
+      P=Math.max(d[0],Math.min(d[1],P)); S.P=P; syncInputs(); draw(); };
+    c.addEventListener('pointerdown',e=>{down=true; c.setPointerCapture(e.pointerId); set(e);});
+    c.addEventListener('pointermove',e=>{ if(down) set(e); else if(e.pointerType==='mouse' && onHover){ const inv=getInv(); if(!inv) return; const r=c.getBoundingClientRect(); onHover(inv(e.clientX-r.left)); redraw(); } });
+    c.addEventListener('pointerleave',()=>{ if(onHover){ onHover(null); redraw(); } });
+    c.addEventListener('pointerup',()=>{down=false}); c.addEventListener('pointercancel',()=>{down=false});
+  }
+  dragOn($('cValue'),()=>invV,()=>dom,v=>{hovV=v}); dragOn($('cMix'),()=>invM,()=>dom,v=>{hovM=v}); dragOn($('cLiq'),()=>invL,()=>domL);
+
+  let raf; function redraw(){ cancelAnimationFrame(raf); raf=requestAnimationFrame(draw); }
+  ranges(); syncInputs(); draw();
+  // clavier : flèches gauche/droite = prix, quand on n'écrit pas dans un champ
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+    const t=e.target; if(t && (t.tagName==='INPUT'||t.tagName==='SELECT'||t.tagName==='TEXTAREA')) return;
+    e.preventDefault(); const step=S.P0*(e.shiftKey?0.02:0.002)*(e.key==='ArrowLeft'?-1:1);
+    const r=$('pr'); S.P=Math.max(+r.min,Math.min(+r.max,S.P+step)); syncInputs(); draw();
+  });
+  // sommaire latéral : section en cours
+  // sous-chapitres dans le sommaire
+  const slug=t=>'s-'+t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,48);
+  const subHeads=[];
+  document.querySelectorAll('nav.side > a').forEach(a=>{
+    const id=a.getAttribute('href').slice(1), sec=document.getElementById(id); if(!sec) return;
+    let hs=[];
+    if(id==='labo'){ const ex=document.getElementById('exps'); if(ex){ ex.dataset.subTitle='Expériences guidées'; hs.push(ex); } hs=hs.concat([...sec.querySelectorAll('.chart-card h3')]); }
+    else { hs=[...sec.querySelectorAll('.prose h3')]; if(id==='c7'){ const l=document.querySelector('#liq h3.lab-sub'); if(l) hs.push(l); } }
+    if(!hs.length) return;
+    const box=document.createElement('div'); box.className='subs'; const inner=document.createElement('div'); inner.className='subs-in'; box.appendChild(inner);
+    hs.forEach(h=>{ const t=(h.dataset.subTitle||h.textContent).trim(); if(!h.id) h.id=slug(t); h.classList.add('sub-anchor');
+      const s=document.createElement('a'); s.className='sub'; s.href='#'+h.id; s.textContent=t; inner.appendChild(s); subHeads.push({h,link:s,parent:a}); });
+    a.after(box);
+  });
+  const sideLinks=[...document.querySelectorAll('nav.side > a')];
+  let locked=false, lockT=0;
+  const setCur=bi=>sideLinks.forEach((a,i)=>{ a.classList.toggle('cur',i===bi); a.classList.toggle('done',i<bi); });
+  function syncFromScroll(){ let bi=0; const line=innerHeight*0.38, atEnd=innerHeight+scrollY>=document.documentElement.scrollHeight-4; sideLinks.forEach((a,i)=>{ const sc=document.querySelector(a.getAttribute('href')); if(sc && sc.getBoundingClientRect().top < line) bi=i; }); if(atEnd) bi=sideLinks.length-1; setCur(bi); markSub(); }
+  function unlock(){ clearTimeout(lockT); if(!locked) return; locked=false; syncFromScroll(); }
+  function lock(){ locked=true; clearTimeout(lockT); lockT=setTimeout(unlock,2000); }
+  addEventListener('scrollend',()=>{ if(locked) unlock(); });
+  sideLinks.forEach((a,i)=>a.addEventListener('click',()=>{ setCur(i); lock(); }));
+  document.querySelectorAll('nav.side a.sub').forEach(s=>s.addEventListener('click',()=>{ const x=subHeads.find(q=>q.link===s); setCur(sideLinks.indexOf(x.parent)); subHeads.forEach(q=>q.link.classList.toggle('cur',q===x)); lock(); }));
+  let subRaf=0;
+  const markSub=()=>{ subRaf=0; let cur=null; if(locked) return; subHeads.forEach(x=>{ if(x.h.getBoundingClientRect().top<innerHeight*0.38) cur=x; });
+    subHeads.forEach(x=>x.link.classList.toggle('cur', x===cur && x.parent.classList.contains('cur'))); };
+  addEventListener('scroll',()=>{ if(!subRaf) subRaf=requestAnimationFrame(markSub); },{passive:true});
+  const secs=sideLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  // chapitre courant : celui dont le titre a dépassé le milieu de l'écran
+  let curRaf=0;
+  addEventListener('scroll',()=>{ if(!curRaf) curRaf=requestAnimationFrame(()=>{ curRaf=0; if(!locked) syncFromScroll(); }); },{passive:true});
+  syncFromScroll();
+  { const pn=document.getElementById('progN'), pb=document.getElementById('progB'); let pr=0;
+    const upd=()=>{ pr=0; const h=document.documentElement.scrollHeight-innerHeight; const v=h>0?Math.min(1,Math.max(0,scrollY/h)):0; if(pn) pn.textContent=Math.round(v*100)+' %'; if(pb) pb.style.width=(v*100)+'%'; };
+    addEventListener('scroll',()=>{ if(!pr) pr=requestAnimationFrame(upd); },{passive:true}); upd();
+  }
+  new ResizeObserver(redraw).observe(document.body);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
+  new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if(document.fonts) document.fonts.ready.then(redraw);
+})();
+</script>
