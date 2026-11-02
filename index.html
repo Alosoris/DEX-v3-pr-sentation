@@ -400,6 +400,25 @@ a.chref{color:var(--accent);text-decoration:underline;text-decoration-style:dott
 a.chref:hover{text-decoration-style:solid}
 
 .obs-back{display:block;margin-top:8px;font-size:.84rem;color:var(--muted)}
+
+/* ===== Arbre des formules ===== */
+.prose.wide{max-width:none}
+.tree-wrap{display:flex;flex-direction:column;gap:22px;margin-top:14px;overflow-x:auto;padding-bottom:6px}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{padding-left:34px}
+.tree li{position:relative;padding:7px 0}
+.tree ul > li::before{content:"";position:absolute;left:-20px;top:0;bottom:0;border-left:2px solid color-mix(in srgb,var(--accent) 35%,var(--line))}
+.tree ul > li:last-child::before{bottom:auto;height:30px}
+.tree ul > li::after{content:"";position:absolute;left:-20px;top:30px;width:20px;border-top:2px solid color-mix(in srgb,var(--accent) 35%,var(--line))}
+.node{display:inline-flex;flex-direction:column;gap:4px;min-width:250px;max-width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-family:var(--f-body);line-height:1.4}
+.node.root{border-color:var(--accent);background:var(--accent-soft)}
+.n-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.n-name{font-weight:600;font-size:.88rem;color:var(--ink)}
+.n-ch{font-size:.76rem;white-space:nowrap}
+.n-f{font-size:.98rem;overflow-x:auto;padding:2px 0}
+.n-how{font-size:.8rem;color:var(--muted)}
+.tree-aside{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding-top:14px;border-top:1px dashed var(--line)}
+.tree-aside .lbl{font-size:.78rem;color:var(--muted);font-family:var(--f-body)}
 </style>
 
 <button id="themeBtn" class="theme-btn" type="button" aria-label="Passer en mode sombre" title="Mode sombre / mode clair">
@@ -413,11 +432,11 @@ a.chref:hover{text-decoration-style:solid}
     <h1>Comprendre la liquidité concentrée</h1>
     <p>Un cours interactif sur les CLMM (<i>Concentrated Liquidity Market Makers</i>). On part d'une seule équation, x·y = k, on la déforme pas à pas, et chaque formule peut être manipulée dans les laboratoires. Aucune connaissance en cryptomonnaies n'est nécessaire : le vocabulaire est expliqué au fur et à mesure et rassemblé dans le lexique final.</p>
     <nav class="toc" aria-label="Sommaire">
-      <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#lexique"><b>9</b>Lexique</a>
+      <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#arbre"><b>9</b>L'arbre des formules</a><a href="#lexique"><b>10</b>Lexique</a>
     </nav>
   </header>
   <div class="layout">
-    <nav class="side" aria-label="Sommaire"><div class="side-head"><span class="side-title">Sommaire</span><span class="prog-t"><b id="progN">0 %</b> parcouru</span><span class="prog-bar"><i id="progB"></i></span></div><a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#lexique"><b>9</b>Lexique</a><p class="side-note">Dans le laboratoire, les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier font bouger le prix (<span class="kbd">Maj</span> pour aller plus vite).</p></nav>
+    <nav class="side" aria-label="Sommaire"><div class="side-head"><span class="side-title">Sommaire</span><span class="prog-t"><b id="progN">0 %</b> parcouru</span><span class="prog-bar"><i id="progB"></i></span></div><a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#arbre"><b>9</b>L'arbre des formules</a><a href="#lexique"><b>10</b>Lexique</a><p class="side-note">Dans le laboratoire, les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier font bouger le prix (<span class="kbd">Maj</span> pour aller plus vite).</p></nav>
     <div class="content">
 
   <!-- 1 -->
@@ -765,8 +784,17 @@ a.chref:hover{text-decoration-style:solid}
   </section>
 
   <!-- 9 -->
-  <section class="chap" id="lexique">
+  <section class="chap" id="arbre">
     <div class="chap-n"><span>Chapitre</span>9</div>
+    <div class="prose wide">
+      <h2>L'arbre des formules</h2>
+      <p>Toutes les formules du cours descendent de la même règle, \(x \cdot y = k\). Chaque branche est une étape de calcul : la petite phrase sous une formule dit comment on l'obtient à partir de sa formule « parente ». Le lien en haut à droite de chaque carte renvoie à la partie du cours où elle est démontrée.</p>
+      <div class="tree-wrap"><ul class="tree"><li><div class="node root"><div class="n-top"><span class="n-name">Produit constant</span><a class="chref n-ch" href="#c2">chap. 2</a></div><div class="n-f">\( \displaystyle x \cdot y = k \)</div><div class="n-how">La règle de départ d'une pool Uniswap v2.</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Échange dans une pool v2</span><a class="chref n-ch" href="#c2">chap. 2</a></div><div class="n-f">\( \displaystyle \Delta y = \frac{y\,\Delta x}{x+\Delta x} \)</div><div class="n-how">On isole \(\Delta y\) dans \((x+\Delta x)(y-\Delta y) = k\).</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Prix</span><a class="chref n-ch" href="#c2">2.1</a></div><div class="n-f">\( \displaystyle P = -\frac{dy}{dx} = \frac{y}{x} \)</div><div class="n-how">On dérive \(y = k/x\).</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Liquidité</span><a class="chref n-ch" href="#c2">2.2</a></div><div class="n-f">\( \displaystyle L = \sqrt{k} \)</div><div class="n-how">On prend la racine carrée de \(k\) (raisons au 2.3).</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Réserves en fonction du prix</span><a class="chref n-ch" href="#c2">2.2</a></div><div class="n-f">\( \displaystyle x = \frac{L}{\sqrt{P}} \qquad y = L\sqrt{P} \)</div><div class="n-how">On combine \(xy = L^2\) et le prix \(y/x = P\).</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Perte impermanente (v2)</span><a class="chref n-ch" href="#c8">8.1</a></div><div class="n-f">\( \displaystyle \frac{V_{\text{LP}}}{V_{\text{HODL}}} = \frac{2\sqrt{r}}{1+r} \)</div><div class="n-how">On compare \(2L\sqrt{P}\) avec la valeur des jetons gardés.</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Réserves réelles (v3)</span><a class="chref n-ch" href="#c3">chap. 3</a></div><div class="n-f">\( \displaystyle x = X - \frac{L}{\sqrt{p_b}} \qquad y = Y - L\sqrt{p_a} \)</div><div class="n-how">Les réserves v2 deviennent virtuelles (\(X, Y\)) ; on retire ce qui ne sert jamais.</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Courbe d'une position v3</span><a class="chref n-ch" href="#c3">chap. 3</a></div><div class="n-f">\( \displaystyle \left(x + \frac{L}{\sqrt{p_b}}\right)\left(y + L\sqrt{p_a}\right) = L^2 \)</div><div class="n-how">On remplace \(X\) et \(Y\) dans \(X \cdot Y = L^2\).</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Réserves réelles selon le prix</span><a class="chref n-ch" href="#c3">3.1</a></div><div class="n-f">\( \displaystyle x(P) = L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) \qquad y(P) = L\left(\sqrt{P} - \sqrt{p_a}\right) \)</div><div class="n-how">On remplace \(X = L/\sqrt{P}\) et \(Y = L\sqrt{P}\).</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Liquidité d'un dépôt</span><a class="chref n-ch" href="#c3">3.2</a></div><div class="n-f">\( \displaystyle L = \frac{V}{\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}} \)</div><div class="n-how">On isole \(L\) dans \(V = x\,P_0 + y\).</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Efficacité du capital</span><a class="chref n-ch" href="#c3">3.3</a></div><div class="n-f">\( \displaystyle \frac{V_{v2}}{V_{v3}} = \frac{1}{1 - \left(p_a/p_b\right)^{1/4}} \)</div><div class="n-how">On compare les valeurs v3 et v2 au prix central \(\sqrt{p_a p_b}\).</div></div></li><li><div class="node"><div class="n-top"><span class="n-name">Relations linéaires</span><a class="chref n-ch" href="#c4">chap. 4</a></div><div class="n-f">\( \displaystyle \Delta y = L\,\Delta\sqrt{P} \qquad \Delta x = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) \)</div><div class="n-how">On soustrait \(y(P') - y(P)\) et \(x(P') - x(P)\).</div></div><ul><li><div class="node"><div class="n-top"><span class="n-name">Nouveau prix après un échange</span><a class="chref n-ch" href="#c4">chap. 4</a></div><div class="n-f">\( \displaystyle \frac{1}{\sqrt{P'}} = \frac{1}{\sqrt{P}} + \frac{\Delta x}{L} \)</div><div class="n-how">On isole \(1/\sqrt{P'}\).</div></div></li></ul></li></ul></li></ul></li></ul></li><li><div class="node"><div class="n-top"><span class="n-name">Partage des frais</span><a class="chref n-ch" href="#c7">7.2</a></div><div class="n-f">\( \displaystyle \text{frais du LP} \approx f \cdot \text{volume} \cdot \frac{L_{\text{LP}}}{L_{\text{actif}}} \)</div><div class="n-how">Les \(L\) des positions s'additionnent (2.3).</div></div></li></ul></li></ul></li></ul><div class="tree-aside"><span class="lbl">Branche à part</span><div class="node"><div class="n-top"><span class="n-name">Ticks</span><a class="chref n-ch" href="#c7">7.1</a></div><div class="n-f">\( \displaystyle p(i) = 1{,}0001^{\,i} \)</div><div class="n-how">Une convention de découpage du prix, qui ne découle pas de \(x \cdot y = k\).</div></div></div></div>
+    </div>
+  </section>
+
+  <section class="chap" id="lexique">
+    <div class="chap-n"><span>Chapitre</span>10</div>
     <div class="prose">
       <h2>Lexique</h2>
       <dl class="gloss">
