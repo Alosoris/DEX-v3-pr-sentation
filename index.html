@@ -21,7 +21,9 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   --eth:#4c82fb; --usd:#f5a524; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
   --t-pink:#fff0fa; --t-blue:#eef4ff; --t-orange:#fff4ea; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#d6e4ff; --blue-head:#dfeaff;
   --g1:#ffe0f4; --g2:#ffbde8; --g3:#ff96da;
-  --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.07); --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
+  --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.07);
+  --lg-top:rgba(255,255,255,.60); --lg-bot:rgba(255,255,255,.28); --lg-hi:rgba(255,255,255,.72); --lg-rim:rgba(255,255,255,.92); --lg-edge:rgba(245,15,180,.18); --lg-tint:rgba(245,15,180,.10); --lg-nest:rgba(255,255,255,.48); --lg-glow:rgba(245,15,180,.07); --lg-shadow:rgba(140,20,105,.16);
+  --blob1:rgba(245,15,180,.16); --blob2:rgba(150,110,255,.14); --blob3:rgba(255,170,120,.12); --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
   --f-display:"Bricolage Grotesque", "Inter", "Helvetica Neue", Arial, sans-serif;
   --f-body:"Inter", "Helvetica Neue", Arial, sans-serif;
   --f-read:"Inter", "Helvetica Neue", Arial, sans-serif;
@@ -33,7 +35,7 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
     --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
     --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
     --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
-    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); color-scheme:dark;
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); --lg-top:rgba(46,40,48,.60); --lg-bot:rgba(26,24,28,.40); --lg-hi:rgba(252,140,255,.14); --lg-rim:rgba(255,255,255,.12); --lg-edge:rgba(252,114,255,.20); --lg-tint:rgba(252,114,255,.12); --lg-nest:rgba(255,255,255,.05); --lg-glow:rgba(252,114,255,.08); --lg-shadow:rgba(0,0,0,.5); --blob1:rgba(245,15,180,.16); --blob2:rgba(140,100,255,.12); --blob3:rgba(255,140,90,.06); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
@@ -41,7 +43,7 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
   --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
   --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
-    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); color-scheme:dark;
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); --lg-top:rgba(46,40,48,.60); --lg-bot:rgba(26,24,28,.40); --lg-hi:rgba(252,140,255,.14); --lg-rim:rgba(255,255,255,.12); --lg-edge:rgba(252,114,255,.20); --lg-tint:rgba(252,114,255,.12); --lg-nest:rgba(255,255,255,.05); --lg-glow:rgba(252,114,255,.08); --lg-shadow:rgba(0,0,0,.5); --blob1:rgba(245,15,180,.16); --blob2:rgba(140,100,255,.12); --blob3:rgba(255,140,90,.06); color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -467,6 +469,59 @@ button.on,.exps button.on{background:var(--accent);border-color:var(--accent);co
 .node.root,.node.root .n-name,.node.root .n-how,.node.root a.chref{color:#fff}
 .node.root .n-f{color:#fff}
 @media (max-width:640px){header{padding:34px 22px 22px}header::after{width:180px;height:180px}}
+
+/* ===== Verre liquide (mêmes endroits que la version Aave) ===== */
+body{background-color:var(--bg);background-image:radial-gradient(900px 620px at 6% 10%,var(--blob1),transparent 60%),radial-gradient(800px 640px at 100% 45%,var(--blob2),transparent 60%),radial-gradient(900px 700px at 25% 105%,var(--blob3),transparent 60%);background-attachment:fixed}
+.prose .math,.box,.box.live,.box.ex,.roles div,.formulas,.obs,.stat,.gloss,.refnote,.node,.panel,.exps button{
+  --mx:30%; --my:0%;
+  background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot));
+  -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);
+  border:1px solid var(--lg-rim);
+  box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 1px 0 0 rgba(255,255,255,.22),inset -1px 0 0 rgba(255,255,255,.14),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)}
+.prose .math,.box,.roles div,.formulas,.obs,.stat,.gloss,.refnote,.node{position:relative}
+.prose > .math{padding:10px 20px;border-radius:20px;margin:8px 0 16px}
+.prose .math.deriv{padding:12px 18px;border-radius:20px;border-style:solid}
+.box.live{background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-tint),var(--lg-bot))}
+/* exemples : on garde le quadrillage « plan technique » sous le verre */
+.box.ex{background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(var(--card-line) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,var(--card-line) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(180deg,var(--lg-top),var(--lg-bot))}
+.box,.box.ex{border-radius:24px}
+.roles div{border-radius:22px}
+.roles div,.roles div:nth-child(2),.roles div:nth-child(3){border-color:var(--lg-rim)}
+.stat{border-radius:18px}
+.stats,.stats.three{background:transparent;border:0;gap:8px;overflow:visible}
+.gloss{padding:18px 22px;border-radius:24px}
+.refnote{padding:8px 14px;border-radius:14px}
+.formulas{border-radius:20px}
+.panel{border-radius:26px}
+.exps button{border-radius:20px}
+/* verre imbriqué : plus léger, sans second flou */
+.box .math,.box .math.deriv,.box table,.box.ex table,.obs .math,.node .n-f{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--lg-nest);border:1px solid var(--lg-rim);box-shadow:inset 0 1px 0 var(--lg-rim)}
+.box .math{border-radius:16px;padding:8px 14px}
+.box.ex th{background:var(--lg-tint)}
+.node .n-f{border-radius:12px;padding:6px 10px}
+/* éléments qui gardent leur couleur pleine */
+.exps button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.node.root{background:linear-gradient(120deg,var(--uni-1),var(--uni-2));border-color:transparent}
+.node.root .n-f{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35)}
+@media (prefers-reduced-transparency:reduce){.prose .math,.box,.roles div,.formulas,.obs,.stat,.gloss,.refnote,.node,.panel,.exps button{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}}
+/* ===== Curseurs : bouton plein au repos, lentille de verre pendant le déplacement ===== */
+.gsl{position:relative;height:36px;--p:50%;--pn:.5}
+.gsl input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:3;-webkit-appearance:none;appearance:none;background:none}
+.gsl input[type=range]::-webkit-slider-runnable-track{background:none;height:100%}
+.gsl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:48px;height:34px;margin-top:0}
+.gsl input[type=range]::-moz-range-thumb{width:48px;height:34px;border:0}
+.gsl-track,.gsl-copy-track{position:absolute;left:0;right:0;top:50%;height:6px;margin-top:-3px;border-radius:999px;background:var(--g1);overflow:hidden}
+.gsl-fill{position:absolute;left:0;top:0;bottom:0;width:var(--p);border-radius:999px;background:linear-gradient(90deg,var(--uni-2),var(--uni-1))}
+.gsl-knob,.gsl-lens{position:absolute;top:50%;left:calc(24px + (100% - 48px) * var(--pn));pointer-events:none;z-index:2}
+.gsl-knob{width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 1px var(--g2),0 3px 8px -2px rgba(140,20,105,.4);transition:opacity .22s ease,transform .35s cubic-bezier(.34,1.56,.64,1)}
+.gsl-lens{width:48px;height:32px;margin:-16px 0 0 -24px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);opacity:0;transform:scale(.45);transition:opacity .2s ease,transform .45s cubic-bezier(.34,1.56,.64,1);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 1px rgba(245,15,180,.35),inset 1px 0 2px rgba(255,255,255,.6),inset -1px 0 2px rgba(245,15,180,.25),0 8px 18px -6px rgba(140,20,105,.35),0 1px 3px rgba(140,20,105,.18)}
+.gsl-refr{position:absolute;inset:0;filter:url(#glassLens)}
+.gsl-copy{position:absolute;top:-2px;height:36px}
+.gsl-lens::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 42%),radial-gradient(50% 35% at 28% 14%,rgba(255,255,255,.6),transparent 70%);mix-blend-mode:screen;pointer-events:none}
+.gsl.active .gsl-lens{opacity:1;transform:scale(1.08)}
+.gsl.active .gsl-knob{opacity:0;transform:scale(1.7)}
+.gsl input:focus-visible ~ .gsl-knob{box-shadow:0 0 0 3px var(--accent-soft),0 0 0 5px var(--accent)}
+@media (prefers-reduced-motion:reduce){.gsl-knob,.gsl-lens{transition:opacity .1s linear}}
 </style>
 
 <button id="themeBtn" class="theme-btn" type="button" aria-label="Passer en mode sombre" title="Mode sombre / mode clair">
@@ -474,6 +529,7 @@ button.on,.exps button.on{background:var(--accent);border-color:var(--accent);co
   <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   <span class="theme-lbl">Mode sombre</span>
 </button>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="glassLens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage id="glassMap" x="0" y="0" width="48" height="32" preserveAspectRatio="none" result="map"/><feDisplacementMap in="SourceGraphic" in2="map" scale="24" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <div class="wrap">
   <header>
     <div class="pair">Pool ETH / USDC · Uniswap v3</div>
@@ -1204,7 +1260,40 @@ button.on,.exps button.on{background:var(--accent);border-color:var(--accent);co
 
   function paintRanges(){ document.querySelectorAll('input[type=range]').forEach(r=>{ const mn=+r.min||0, mx=+r.max||100, v=+r.value; r.style.setProperty('--fill', (mx>mn?Math.max(0,Math.min(100,(v-mn)/(mx-mn)*100)):0)+'%'); }); }
   document.addEventListener('input',e=>{ if(e.target.type==='range') paintRanges(); });
-  function draw(){ paintRanges(); const m=model(); readouts(m); drawCurve(m); drawValue(m); drawMix(m); swap(m); const os=liquidity(m); drawLiq(m,os); }
+
+  // ---------- Verre liquide ----------
+  // carte de déplacement d'une lentille arrondie (rouge = horizontal, vert = vertical)
+  (function(){
+    const W=48,H=32,R=16,depth=11,cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    const ctx=cv.getContext('2d'), img=ctx.createImageData(W,H);
+    const sdf=(x,y)=>{ const qx=Math.abs(x-W/2)-(W/2-R), qy=Math.abs(y-H/2)-(H/2-R); return Math.hypot(Math.max(qx,0),Math.max(qy,0))+Math.min(Math.max(qx,qy),0)-R; };
+    for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const px=x+.5, py=y+.5, d=-sdf(px,py); let dx=0,dy=0;
+      if(d>0 && d<depth){ const gx=sdf(px+1,py)-sdf(px-1,py), gy=sdf(px,py+1)-sdf(px,py-1), gl=Math.hypot(gx,gy)||1; const m=Math.pow(1-d/depth,2); dx=-gx/gl*m; dy=-gy/gl*m; }
+      const i=(y*W+x)*4; img.data[i]=Math.round(128+127*dx); img.data[i+1]=Math.round(128+127*dy); img.data[i+2]=128; img.data[i+3]=255; }
+    ctx.putImageData(img,0,0); const fe=document.getElementById('glassMap'); if(fe){ const u=cv.toDataURL(); fe.setAttribute('href',u); fe.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',u); }
+  })();
+  // curseurs : bouton plein au repos ; pendant le déplacement il devient une lentille qui réfracte la barre
+  const gsliders=[...document.querySelectorAll('input[type=range]')].map(r=>{
+    const w=document.createElement('div'); w.className='gsl'; r.parentNode.insertBefore(w,r);
+    w.innerHTML='<div class="gsl-track"><div class="gsl-fill"></div></div>'; w.appendChild(r);
+    const lens=document.createElement('div'); lens.className='gsl-lens'; lens.innerHTML='<div class="gsl-refr"><div class="gsl-copy"><div class="gsl-copy-track"><div class="gsl-fill"></div></div></div></div>';
+    const knob=document.createElement('div'); knob.className='gsl-knob'; w.appendChild(knob); w.appendChild(lens);
+    let t=0; const on=()=>{ clearTimeout(t); w.classList.add('active'); }, off=(d)=>{ clearTimeout(t); t=setTimeout(()=>w.classList.remove('active'),d||0); };
+    r.addEventListener('pointerdown',on); addEventListener('pointerup',()=>{ if(w.classList.contains('active')) off(120); }); addEventListener('pointercancel',()=>off(0));
+    r.addEventListener('keydown',e=>{ if(/Arrow|Page|Home|End/.test(e.key)){ on(); off(650); } });
+    return {r,w,copy:lens.querySelector('.gsl-copy')};
+  });
+  function paintSliders(){ gsliders.forEach(g=>{ const mn=+g.r.min||0, mx=+g.r.max||100, v=+g.r.value, pn=mx>mn?Math.max(0,Math.min(1,(v-mn)/(mx-mn))):0;
+    const W=g.w.clientWidth, left=(W-48)*pn; g.w.style.setProperty('--p',(pn*100)+'%'); g.w.style.setProperty('--pn',pn);
+    g.copy.style.width=W+'px'; g.copy.style.left=(-left)+'px'; }); }
+  document.addEventListener('input',e=>{ if(e.target.type==='range') paintSliders(); });
+  // reflet qui suit la souris sur le verre
+  (function(){
+    const SEL='.prose .math,.box,.roles div,.formulas,.obs,.stat,.gloss,.refnote,.node,.panel,.exps button';
+    let raf=0, ev=null;
+    addEventListener('pointermove',e=>{ if(e.pointerType!=='mouse') return; ev=e; if(!raf) raf=requestAnimationFrame(()=>{ raf=0; const el=ev.target.closest&&ev.target.closest(SEL); if(!el) return; const r=el.getBoundingClientRect(); el.style.setProperty('--mx',(ev.clientX-r.left)+'px'); el.style.setProperty('--my',(ev.clientY-r.top)+'px'); }); },{passive:true});
+  })();
+  function draw(){ paintRanges(); paintSliders(); const m=model(); readouts(m); drawCurve(m); drawValue(m); drawMix(m); swap(m); const os=liquidity(m); drawLiq(m,os); }
   function update(src){
     if(src && src!=='reset') { if(['p0n','pan','pbn','pn','v0n'].includes(src)) syncSliders(); else syncInputs(); clearExp(); preExp=null; $('obs').hidden=true; }
     else syncInputs();
