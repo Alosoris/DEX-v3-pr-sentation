@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@400;485;535;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Fragment+Mono:ital@0;1&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@400;485;535;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <!-- Vercel Web Analytics : statistiques de visite anonymes (aucun cookie) -->
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -17,14 +17,15 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
 :root{
   /* Palette inspirée de la documentation développeurs d'Uniswap : blanc, gris neutres, rose vif */
   --bg:#ffffff; --surface:#ffffff; --field:#f9f9f9; --hover:#f5f5f5; --ink:#131313; --text:#0a0a0a; --muted:rgba(19,19,19,.63); --faint:#737373; --line:#e5e5e5;
-  --accent:#ff37c7; --accent-ink:#ffffff; --accent-soft:#ffeffb; --grid:rgba(19,19,19,.045);
+  --accent:#f50fb4; --accent-ink:#ffffff; --accent-soft:#ffeffb; --grid:rgba(19,19,19,.045);
   --eth:#4c82fb; --usd:#f5a524; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
   --t-pink:#fff0fa; --t-blue:#eef4ff; --t-orange:#fff4ea; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#d6e4ff; --blue-head:#dfeaff;
   --g1:#ffe0f4; --g2:#ffbde8; --g3:#ff96da;
+  --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.07); --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
   --f-display:"Bricolage Grotesque", "Inter", "Helvetica Neue", Arial, sans-serif;
   --f-body:"Inter", "Helvetica Neue", Arial, sans-serif;
   --f-read:"Inter", "Helvetica Neue", Arial, sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-mono:"Fragment Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -32,7 +33,7 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
     --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
     --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
     --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
-    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; color-scheme:dark;
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
@@ -40,7 +41,7 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
   --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
   --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
-    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; color-scheme:dark;
+    --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -421,6 +422,51 @@ a.chref:hover{text-decoration-style:solid}
 .tree-aside .lbl{font-size:.78rem;color:var(--muted);font-family:var(--f-body)}
 
 .prose h3[id]{scroll-margin-top:24px}
+
+/* ===== Touches Unichain : héros magenta quadrillé, italiques à empattements, étiquettes mono, cartes « plan technique » ===== */
+header{position:relative;isolation:isolate;overflow:hidden;color:#fff;border-radius:28px;padding:46px 40px 30px;background:radial-gradient(90% 120% at 90% -10%,var(--uni-2),transparent 60%),linear-gradient(120deg,var(--uni-1) 0%,#ff3fcf 55%,#fc5cf0 100%)}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px);background-size:40px 40px;-webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 95%);mask-image:linear-gradient(180deg,#000 10%,transparent 95%)}
+header::after{content:"";position:absolute;right:-30px;top:-30px;width:300px;height:300px;z-index:-1;opacity:.28;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0C53 30 70 47 100 50C70 53 53 70 50 100C47 70 30 53 0 50C30 47 47 30 50 0Z' fill='white'/%3E%3C/svg%3E") center/contain no-repeat}
+header .pair{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px}
+header .pair::before{content:"";width:12px;height:12px;background:#fff;clip-path:polygon(50% 0%,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0% 50%,39% 39%)}
+header h1{color:#fff;font-size:clamp(2.4rem,5.4vw,4.2rem);letter-spacing:-.04em;line-height:1.02;max-width:16ch}
+header h1 em{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+header p{color:rgba(255,255,255,.88)}
+header nav.toc{border-color:rgba(255,255,255,.3)}
+header nav.toc a{color:#fff;background:rgba(255,255,255,.14);border-radius:10px}
+header nav.toc a b{color:#fff}
+/* titres : dégradé magenta + numéros en italique à empattements */
+.prose h2,.lab-head h2{background:linear-gradient(64deg,var(--uni-1),var(--uni-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.chap-n{font-family:var(--f-serif);font-style:italic;font-weight:400;font-size:3.2rem;line-height:.9;letter-spacing:-.02em;background:linear-gradient(64deg,var(--uni-1),var(--uni-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.chap-n span{display:block;font-family:var(--f-mono);font-style:normal;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);-webkit-text-fill-color:var(--faint);margin-bottom:6px}
+.prose h3 em,.prose h2 em{font-family:var(--f-serif);font-style:italic;font-weight:400}
+/* étiquettes en mono majuscules, comme « FAST » / « OPTIMIZED » */
+.lab-head .tag,.box .lbl,.section-label,.stat .k,nav.side .side-title,.tree-aside .lbl{font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;font-weight:400}
+.lab-head .tag{color:var(--accent);background:none;padding:0}
+.box .lbl,.box.ex .lbl{color:var(--accent)}
+/* cartes « plan technique » : gris chaud + quadrillage rose */
+.panel{background:var(--card);border-color:transparent;border-radius:24px}
+.stat{background:var(--surface)}
+.box.ex{background-color:var(--card);background-image:linear-gradient(var(--card-line) 1px,transparent 1px),linear-gradient(90deg,var(--card-line) 1px,transparent 1px);background-size:22px 22px;border:1px solid var(--line);border-radius:20px}
+.box.ex .math.deriv,.box.ex table{background:var(--surface)}
+.box.ex th{background:var(--t-pink)}
+.math.deriv{border:1px dashed var(--pink-line);border-radius:16px}
+.roles div{background:var(--card);border-color:transparent}
+/* boutons : prune foncée et magenta */
+#reset{background:var(--plum);color:var(--plum-ink);border-radius:14px}
+#reset:hover{background:var(--plum);color:var(--plum-ink);filter:brightness(1.15)}
+button.on,.exps button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.theme-btn{border-radius:14px}
+/* sommaire : l'étoile Unichain marque le chapitre en cours */
+@media (min-width:1200px){
+  nav.side a.cur b{width:12px;height:12px;background:var(--accent);box-shadow:none;clip-path:polygon(50% 0%,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0% 50%,39% 39%)}
+  nav.side a.sub.cur{color:var(--accent)}
+}
+/* arbre : racine en magenta */
+.node.root{background:linear-gradient(120deg,var(--uni-1),var(--uni-2));border-color:transparent}
+.node.root,.node.root .n-name,.node.root .n-how,.node.root a.chref{color:#fff}
+.node.root .n-f{color:#fff}
+@media (max-width:640px){header{padding:34px 22px 22px}header::after{width:180px;height:180px}}
 </style>
 
 <button id="themeBtn" class="theme-btn" type="button" aria-label="Passer en mode sombre" title="Mode sombre / mode clair">
@@ -431,7 +477,7 @@ a.chref:hover{text-decoration-style:solid}
 <div class="wrap">
   <header>
     <div class="pair">Pool ETH / USDC · Uniswap v3</div>
-    <h1>Comprendre la liquidité concentrée</h1>
+    <h1>Comprendre la <em>liquidité</em> concentrée.</h1>
     <p>Un cours interactif sur les CLMM (<i>Concentrated Liquidity Market Makers</i>). On part d'une seule équation, x·y = k, on la déforme pas à pas, et chaque formule peut être manipulée dans les laboratoires. Aucune connaissance en cryptomonnaies n'est nécessaire : le vocabulaire est expliqué au fur et à mesure et rassemblé dans le lexique final.</p>
     <nav class="toc" aria-label="Sommaire">
       <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#arbre"><b>9</b>L'arbre des formules</a><a href="#lexique"><b>10</b>Lexique</a>
