@@ -715,7 +715,7 @@ table.alice td,table.alice th{vertical-align:top}
       <button data-e="1">L'effet loupe<small>Plage étroite vs large</small></button>
       <button data-e="2">Ordre limite<small>Plage au-dessus du prix</small></button>
       <button data-e="3">Sortie de plage<small>Le prix s'effondre</small></button>
-      <button data-e="4">Perte « impermanente »<small>Aller-retour du prix</small></button>
+      <button data-e="4">Perte « impermanente » (IL)<small>Aller-retour du prix</small></button>
     </div>
     <div class="obs" id="obs" hidden></div>
 
@@ -770,7 +770,7 @@ table.alice td,table.alice th{vertical-align:top}
             <div class="stat"><span class="k">Efficacité vs v2</span><span class="v" id="sEff"></span><span class="s">à capital égal</span></div>
             <div class="stat"><span class="k">Valeur position</span><span class="v" id="sVal"></span><span class="s" id="sValPct"></span></div>
             <div class="stat"><span class="k">Valeur si gardé (HODL)</span><span class="v" id="sHold"></span><span class="s">jetons de départ</span></div>
-            <div class="stat"><span class="k">Perte impermanente</span><span class="v" id="sIL"></span><span class="s" id="sILd"></span></div>
+            <div class="stat"><span class="k">Perte impermanente (IL)</span><span class="v" id="sIL"></span><span class="s" id="sILd"></span></div>
             <div class="stat"><span class="k">Ticks p<sub>a</sub> → p<sub>b</sub></span><span class="v" id="sTick"></span><span class="s" id="sTickN"></span></div>
           </div>
           <div class="mix">
@@ -916,7 +916,7 @@ table.alice td,table.alice th{vertical-align:top}
     <div class="chap-n"><span>Chapitre</span>8</div>
     <div class="prose">
       <h2>Les risques de la concentration</h2>
-      <h3 id="sec-8-1">8.1 La perte impermanente</h3>
+      <h3 id="sec-8-1">8.1 La perte impermanente (IL)</h3>
       <p>Comparons la position avec le fait de simplement garder ses jetons. Pour une position v2 déposée au prix \(P_0\), le prix devient \(P = r\,P_0\). Valeur de la position (formule \(V_{v2} = 2L\sqrt{P}\) du <a class="chref" href="#sec-3-3">3.3</a>) :</p>
       <div class="math deriv">\[ \begin{aligned} V_{\text{LP}} &= 2L\sqrt{P} = 2L\sqrt{r\,P_0} = 2L\sqrt{r}\,\sqrt{P_0} && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \end{aligned} \]</div>
       <p>Valeur si l'on avait gardé les jetons déposés, \(x_0 = L/\sqrt{P_0}\) ETH et \(y_0 = L\sqrt{P_0}\) USDC (formules du <a class="chref" href="#sec-2-2">2.2</a>) :</p>
@@ -1001,7 +1001,7 @@ table.alice td,table.alice th{vertical-align:top}
         <dt>Liquidité active</dt><dd>Somme des L des positions dont la plage contient le prix actuel.</dd>
         <dt>Glissement</dt><dd>Écart entre le prix affiché et le prix moyen obtenu lors d'un gros échange.</dd>
         <dt>HODL</dt><dd>Stratégie de référence : garder ses jetons sans rien faire.</dd>
-        <dt>Perte impermanente</dt><dd>Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.</dd>
+        <dt>Perte impermanente (IL)</dt><dd>De l'anglais <i>impermanent loss</i>. Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.</dd>
         <dt>Gas</dt><dd>Frais payés au réseau Ethereum pour chaque opération (dépôt, retrait, échange).</dd>
         <dt>Arbitragiste</dt><dd>Trader qui profite d'un écart de prix entre deux plateformes ; c'est lui qui aligne le prix de la pool sur celui du marché.</dd><dt>Teneur de marché</dt><dd>Celui qui propose en permanence d'acheter et de vendre (<i>market maker</i>) ; un LP joue ce rôle de façon automatique.</dd><dt>Plage de prix</dt><dd>Intervalle \([p_a\,;\,p_b]\) choisi par un LP v3 ; sa liquidité ne travaille, et ne touche des frais, que dans cet intervalle.</dd><dt>Rendement annualisé (APR)</dt><dd>Gain exprimé en pourcentage du capital, ramené à une année.</dd><dt>Rééquilibrage</dt><dd>Retirer une position sortie de sa plage pour en ouvrir une nouvelle autour du prix actuel.</dd><dt>USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
       </dl>
@@ -1092,7 +1092,7 @@ table.alice td,table.alice th{vertical-align:top}
     { set:{pa:0.9,pb:1.1,P:0.75,view:'real'},
       txt:"<b>Sortie de plage.</b> L'ETH est tombé à 1500. La pastille est rouge : la position ne contient plus que de l'ETH et ne touche plus de frais. Sur le graphique « Valeur », la courbe v3 est devenue une droite sous p<sub>a</sub> : sa valeur suit simplement celle de l'ETH, avec plus d'ETH qu'au départ, puisque la position en a acheté pendant toute la baisse." },
     { set:{pa:0.75,pb:1.25,P:1.2,view:'real'},
-      txt:"<b>Une perte qui peut disparaître.</b> À 2400, la position vaut moins que HODL (ligne « Perte impermanente »). En ramenant le prix vers 2000 (bouton « Remettre P = P₀ »), la perte revient exactement à 0, car x(P) et y(P) ne dépendent que du prix actuel, pas du chemin suivi. Avec les frais encaissés entre-temps, l'aller-retour aurait même été gagnant." }
+      txt:"<b>Une perte qui peut disparaître.</b> À 2400, la position vaut moins que HODL (ligne « Perte impermanente (IL) »). En ramenant le prix vers 2000 (bouton « Remettre P = P₀ »), la perte revient exactement à 0, car x(P) et y(P) ne dépendent que du prix actuel, pas du chemin suivi. Avec les frais encaissés entre-temps, l'aller-retour aurait même été gagnant." }
   ];
   // réglages d'avant le premier scénario, pour pouvoir y revenir
   let preExp=null;
@@ -1149,6 +1149,8 @@ table.alice td,table.alice th{vertical-align:top}
       row('ETH  x(P)','L·(1/√P − 1/√p_b) = '+smart(m.L)+' × ('+smart(1/sc)+' − '+smart(1/m.sb)+')', smart(a.x)),
       row('USDC  y(P)','L·(√P − √pₐ) = '+smart(m.L)+' × ('+smart(sc)+' − '+smart(m.sa)+')', smart(a.y)),
       row('Valeur','x·P + y = '+smart(a.x)+' × '+f(S.P,2)+' + '+smart(a.y), f(val,2)+' $'),
+      row('Valeur HODL','x₀·P + y₀ = '+smart(m.a0.x)+' × '+f(S.P,2)+' + '+smart(m.a0.y), f(h,2)+' $'),
+      row('Perte imperm. (IL)','V ÷ V_HODL − 1 = '+f(val,2)+' ÷ '+f(h,2)+' − 1', fp(il)+'  ('+(val-h>=0?'+':'')+f(val-h,2)+' $)'),
       row('Courbe','(x + L/√p_b)·(y + L·√pₐ) = ('+smart(a.x)+' + '+smart(m.L/m.sb)+') × ('+smart(a.y)+' + '+smart(m.L*m.sa)+')', smart((a.x+m.L/m.sb)*(a.y+m.L*m.sa))+'  = L²'),
       row('Efficacité','L ÷ L_v2 = '+smart(m.L)+' ÷ '+smart(m.L2), '× '+f(m.eff,2))
     ].join('');
