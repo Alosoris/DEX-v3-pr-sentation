@@ -742,11 +742,11 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
 @media (prefers-reduced-motion:reduce){.sa-mark{transition:none}}
 
 /* ===== Style A : une matière par type d'encadré ===== */
-:root{--paper:#ffffff;--paper-grid:rgba(245,15,180,.10);--paper-line:rgba(245,15,180,.24);--co-a:rgba(245,15,180,.20);--co-b:rgba(160,90,255,.14);--co-hi:rgba(255,255,255,.55);--co-rim:rgba(255,255,255,.75);--co-lbl:#6b1d5c}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.085);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}}
-:root[data-theme="dark"]{--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.085);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}
+:root{--paper:#ffffff;--paper-grid:rgba(245,15,180,.065);--paper-line:rgba(245,15,180,.24);--co-a:rgba(245,15,180,.20);--co-b:rgba(160,90,255,.14);--co-hi:rgba(255,255,255,.55);--co-rim:rgba(255,255,255,.75);--co-lbl:#6b1d5c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.06);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}}
+:root[data-theme="dark"]{--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.06);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}
 /* exemple chiffré : papier millimétré */
-.prose .box.ex,.box.ex{background:linear-gradient(var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,linear-gradient(90deg,var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,var(--paper);
+.prose .box.ex,.box.ex{background:radial-gradient(ellipse 60% 70% at 92% 8%,var(--paper) 15%,transparent 70%),radial-gradient(ellipse 45% 60% at 4% 96%,var(--paper) 10%,transparent 70%),radial-gradient(ellipse 35% 45% at 55% 60%,var(--paper) 0%,transparent 75%),linear-gradient(var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,linear-gradient(90deg,var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,var(--paper);
   -webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--paper-line);border-radius:18px;box-shadow:0 12px 26px -20px var(--lg-shadow)}
 .box.ex .lbl{color:var(--accent)}
 .box.ex .math,.box.ex table{background:color-mix(in srgb,var(--paper) 88%,transparent);border-color:var(--paper-line);box-shadow:none}
@@ -761,12 +761,25 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
   -webkit-backdrop-filter:none;backdrop-filter:none;border:0;border-radius:0;box-shadow:none;padding:6px 8px 6px 44px}
 .prose > .math.deriv mjx-container[display="true"]{text-align:left!important;margin:0!important}
 .step-n{position:absolute;left:4px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 .68rem/1 var(--f-mono);color:var(--accent-ink);background:var(--accent);box-shadow:0 0 0 3px var(--bg);pointer-events:none}
-/* illustrations : feuille blanche et repères d'angle */
-.blueprint,figure.blueprint{background:var(--paper);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 28px -22px var(--lg-shadow);overflow:visible}
-.blueprint::before,.blueprint::after{content:"";position:absolute;width:16px;height:16px;border:2px solid var(--accent);pointer-events:none;z-index:2}
-.blueprint::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
-.blueprint::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+/* illustrations : liquid glass arrondi, repères d'angle arrondis */
+.blueprint,figure.blueprint{background:radial-gradient(420px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot));
+  -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border:1px solid var(--lg-rim);border-radius:24px;overflow:visible;
+  box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)}
+.blueprint::before,.blueprint::after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--accent);pointer-events:none;z-index:2;opacity:.85}
+.blueprint::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:24px}
+.blueprint::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:24px}
 .blueprint figcaption{color:var(--muted)}
+/* étapes algébriques : carte à quadrillage de points */
+:root{--dcard:#faf5f8;--dcard2:#f4edf2;--ddot:rgba(19,19,19,.11)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(255,255,255,.075)}}
+:root[data-theme="dark"]{--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(255,255,255,.075)}
+.prose > .math.deriv{margin:10px 0 18px;padding:44px 22px 16px 62px;border-radius:24px;border:1px solid var(--line);
+  background:linear-gradient(90deg,transparent 30px,var(--accent) 30px,var(--accent) 32px,transparent 32px) 0 46px/100% calc(100% - 62px) no-repeat,
+    radial-gradient(circle,var(--ddot) 1px,transparent 1.4px) 0 0/14px 14px,linear-gradient(160deg,var(--dcard),var(--dcard2));
+  box-shadow:0 12px 28px -22px var(--lg-shadow)}
+.prose > .math.deriv::before{content:"Étapes algébriques";position:absolute;top:14px;left:20px;font:600 .78rem/1 var(--f-display);letter-spacing:.01em;color:var(--muted);padding-left:14px}
+.prose > .math.deriv::after{content:"";position:absolute;top:17px;left:20px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.prose > .math.deriv .step-n{left:20px;box-shadow:0 0 0 3px var(--dcard)}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
