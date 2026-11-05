@@ -20,8 +20,8 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   /* Palette inspirée de la documentation développeurs d'Uniswap : blanc, gris neutres, rose vif */
   --bg:#ffffff; --surface:#ffffff; --field:#f9f9f9; --hover:#f5f5f5; --ink:#131313; --text:#0a0a0a; --muted:rgba(19,19,19,.63); --faint:#737373; --line:#e5e5e5;
   --accent:#f50fb4; --accent-ink:#ffffff; --accent-soft:#ffeffb; --grid:rgba(19,19,19,.045);
-  --eth:#4c82fb; --usd:#f5a524; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
-  --t-pink:#fff0fa; --t-blue:#eef4ff; --t-orange:#fff4ea; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#d6e4ff; --blue-head:#dfeaff;
+  --eth:#a8136f; --usd:#ff8fd6; --v2:#f5a524; --usd-ink:#e0469f; --eth-hi:#e0479f; --usd-hi:#ffc4ea; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
+  --t-pink:#fff0fa; --t-blue:#fff2fa; --t-orange:#fff6fb; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#ffd6ef; --blue-head:#ffe6f5;
   --g1:#ffe0f4; --g2:#ffbde8; --g3:#ff96da;
   --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.11);
   --lg-top:rgba(255,255,255,.60); --lg-bot:rgba(255,255,255,.28); --lg-hi:rgba(255,255,255,.72); --lg-rim:rgba(255,255,255,.92); --lg-edge:rgba(245,15,180,.18); --lg-tint:rgba(245,15,180,.10); --lg-nest:rgba(255,255,255,.48); --lg-glow:rgba(245,15,180,.07); --lg-shadow:rgba(140,20,105,.16); --bp-top:rgba(255,255,255,.88); --bp-bot:rgba(255,255,255,.66);
@@ -35,16 +35,16 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   :root:not([data-theme="light"]){
     --bg:#131313; --surface:#131313; --field:#1b1b1b; --hover:#222222; --ink:#ffffff; --text:#f5f5f5; --muted:rgba(255,255,255,.65); --faint:#9b9b9b; --line:#2a2a2a;
     --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
-    --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
-    --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
+    --eth:#ff4fbf; --usd:#ffb8e8; --v2:#ffbf3c; --usd-ink:#ffb8e8; --eth-hi:#ff8ad6; --usd-hi:#ffe0f5; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
+    --t-pink:rgba(252,114,255,.10); --t-blue:rgba(255,79,191,.10); --t-orange:rgba(255,184,232,.08); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(255,79,191,.25); --blue-head:rgba(255,79,191,.18);
     --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); --lg-top:rgba(46,40,48,.60); --lg-bot:rgba(26,24,28,.40); --lg-hi:rgba(252,140,255,.14); --lg-rim:rgba(255,255,255,.12); --lg-edge:rgba(252,114,255,.20); --lg-tint:rgba(252,114,255,.12); --lg-nest:rgba(255,255,255,.05); --lg-glow:rgba(252,114,255,.08); --lg-shadow:rgba(0,0,0,.5); --bp-top:rgba(46,40,48,.62); --bp-bot:rgba(26,24,28,.42); --blob1:rgba(245,15,180,.16); --blob2:rgba(140,100,255,.12); --blob3:rgba(255,140,90,.06); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#131313; --surface:#131313; --field:#1b1b1b; --hover:#222222; --ink:#ffffff; --text:#f5f5f5; --muted:rgba(255,255,255,.65); --faint:#9b9b9b; --line:#2a2a2a;
   --accent:#fc72ff; --accent-ink:#131313; --accent-soft:rgba(252,114,255,.12); --grid:rgba(255,255,255,.05);
-  --eth:#6e9bff; --usd:#ffbf3c; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
-  --t-pink:rgba(252,114,255,.10); --t-blue:rgba(110,155,255,.11); --t-orange:rgba(255,160,80,.11); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(110,155,255,.25); --blue-head:rgba(110,155,255,.18);
+  --eth:#ff4fbf; --usd:#ffb8e8; --v2:#ffbf3c; --usd-ink:#ffb8e8; --eth-hi:#ff8ad6; --usd-hi:#ffe0f5; --hold:#8a8a8a; --bad:#ff7a6e; --good:#40d77a;
+  --t-pink:rgba(252,114,255,.10); --t-blue:rgba(255,79,191,.10); --t-orange:rgba(255,184,232,.08); --pink-faint:rgba(252,114,255,.06); --pink-line:rgba(252,114,255,.22); --blue-line:rgba(255,79,191,.25); --blue-head:rgba(255,79,191,.18);
     --g1:#3f2139; --g2:#5e2a55; --g3:#843a77; --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#fc72ff; --plum-ink:#131313; --card:#1c1a1e; --card-line:rgba(252,114,255,.08); --lg-top:rgba(46,40,48,.60); --lg-bot:rgba(26,24,28,.40); --lg-hi:rgba(252,140,255,.14); --lg-rim:rgba(255,255,255,.12); --lg-edge:rgba(252,114,255,.20); --lg-tint:rgba(252,114,255,.12); --lg-nest:rgba(255,255,255,.05); --lg-glow:rgba(252,114,255,.08); --lg-shadow:rgba(0,0,0,.5); --bp-top:rgba(46,40,48,.62); --bp-bot:rgba(26,24,28,.42); --blob1:rgba(245,15,180,.16); --blob2:rgba(140,100,255,.12); --blob3:rgba(255,140,90,.06); color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -227,7 +227,7 @@ nav.toc a b{color:var(--faint);font-family:var(--f-body);font-weight:400}
 .box.ex tr:last-child td{border-bottom:0}
 .math.deriv{background:var(--field);border:1px solid var(--line);border-radius:12px}
 .roles div{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.roles div:nth-child(1) b{color:var(--accent)} .roles div:nth-child(2) b{color:var(--eth)} .roles div:nth-child(3) b{color:var(--usd)}
+.roles div:nth-child(1) b{color:var(--accent)} .roles div:nth-child(2) b{color:var(--eth)} .roles div:nth-child(3) b{color:var(--usd-ink)}
 .roles b{font-weight:535}
 .roles div:nth-child(2),.roles div:nth-child(3){border-color:var(--line)}
 .box.ex .lbl{color:var(--faint)}
@@ -661,8 +661,8 @@ header::after{width:200px;height:200px;right:-40px;top:-50px}
 .sa-bars{display:flex;gap:12px;align-items:flex-end;height:120px}
 .sa-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;font-size:.74rem;font-variant-numeric:tabular-nums;text-align:center}
 .sa-fill{width:100%;border-radius:8px 8px 4px 4px;transition:height .8s cubic-bezier(.34,1.3,.64,1)}
-.sa-eth{background:linear-gradient(180deg,#8fb1ff,var(--eth))}
-.sa-usd{background:linear-gradient(180deg,#ffd08a,var(--usd))}
+.sa-eth{background:linear-gradient(180deg,var(--eth-hi),var(--eth))}
+.sa-usd{background:linear-gradient(180deg,var(--usd-hi),var(--usd))}
 .sa-curve{width:100%;height:auto}
 .sa-ax{fill:none;stroke:var(--ink);stroke-width:1.2;opacity:.6}
 .sa-axt{fill:var(--muted);font:italic 13px var(--f-serif)}
@@ -725,6 +725,21 @@ button.on,.exps button.on,#reset{
 button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);border-color:rgba(255,255,255,.55);filter:brightness(1.06)}
 .exps button.on small{color:inherit}
 @media (prefers-reduced-transparency:reduce){button:not(.theme-sw),.lex-back{-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* animation v3 : pièces, jauge de prix */
+.sa-lane.coin-u.act i{background:var(--usd);box-shadow:0 0 10px var(--usd)}
+.sa-lane.coin-e.act i{background:var(--eth);box-shadow:0 0 10px var(--eth)}
+.sa-end{fill:var(--muted);font:11px var(--f-mono)}
+.sa-hyp.v3ghost{stroke:var(--hold);stroke-width:1.2;stroke-dasharray:3 4;opacity:.6}
+.sa-gauge{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.sa-track{position:relative;flex:1;height:30px;border-radius:999px;background:var(--lg-nest);border:1px solid var(--lg-rim)}
+.sa-range{position:absolute;top:3px;bottom:3px;left:16.667%;width:66.667%;border-radius:999px;background:var(--accent-soft);border:1px dashed var(--accent);display:flex;align-items:center;justify-content:flex-start;padding-left:12px}
+.sa-range span{font-size:.68rem;color:var(--accent)}
+.sa-mark{position:absolute;top:-6px;bottom:-6px;width:3px;margin-left:-1.5px;border-radius:3px;background:var(--accent);left:50%;transition:left .8s cubic-bezier(.34,1.3,.64,1),background .3s}
+.sa-mark b{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:.72rem;color:var(--accent);white-space:nowrap;transition:color .3s}
+.sa-mark.out{background:var(--hold)} .sa-mark.out b{color:var(--hold)}
+.sa-gauge{margin-top:12px}
+@media (prefers-reduced-motion:reduce){.sa-mark{transition:none}}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -789,8 +804,8 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
         <div class="sa-stage">
           <div class="sa-wallet"><span class="sa-who">Trader</span><span class="sa-row"><b id="saTE">1</b> ETH</span><span class="sa-row"><b id="saTU">0</b> USDC</span></div>
           <div class="sa-flow" aria-hidden="true">
-            <div class="sa-lane" id="saIn"><span class="sa-lbl">1 ETH →</span><i></i></div>
-            <div class="sa-lane sa-out" id="saOut"><span class="sa-lbl">← 1 818,18 USDC</span><i></i></div>
+            <div class="sa-lane coin-e" id="saIn"><span class="sa-lbl">1 ETH →</span><i></i></div>
+            <div class="sa-lane sa-out coin-u" id="saOut"><span class="sa-lbl">← 1 818,18 USDC</span><i></i></div>
           </div>
           <div class="sa-pool"><span class="sa-who">Pool</span>
             <div class="sa-bars">
@@ -869,6 +884,40 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
       <p>Sous \(p_a\), la position ne contient que de l'ETH. Au-dessus de \(p_b\), elle ne contient que de l'USDC.</p>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>Pour la même position (\(L = 447{,}21\), \(p_a = 1\,800\), \(p_b = 2\,200\)), on applique les formules \(x(P) = L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right)\) et \(y(P) = L\left(\sqrt{P} - \sqrt{p_a}\right)\) à trois prix.<br><br><strong>Prix 1 800 (borne basse \(p_a\))</strong><div class="math deriv">\[ \begin{aligned} x(1\,800) &= 447{,}21\left(\frac{1}{\sqrt{1\,800}} - \frac{1}{\sqrt{2\,200}}\right) \approx 1{,}006 \text{ ETH} \\[3pt] y(1\,800) &= 447{,}21\left(\sqrt{1\,800} - \sqrt{1\,800}\right) = 0 \text{ USDC} \end{aligned} \]</div><strong>Prix 2 000 (prix de dépôt)</strong><div class="math deriv">\[ \begin{aligned} x(2\,000) &= 447{,}21\left(\frac{1}{\sqrt{2\,000}} - \frac{1}{\sqrt{2\,200}}\right) \approx 0{,}465 \text{ ETH} \\[3pt] y(2\,000) &= 447{,}21\left(\sqrt{2\,000} - \sqrt{1\,800}\right) \approx 1\,026{,}33 \text{ USDC} \end{aligned} \]</div><strong>Prix 2 200 (borne haute \(p_b\))</strong><div class="math deriv">\[ \begin{aligned} x(2\,200) &= 447{,}21\left(\frac{1}{\sqrt{2\,200}} - \frac{1}{\sqrt{2\,200}}\right) = 0 \text{ ETH} \\[3pt] y(2\,200) &= 447{,}21\left(\sqrt{2\,200} - \sqrt{1\,800}\right) \approx 2\,002{,}51 \text{ USDC} \end{aligned} \]</div>La valeur se calcule avec \(V = x \cdot P + y\), par exemple à 2 000 : \(0{,}465 \times 2\,000 + 1\,026{,}33 \approx 1\,957\) $. Récapitulatif :<div class="tw"><table><thead><tr><th>Prix</th><th>ETH x(P)</th><th>USDC y(P)</th><th>Valeur</th></tr></thead><tbody><tr><td>1 800 (= p<sub>a</sub>)</td><td>1,006</td><td>0</td><td>1 811 $</td></tr><tr><td>2 000</td><td>0,465</td><td>1 026,33</td><td>1 957 $</td></tr><tr><td>2 200 (= p<sub>b</sub>)</td><td>0</td><td>2 002,51</td><td>2 003 $</td></tr></tbody></table></div>Entre 1 800 et 2 200, la position est passée de 100 % ETH à 100 % USDC.</div>
       <div class="box concret"><span class="lbl">Concrètement · une position, c'est une série d'ordres d'achat et de vente</span>Quand Alice choisit la plage [1 800 ; 2 200], elle dit en pratique : « <em>Si l'ETH monte vers 2 200, vendez progressivement mes ETH ; s'il baisse vers 1 800, achetez-en progressivement avec mes USDC.</em> »<br><br>Les formules \(x(P)\) et \(y(P)\) disent simplement <strong>ce qu'Alice possède à chaque instant</strong>. Si l'ETH dépasse 2 200, elle a tout vendu et ne détient plus que des dollars : elle a « encaissé » la hausse, mais elle n'en profite plus. S'il passe sous 1 800, elle n'a plus que des ETH, achetés pendant toute la baisse.</div>
+      <div class="panel swapanim" id="swapAnim3">
+        <div class="sa-head"><span class="sa-tag">Animation</span><span class="sa-title">Un échange dans une position v3, étape par étape</span></div>
+        <div class="sa-stage">
+          <div class="sa-wallet"><span class="sa-who" id="s3Who">Trader</span><span class="sa-row"><b id="s3TE">0</b> ETH</span><span class="sa-row"><b id="s3TU">500</b> USDC</span></div>
+          <div class="sa-flow" aria-hidden="true">
+            <div class="sa-lane coin-u" id="s3In"><span class="sa-lbl" id="s3InL">500 USDC →</span><i></i></div>
+            <div class="sa-lane sa-out coin-e" id="s3Out"><span class="sa-lbl" id="s3OutL">← 0,2439 ETH</span><i></i></div>
+          </div>
+          <div class="sa-pool"><span class="sa-who">Position v3</span>
+            <div class="sa-bars">
+              <div class="sa-bar"><div class="sa-fill sa-eth" id="s3BE"></div><span><b id="s3PE">0,4654</b> ETH</span></div>
+              <div class="sa-bar"><div class="sa-fill sa-usd" id="s3BU"></div><span><b id="s3PU">1 026,33</b> USDC</span></div>
+            </div>
+          </div>
+          <svg class="sa-curve" viewBox="0 0 230 170" aria-hidden="true">
+            <path class="sa-ax" d="M24 8 V150 H222"/><text class="sa-axt" x="8" y="14">y</text><text class="sa-axt" x="214" y="166">x</text>
+            <path class="sa-hyp" id="s3Hyp" d=""/>
+            <text class="sa-end" id="s3Eb" x="36" y="12">P = p_b</text><text class="sa-end" id="s3Ea" x="0" y="144" text-anchor="end">P = pₐ</text>
+            <g id="s3Pt"><path class="sa-proj" id="s3Proj" d=""/><circle class="sa-dot" r="5.5" cx="0" cy="0"/></g>
+          </svg>
+        </div>
+        <div class="sa-gauge" aria-hidden="true">
+          <span class="sa-gl">1 700</span>
+          <div class="sa-track"><div class="sa-range"><span>plage [1 800 ; 2 200]</span></div><div class="sa-mark" id="s3Mark"><b id="s3P">2 000</b></div></div>
+          <span class="sa-gl">2 300</span>
+        </div>
+        <p class="sa-text" id="s3Text" aria-live="polite"></p>
+        <div class="sa-ctrl">
+          <button type="button" id="s3Prev">← Étape précédente</button>
+          <span class="sa-count" id="s3Count">0 / 5</span>
+          <button type="button" id="s3Next" class="on">Étape suivante →</button>
+          <button type="button" id="s3Play">▶ Lecture automatique</button>
+        </div>
+      </div>
       <h3 id="sec-3-2">3.2 Combien de liquidité pour un capital donné ?</h3>
       <p>Un LP dépose une somme \(V\) (en USDC) quand le prix vaut \(P_0\). Sa <a class="lexref" href="#lex-liquidite" title="√k en v2 ; mesure de la profondeur d&#x27;une position. Fixe tant qu&#x27;on ne dépose ni ne retire rien.">liquidité</a> \(L\) s'obtient en écrivant la valeur de la position et en isolant \(L\). C'est exactement le calcul fait par le <a class="chref" href="#labo">chapitre 5</a> :</p>
       <div class="math deriv">\[ \begin{aligned} V &= x\,P_0 + y && \small\text{valeur = ETH × prix + USDC} \\[3pt] V &= L\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + L\left(\sqrt{P_0} - \sqrt{p_a}\right) && \small\text{on remplace } x(P_0) \text{ et } y(P_0) \\[3pt] V &= L\left[\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}\right] && \small\text{on met } L \text{ en évidence} \\[3pt] L &= \frac{V}{\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}} && \small\text{on divise par le crochet} \end{aligned} \]</div>
@@ -976,7 +1025,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
             <div class="stat"><span class="k">Ticks p<sub>a</sub> → p<sub>b</sub></span><span class="v" id="sTick"></span><span class="s" id="sTickN"></span></div>
           </div>
           <div class="mix">
-            <div class="mixlbl"><span style="color:var(--eth)" id="mEth"></span><span style="color:var(--usd)" id="mUsd"></span></div>
+            <div class="mixlbl"><span style="color:var(--eth)" id="mEth"></span><span style="color:var(--usd-ink)" id="mUsd"></span></div>
             <div class="mixbar" role="img" aria-label="Répartition en valeur"><span id="bEth" style="background:var(--eth)"></span><span id="bUsd" style="background:var(--usd)"></span></div>
             <span class="note">Répartition de la valeur de la position au prix actuel.</span>
           </div>
@@ -1003,7 +1052,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
             <div class="legend">
               <span><i style="background:var(--accent)"></i>Position v3</span>
               <span><i style="background:var(--hold)"></i>Garder (<a class="lexref" href="#lex-hodl" title="Stratégie de référence : garder ses jetons sans rien faire.">HODL</a>)</span>
-              <span><i style="background:var(--usd)"></i>Position v2</span>
+              <span><i style="background:var(--v2)"></i>Position v2</span>
             </div>
             <canvas id="cValue" class="c-value drag" aria-label="Valeur de la position selon le prix"></canvas>
           </section>
@@ -1217,7 +1266,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
           </div>
         </div>
         <div class="legend">
-          <span><i style="background:var(--usd)"></i>Pool v2 (frais 4,5 %)</span>
+          <span><i style="background:var(--v2)"></i>Pool v2 (frais 4,5 %)</span>
           <span><i style="background:var(--accent)"></i>Position v3 [1 800 ; 2 200] (frais 11 % dans la plage)</span>
           <span><i style="background:var(--hold)"></i>Prix de l'ETH (échelle de droite)</span>
         </div>
@@ -1549,7 +1598,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
       dot(ctx,F.X(a.x),F.Y(a.y),6,A,col('--surface'));
       tag(ctx,F.X(a.x)+10,F.Y(a.y)-10,'P = '+f(S.P,0),ink,'left');
     } else {
-      leg.innerHTML='<span><i style="background:var(--hold)"></i>Hyperbole complète X·Y = L²</span><span><i style="background:var(--accent)"></i>Morceau utilisé [pₐ ; p_b]</span><span><i style="background:var(--usd)"></i>Axes réels (réserves = 0)</span>';
+      leg.innerHTML='<span><i style="background:var(--hold)"></i>Hyperbole complète X·Y = L²</span><span><i style="background:var(--accent)"></i>Morceau utilisé [pₐ ; p_b]</span><span><i style="background:var(--eth)"></i>Axes réels (réserves = 0)</span>';
       const Xa=m.L/m.sa, Yb=m.L*m.sb, xmax=Xa*1.5, ymax=Yb*1.5;
       const F=frame(ctx,w,h,[0,xmax],[0,ymax],{xl:'ETH virtuel (X) →',yl:'↑ USDC virtuel (Y)'});
       const ox=m.L/m.sb, oy=m.L*m.sa;
@@ -1558,7 +1607,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
       line(ctx,hyp,col('--hold'),1.5,[4,4]);
       const seg=[]; for(let i=0;i<=200;i++){ const s=m.sa+(m.sb-m.sa)*i/200; seg.push([F.X(m.L/s),F.Y(m.L*s)]); }
       line(ctx,seg,A,4);
-      const U=col('--usd');
+      const U=col('--eth');
       line(ctx,[[F.X(ox),F.Y(0)],[F.X(ox),F.Y(ymax)]],U,1.2,[6,4]);
       line(ctx,[[F.X(0),F.Y(oy)],[F.X(xmax),F.Y(oy)]],U,1.2,[6,4]);
       tag(ctx,F.X(ox)+6,F.Y(ymax)+14,'x réel = 0  (X = L/√p_b)',U,'left');
@@ -1589,16 +1638,16 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
     const F=frame(ctx,w,h,[lo,hi],[ymin,ymax],{xl:'prix ETH →',yl:'valeur $'}); invV=F.inv;
     ctx.fillStyle=col('--accent-soft'); ctx.fillRect(F.X(S.pa),F.pad.t,F.X(S.pb)-F.X(S.pa),h-F.pad.t-F.pad.b);
     line(ctx,xs.map((x,i)=>[F.X(x),F.Y(ho[i])]),col('--hold'),1.6,[5,4]);
-    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(v2[i])]),col('--usd'),1.8);
+    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(v2[i])]),col('--v2'),1.8);
     line(ctx,xs.map((x,i)=>[F.X(x),F.Y(lp[i])]),col('--accent'),3);
     line(ctx,[[F.X(S.P),F.pad.t],[F.X(S.P),h-F.pad.b]],col('--ink'),1,[2,3]);
     dot(ctx,F.X(S.P),F.Y(m.lpVal(S.P)),5,col('--accent'),col('--surface'));
     tag(ctx,F.X(S.pa)+4,F.pad.t+12,'pₐ',col('--accent')); tag(ctx,F.X(S.pb)-4,F.pad.t+12,'p_b',col('--accent'),'right');
     if(hovV!=null && hovV>=lo && hovV<=hi){ const hx=F.X(hovV);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],col('--muted'),1,[3,3]);
-      [[m.lpVal(hovV),col('--accent')],[m.hold(hovV),col('--hold')],[m.v2(hovV),col('--usd')]].forEach(q=>dot(ctx,hx,F.Y(q[0]),3.5,q[1]));
+      [[m.lpVal(hovV),col('--accent')],[m.hold(hovV),col('--hold')],[m.v2(hovV),col('--v2')]].forEach(q=>dot(ctx,hx,F.Y(q[0]),3.5,q[1]));
       const lp=m.lpVal(hovV), hd=m.hold(hovV);
-      tip(ctx,hx,F.Y(lp),w,h,[['P = '+f(hovV,0),col('--ink')],['v3   '+f(lp,0)+' $',col('--accent')],['HODL '+f(hd,0)+' $',col('--hold')],['v2   '+f(m.v2(hovV),0)+' $',col('--usd')],['écart '+fp(lp/hd-1),col('--bad')]]); }
+      tip(ctx,hx,F.Y(lp),w,h,[['P = '+f(hovV,0),col('--ink')],['v3   '+f(lp,0)+' $',col('--accent')],['HODL '+f(hd,0)+' $',col('--hold')],['v2   '+f(m.v2(hovV),0)+' $',col('--v2')],['écart '+fp(lp/hd-1),col('--bad')]]); }
   }
   function drawMix(m){
     const c=$('cMix'), {ctx,w,h}=prep(c), [lo,hi]=dom;
@@ -1613,7 +1662,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
     line(ctx,[[F.X(S.P),F.Y(0)-2],[F.X(S.P),F.Y(1)+2]],col('--ink'),2);
     if(hovM!=null && hovM>=lo && hovM<=hi){ const hx=F.X(hovM), a=m.amounts(hovM), v=a.x*hovM+a.y, se=v>0?a.x*hovM/v:0;
       line(ctx,[[hx,F.Y(0)],[hx,F.Y(1)]],col('--ink'),1,[3,3]);
-      tip(ctx,hx,h/2,w,h,[['P = '+f(hovM,0),col('--ink')],['ETH  '+f(se*100,1)+' %',col('--eth')],['USDC '+f((1-se)*100,1)+' %',col('--usd')]]); }
+      tip(ctx,hx,h/2,w,h,[['P = '+f(hovM,0),col('--ink')],['ETH  '+f(se*100,1)+' %',col('--eth')],['USDC '+f((1-se)*100,1)+' %',col('--usd-ink')]]); }
   }
   function drawLiq(m,os){
     const c=$('cLiq'), {ctx,w,h}=prep(c);
@@ -1699,13 +1748,13 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
     nice(pmin,pmax,5).forEach(v=>{ const y=YP(v); ctx.beginPath(); ctx.moveTo(xr,y); ctx.lineTo(xr+4,y); ctx.stroke(); ctx.fillText(compact(v),xr+7,y+4); });
     ctx.textAlign='right'; ctx.fillText('prix ETH ($)',w-2,12);
     line(ctx,S.map(o=>[F.X(o.t),YP(o.P)]),col('--hold'),1.6,[5,4]);
-    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--usd'),2.4);
+    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--v2'),2.4);
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v3)]),col('--accent'),3);
     const e=S[S.length-1]; [['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
     if(hovC!=null){ const k=Math.round(Math.max(0,Math.min(5,hovC))/5*(S.length-1)), o=S[k], hx=F.X(o.t);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],col('--muted'),1,[3,3]);
-      dot(ctx,hx,F.Y(o.v2),3.5,col('--usd')); dot(ctx,hx,F.Y(o.v3),3.5,col('--accent')); dot(ctx,hx,YP(o.P),3.5,col('--hold'));
-      tip(ctx,hx,F.Y(o.v3),w-F.pad.r,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--usd')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
+      dot(ctx,hx,F.Y(o.v2),3.5,col('--v2')); dot(ctx,hx,F.Y(o.v3),3.5,col('--accent')); dot(ctx,hx,YP(o.P),3.5,col('--hold'));
+      tip(ctx,hx,F.Y(o.v3),w-F.pad.r,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--v2')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
     const pc=v=>{ const r=v/1000-1; return (r>=0?'+':'')+f(r*100,1)+' %'; };
     document.getElementById('cmpV2').textContent=f(e.v2,0)+' $'; document.getElementById('cmpV2s').textContent=pc(e.v2);
     document.getElementById('cmpV3').textContent=f(e.v3,0)+' $'; document.getElementById('cmpV3s').textContent=pc(e.v3)+(cmpG!==1?' · hors de la plage':'');
@@ -1853,6 +1902,46 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
     $$('saPrev').addEventListener('click',()=>{ stop(); show(i-1,false); });
     function stop(){ clearInterval(timer); timer=0; $$('saPlay').textContent='▶ Lecture automatique'; $$('saPlay').classList.remove('on'); }
     $$('saPlay').addEventListener('click',()=>{ if(timer){ stop(); return; } $$('saPlay').textContent='❚❚ Pause'; $$('saPlay').classList.add('on'); show(0,false); timer=setInterval(()=>{ if(i>=S.length-1){ stop(); return; } show(i+1,true); },3200); });
+    show(0,false);
+  })();
+
+  // animation : un échange dans une position v3
+  (function(){
+    const box=document.getElementById('swapAnim3'); if(!box) return;
+    const $$=id=>document.getElementById(id);
+    const L=Math.sqrt(200000), sa=Math.sqrt(1800), sb=Math.sqrt(2200);
+    const xr=s=>L*(1/s-1/sb), yr=s=>L*(s-sa);
+    const X=v=>24+v/1.1*196, Y=v=>150-v/2200*140;
+    let d=''; for(let i=0;i<=120;i++){ const s=sa+(sb-sa)*i/120; d+=(i?'L':'M')+X(xr(s)).toFixed(1)+' '+Y(yr(s)).toFixed(1); } $$('s3Hyp').setAttribute('d',d);
+    $$('s3Eb').setAttribute('y',Y(yr(sb))-6); $$('s3Ea').setAttribute('x',X(xr(sa))+6); $$('s3Ea').setAttribute('y',136); $$('s3Ea').setAttribute('text-anchor','end');
+    const fr=(n,dg)=>n.toLocaleString('fr-CH',{minimumFractionDigits:dg,maximumFractionDigits:dg});
+    const s0=Math.sqrt(2000), s1=s0+500/L;
+    const S=[
+      {s:s0,P:2000,who:'Trader 1',te:0,tu:500,lane:null,t:"<b>Départ.</b> Une position v3 avec la même liquidité qu'au <a class='chref' href='#sec-2-2'>2.2</a> (L = 447,21), mais sur la plage [1 800 ; 2 200]. Au prix de 2 000, elle ne contient que 0,4654 ETH et 1 026,33 USDC (exemple du <a class='chref' href='#sec-3-1'>3.1</a>), contre 10 ETH et 20 000 USDC pour la pool v2. Un trader veut acheter de l'ETH avec 500 USDC."},
+      {s:s0,P:2000,who:'Trader 1',te:0,tu:0,dy:500,lane:'in',t:"<b>Étape 1.</b> Le trader envoie ses 500 USDC à la position. Sa réserve d'USDC passe de 1 026,33 à 1 526,33."},
+      {s:s1,P:s1*s1,who:'Trader 1',te:0,tu:0,lane:null,t:"<b>Étape 2.</b> Dans une plage, les USDC font monter √P en ligne droite (<a class='chref' href='#c4'>chapitre 4</a>) : √P' = √P + Δy / L = 44,72 + 500 / 447,21 ≈ 45,84, donc P' ≈ 2 101,25. La position ne doit plus garder que x(2 101,25) ≈ 0,2215 ETH. Le point glisse sur la courbe et le prix avance dans la plage."},
+      {s:s1,P:s1*s1,who:'Trader 1',te:0.2439,tu:0,lane:'out',t:"<b>Étape 3.</b> Elle rend la différence : 0,4654 − 0,2215 ≈ 0,2439 ETH, soit un prix moyen de 500 / 0,2439 = 2 050 $. Avec seulement 1 957 $ déposés, la position offre le même prix qu'une pool v2 de 40 000 $. Une pool v2 de 1 957 $ ferait grimper le prix jusqu'à environ 4 566 pour ce même achat."},
+      {s:sb,P:2200,who:'Trader 2',te:0.2215,tu:0,lane:'both',inl:'476,18 USDC →',outl:'← 0,2215 ETH',t:"<b>Étape 4.</b> Un deuxième trader achète tout l'ETH qui reste. Pour amener √P jusqu'à √2 200 ≈ 46,90, il doit apporter L × (46,90 − 45,84) ≈ 476,18 USDC et il reçoit les 0,2215 ETH restants. Le prix atteint la borne haute p_b : la position ne contient plus que des USDC (2 002,51)."},
+      {s:sb,P:2260,who:'Trader 2',te:0.2215,tu:0,lane:null,out:true,t:"<b>Étape 5.</b> Si le prix continue à monter, la position n'a plus d'ETH à vendre : elle est <b>hors de la plage</b>. Elle ne participe plus aux échanges et ne touche plus de frais. Ce sont les positions d'autres LP, placées plus haut, qui prennent le relais (<a class='chref' href='#c7'>chapitre 7</a>)."}
+    ];
+    let i=0, timer=0;
+    function show(n,anim){ i=Math.max(0,Math.min(S.length-1,n)); const st=S[i];
+      const pe=xr(st.s), pu=yr(st.s)+(st.dy||0);
+      $$('s3BE').style.height=(pe/1.1*100)+'%'; $$('s3BU').style.height=(pu/2200*100)+'%';
+      $$('s3PE').textContent=fr(pe,4); $$('s3PU').textContent=fr(pu,2);
+      $$('s3TE').textContent=st.te?fr(st.te,4):'0'; $$('s3TU').textContent=st.tu?fr(st.tu,0):'0'; $$('s3Who').textContent=st.who;
+      const px=X(pe), py=Y(yr(st.s)); $$('s3Pt').style.transform='translate('+px+'px,'+py+'px)'; $$('s3Proj').setAttribute('d','M0 0 V'+(150-py)+' M0 0 H'+(24-px));
+      $$('s3InL').textContent=st.inl||'500 USDC →'; $$('s3OutL').textContent=st.outl||'← 0,2439 ETH';
+      const mk=$$('s3Mark'); mk.style.left=((st.P-1700)/600*100)+'%'; mk.classList.toggle('out',!!st.out); $$('s3P').textContent=st.out?'> 2 200':fr(st.P,st.P%1?2:0);
+      ['s3In','s3Out'].forEach(id=>{ const el=$$(id); el.classList.remove('act'); el.style.removeProperty('--d'); });
+      if(anim&&st.lane){ const go=(id,delay)=>{ const el=$$(id); void el.offsetWidth; el.querySelector('i').style.animationDelay=delay+'s'; el.classList.add('act'); };
+        if(st.lane==='in') go('s3In',0); else if(st.lane==='out') go('s3Out',0); else { go('s3In',0); go('s3Out',.9); } }
+      $$('s3Text').innerHTML=st.t; $$('s3Count').textContent=i+' / '+(S.length-1);
+      $$('s3Prev').disabled=i===0; $$('s3Next').textContent=i===S.length-1?'↺ Recommencer':'Étape suivante →'; }
+    $$('s3Next').addEventListener('click',()=>{ stop(); show(i===S.length-1?0:i+1,true); });
+    $$('s3Prev').addEventListener('click',()=>{ stop(); show(i-1,false); });
+    function stop(){ clearInterval(timer); timer=0; $$('s3Play').textContent='▶ Lecture automatique'; $$('s3Play').classList.remove('on'); }
+    $$('s3Play').addEventListener('click',()=>{ if(timer){ stop(); return; } $$('s3Play').textContent='❚❚ Pause'; $$('s3Play').classList.add('on'); show(0,false); timer=setInterval(()=>{ if(i>=S.length-1){ stop(); return; } show(i+1,true); },3600); });
     show(0,false);
   })();
   new ResizeObserver(redraw).observe(document.body);
