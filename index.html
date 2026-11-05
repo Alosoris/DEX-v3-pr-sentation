@@ -23,7 +23,7 @@ window.MathJax = { tex:{ inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']]
   --eth:#4c82fb; --usd:#f5a524; --hold:#9b9b9b; --bad:#ff5f52; --good:#21c95e;
   --t-pink:#fff0fa; --t-blue:#eef4ff; --t-orange:#fff4ea; --pink-faint:#fff7fc; --pink-line:#ffd9f1; --blue-line:#d6e4ff; --blue-head:#dfeaff;
   --g1:#ffe0f4; --g2:#ffbde8; --g3:#ff96da;
-  --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.15);
+  --uni-1:#f50fb4; --uni-2:#fc76fe; --plum:#371a37; --plum-ink:#ffffff; --card:#f4f3f1; --card-line:rgba(245,15,180,.11);
   --lg-top:rgba(255,255,255,.60); --lg-bot:rgba(255,255,255,.28); --lg-hi:rgba(255,255,255,.72); --lg-rim:rgba(255,255,255,.92); --lg-edge:rgba(245,15,180,.18); --lg-tint:rgba(245,15,180,.10); --lg-nest:rgba(255,255,255,.48); --lg-glow:rgba(245,15,180,.07); --lg-shadow:rgba(140,20,105,.16);
   --blob1:rgba(245,15,180,.16); --blob2:rgba(150,110,255,.14); --blob3:rgba(255,170,120,.12); --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
   --f-display:"Bricolage Grotesque", "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -600,6 +600,92 @@ a.lexref.lex-flash{background:var(--accent-soft);border-radius:4px;transition:ba
 header nav.toc a{margin:0;padding:4px 10px}
 header nav.toc a:hover,header nav.toc a:focus-visible{background:#fff;color:var(--uni-1)}
 header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
+
+/* ===== En-tête : petit graphique animé x·y = k ===== */
+.hero-curve{position:absolute;right:44px;bottom:26px;width:330px;height:auto;z-index:-1;pointer-events:none;overflow:visible}
+.hc-axis{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.5}
+.hc-arrow{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.5}
+.hc-lab{fill:rgba(255,255,255,.75);font:italic 15px var(--f-serif)}
+.hc-curve{fill:none;stroke:url(#hcFade);stroke-width:3;stroke-linecap:round}
+.hc-rect{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.6);stroke-width:1;stroke-dasharray:4 4}
+.hc-tan{stroke:#fff;stroke-width:1.5;stroke-dasharray:5 4;opacity:.85}
+.hc-dot{fill:#fff;filter:drop-shadow(0 0 8px rgba(255,255,255,.9))}
+.hc-eq{fill:#fff;font:italic 26px var(--f-serif)}
+.hc-p{fill:#fff;font:600 11px var(--f-mono);letter-spacing:.04em}
+header::after{width:200px;height:200px;right:-40px;top:-50px}
+@media (max-width:1100px){.hero-curve{display:none}}
+/* ===== Illustrations « plan technique » au début des chapitres ===== */
+.blueprint{margin:6px 0 18px;border-radius:20px;border:1px solid var(--line);overflow:hidden;background-color:var(--card);background-image:linear-gradient(var(--card-line) 1px,transparent 1px),linear-gradient(90deg,var(--card-line) 1px,transparent 1px);background-size:22px 22px;position:relative}
+.blueprint svg{display:block;width:100%;height:auto;max-height:190px}
+.blueprint figcaption{padding:10px 14px 0;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.bp-l{fill:none;stroke:var(--ink);stroke-width:1.4;opacity:.75}
+.bp-a{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.bp-d{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-dasharray:3 4;opacity:.8}
+.bp-g{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:2 4;opacity:.35}
+.bp-f{fill:var(--accent);opacity:.14}
+.bp-fs{fill:var(--accent)}
+.bp-box{fill:var(--surface);stroke:var(--accent);stroke-width:1.4}
+.bp-t{fill:var(--ink);font:500 11px var(--f-mono);letter-spacing:.06em;opacity:.8}
+.bp-ta{fill:var(--accent);font:500 11px var(--f-mono);letter-spacing:.06em}
+.bp-ts{fill:var(--accent);font:italic 17px var(--f-serif)}
+@media (max-width:640px){.blueprint svg{max-height:150px}}
+/* ===== Graphiques en verre : légendes et contrôles ===== */
+.legend{gap:6px}
+.legend span{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:linear-gradient(180deg,var(--lg-top),var(--lg-bot));border:1px solid var(--lg-rim);box-shadow:inset 0 1px 0 var(--lg-rim),0 4px 10px -8px var(--lg-shadow);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.legend i{width:14px;margin-right:6px}
+.chart-card canvas{border-radius:14px}
+@media (prefers-reduced-motion:reduce){.hc-dot{filter:none}}
+
+/* ===== Animation d'un échange ===== */
+.swapanim{margin:10px 0 18px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.sa-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sa-tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.sa-title{font-family:var(--f-display);font-weight:600;font-size:1.1rem}
+.sa-stage{display:grid;grid-template-columns:150px minmax(110px,1fr) 170px 230px;gap:14px;align-items:center}
+@media (max-width:900px){.sa-stage{grid-template-columns:1fr 1fr}.sa-curve{grid-column:1/-1;max-width:300px;justify-self:center}.sa-flow{order:3;grid-column:1/-1}}
+.sa-who{display:block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sa-wallet{padding:12px;border-radius:16px;background:var(--lg-nest);border:1px solid var(--lg-rim);display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums}
+.sa-row b{font-weight:600;transition:color .3s}
+.sa-row b.flash{color:var(--accent)}
+.sa-flow{display:flex;flex-direction:column;gap:18px}
+.sa-lane{position:relative;height:28px;border-bottom:2px dashed var(--line);opacity:.35;transition:opacity .3s}
+.sa-lane.act{opacity:1;border-bottom-color:var(--accent)}
+.sa-lbl{font-family:var(--f-mono);font-size:.74rem;color:var(--ink)}
+.sa-out{text-align:right}
+.sa-lane i{position:absolute;bottom:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--accent);opacity:0;box-shadow:0 0 10px var(--accent)}
+.sa-lane.act i{animation:saFly 1s cubic-bezier(.5,0,.3,1) forwards}
+.sa-out.act i{animation-name:saFlyBack;background:var(--usd);box-shadow:0 0 10px var(--usd)}
+@keyframes saFly{0%{left:0;opacity:1}100%{left:calc(100% - 12px);opacity:1}}
+@keyframes saFlyBack{0%{left:calc(100% - 12px);opacity:1}100%{left:0;opacity:1}}
+.sa-pool{padding:12px;border-radius:16px;background:var(--lg-nest);border:1px solid var(--lg-rim)}
+.sa-bars{display:flex;gap:12px;align-items:flex-end;height:120px}
+.sa-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;font-size:.74rem;font-variant-numeric:tabular-nums;text-align:center}
+.sa-fill{width:100%;border-radius:8px 8px 4px 4px;transition:height .8s cubic-bezier(.34,1.3,.64,1)}
+.sa-eth{background:linear-gradient(180deg,#8fb1ff,var(--eth))}
+.sa-usd{background:linear-gradient(180deg,#ffd08a,var(--usd))}
+.sa-curve{width:100%;height:auto}
+.sa-ax{fill:none;stroke:var(--ink);stroke-width:1.2;opacity:.6}
+.sa-axt{fill:var(--muted);font:italic 13px var(--f-serif)}
+.sa-hyp{fill:none;stroke:var(--accent);stroke-width:2.4}
+.sa-proj{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:3 3;opacity:.6}
+.sa-dot{fill:var(--accent);stroke:#fff;stroke-width:2}
+#saPt{transition:transform .8s cubic-bezier(.34,1.3,.64,1)}
+.sa-k{fill:var(--accent);font:italic 14px var(--f-serif)}
+.sa-text{margin:0;min-height:3.2em;font-size:.98rem;line-height:1.55}
+.sa-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sa-count{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:44px;text-align:center}
+@media (prefers-reduced-motion:reduce){.sa-fill,#saPt{transition:none}.sa-lane.act i{animation:none;opacity:0}}
+/* ===== Tableaux du chapitre 10 et sources ===== */
+.prose table.reel,.prose table.cmp{min-width:640px}
+.prose table.cmp td:first-child,.prose table.reel td:first-child{font-weight:600;white-space:nowrap}
+.prose table.cmp td,.prose table.reel td{white-space:normal}
+ul.sources{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+ul.sources li{display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:linear-gradient(180deg,var(--lg-top),var(--lg-bot));border:1px solid var(--lg-rim);box-shadow:inset 0 1px 0 var(--lg-rim)}
+.src-link{font-family:var(--f-display);font-weight:600;color:var(--accent);text-decoration:none}
+.src-link:hover{text-decoration:underline}
+.src-link::after{content:" ↗";font-size:.85em}
+.src-a{font-size:.84rem;color:var(--muted)}
+.src-w{font-size:.92rem}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -610,11 +696,23 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <h1>Comprendre la <em>liquidité</em> concentrée.</h1>
     <p>Un cours interactif sur les CLMM (<i>Concentrated Liquidity Market Makers</i>). On part d'une seule équation, x·y = k, on la déforme pas à pas, et chaque formule peut être manipulée dans les laboratoires. Aucune connaissance en cryptomonnaies n'est nécessaire : le vocabulaire est expliqué au fur et à mesure et rassemblé dans le lexique final.</p>
     <nav class="toc" aria-label="Sommaire">
-      <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#alice"><b>9</b>Un exemple complet</a><a href="#arbre"><b>10</b>L'arbre des formules</a><a href="#lexique"><b>11</b>Lexique</a>
+      <a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#alice"><b>9</b>Un exemple complet</a><a href="#reel"><b>10</b>Dans la réalité</a><a href="#arbre"><b>11</b>L'arbre des formules</a><a href="#lexique"><b>12</b>Lexique</a><a href="#sources"><b>13</b>Sources</a>
     </nav>
+    <svg class="hero-curve" viewBox="0 0 320 220" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="hcFade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></linearGradient></defs>
+      <path class="hc-axis" d="M30 10 V190 H310"/>
+      <path class="hc-arrow" d="M26 16 L30 8 L34 16 M302 186 L310 190 L302 194"/>
+      <text class="hc-lab" x="14" y="16">y</text><text class="hc-lab" x="306" y="210">x</text>
+      <path id="hcPath" class="hc-curve" d=""/>
+      <rect id="hcRect" class="hc-rect" x="30" y="0" width="0" height="0"/>
+      <line id="hcTan" class="hc-tan" x1="0" y1="0" x2="0" y2="0"/>
+      <circle id="hcDot" class="hc-dot" r="6" cx="0" cy="0"/>
+      <text class="hc-eq" x="196" y="54">x · y = k</text>
+      <text id="hcP" class="hc-p" x="0" y="0">P</text>
+    </svg>
   </header>
   <div class="layout">
-    <nav class="side" aria-label="Sommaire"><div class="side-head"><span class="side-title">Sommaire</span><span class="prog-t"><b id="progN">0 %</b> parcouru</span><span class="prog-bar"><i id="progB"></i></span></div><a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#alice"><b>9</b>Un exemple complet</a><a href="#arbre"><b>10</b>L'arbre des formules</a><a href="#lexique"><b>11</b>Lexique</a><p class="side-note">Dans le laboratoire, les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier font bouger le prix (<span class="kbd">Maj</span> pour aller plus vite).</p></nav>
+    <nav class="side" aria-label="Sommaire"><div class="side-head"><span class="side-title">Sommaire</span><span class="prog-t"><b id="progN">0 %</b> parcouru</span><span class="prog-bar"><i id="progB"></i></span></div><a href="#c1"><b>1</b>Échanger sans intermédiaire</a><a href="#c2"><b>2</b>Le produit constant (Uniswap v2)</a><a href="#c3"><b>3</b>La liquidité concentrée (Uniswap v3)</a><a href="#c4"><b>4</b>Pourquoi tout s'écrit avec √P</a><a href="#labo"><b>5</b>Laboratoire : une position</a><a href="#swap"><b>6</b>Laboratoire : un échange</a><a href="#c7"><b>7</b>Ticks, liquidité active et frais</a><a href="#c8"><b>8</b>Les risques de la concentration</a><a href="#alice"><b>9</b>Un exemple complet</a><a href="#reel"><b>10</b>Dans la réalité</a><a href="#arbre"><b>11</b>L'arbre des formules</a><a href="#lexique"><b>12</b>Lexique</a><a href="#sources"><b>13</b>Sources</a><p class="side-note">Dans le laboratoire, les flèches <span class="kbd">←</span> <span class="kbd">→</span> du clavier font bouger le prix (<span class="kbd">Maj</span> pour aller plus vite).</p></nav>
     <div class="content">
 
   <!-- 1 -->
@@ -622,6 +720,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>1</div>
     <div class="prose">
       <h2>Échanger sans intermédiaire</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 1 · Une pool, un bureau de change automatique</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><circle class="bp-box" cx="110" cy="100" r="34"/><text class="bp-t" x="110" y="104" text-anchor="middle">TRADER</text><rect class="bp-box" x="250" y="56" width="150" height="88" rx="16"/><text class="bp-ta" x="325" y="88" text-anchor="middle">POOL</text><text class="bp-ts" x="325" y="118" text-anchor="middle">x · y = k</text><circle class="bp-box" cx="540" cy="100" r="34"/><text class="bp-t" x="540" y="104" text-anchor="middle">LP</text><path class="bp-a" d="M146 84 L246 84 M238.8 87.5 L246 84 L238.8 80.5"/><text class="bp-t" x="196" y="76" text-anchor="middle">ETH</text><path class="bp-a" d="M246 118 L146 118 M153.2 114.5 L146 118 L153.2 121.5"/><text class="bp-t" x="196" y="136" text-anchor="middle">USDC</text><path class="bp-a" d="M504 84 L404 84 M411.2 80.5 L404 84 L411.2 87.5"/><text class="bp-t" x="454" y="76" text-anchor="middle">DÉPÔT</text><path class="bp-d" d="M404 118 L504 118 M496.8 121.5 L504 118 L496.8 114.5"/><text class="bp-ta" x="454" y="136" text-anchor="middle">FRAIS</text></svg></figure>
       <p>À la bourse, un acheteur et un vendeur se rencontrent dans un <strong>carnet d'ordres</strong> : chacun annonce un prix, et un échange a lieu quand deux ordres se croisent. Sur une blockchain comme Ethereum, chaque opération coûte des frais et prend du temps. Maintenir un carnet d'ordres y est très coûteux.</p>
       <p>Une plateforme décentralisée comme Uniswap remplace le carnet par un <strong>programme</strong> (un « contrat intelligent ») qui garde deux réserves de jetons et applique une formule mathématique. On appelle ce mécanisme un <strong><a class="lexref" href="#lex-amm" title="Automated Market Maker : programme qui fixe les prix d&#x27;échange à partir de ses réserves et d&#x27;une formule.">AMM</a></strong>, pour <i>Automated Market Maker</i>. Trois rôles interviennent :</p>
       <div class="roles">
@@ -640,11 +739,41 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>2</div>
     <div class="prose">
       <h2>Le produit constant (Uniswap v2)</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 2 · Tous les points de la courbe ont la même aire x·y</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M70 20 V150 H600"/><path class="bp-a" d="M136.0 13.6L140.0 21.4L144.0 28.4L148.0 34.6L152.0 40.2L156.0 45.3L160.0 50.0L164.0 54.3L168.0 58.2L172.0 61.8L176.0 65.1L180.0 68.2L184.0 71.1L188.0 73.7L192.0 76.2L196.0 78.6L200.0 80.8L204.0 82.8L208.0 84.8L212.0 86.6L216.0 88.4L220.0 90.0L224.0 91.6L228.0 93.0L232.0 94.4L236.0 95.8L240.0 97.1L244.0 98.3L248.0 99.4L252.0 100.5L256.0 101.6L260.0 102.6L264.0 103.6L268.0 104.5L272.0 105.4L276.0 106.3L280.0 107.1L284.0 107.9L288.0 108.7L292.0 109.5L296.0 110.2L300.0 110.9L304.0 111.5L308.0 112.2L312.0 112.8L316.0 113.4L320.0 114.0L324.0 114.6L328.0 115.1L332.0 115.6L336.0 116.2L340.0 116.7L344.0 117.2L348.0 117.6L352.0 118.1L356.0 118.5L360.0 119.0L364.0 119.4L368.0 119.8L372.0 120.2L376.0 120.6L380.0 121.0L384.0 121.3L388.0 121.7L392.0 122.0L396.0 122.4L400.0 122.7L404.0 123.1L408.0 123.4L412.0 123.7L416.0 124.0L420.0 124.3L424.0 124.6L428.0 124.9L432.0 125.1L436.0 125.4L440.0 125.7L444.0 125.9L448.0 126.2L452.0 126.4L456.0 126.7L460.0 126.9L464.0 127.2L468.0 127.4L472.0 127.6L476.0 127.8L480.0 128.0L484.0 128.3L488.0 128.5L492.0 128.7L496.0 128.9L500.0 129.1L504.0 129.3L508.0 129.5L512.0 129.6L516.0 129.8L520.0 130.0L524.0 130.2L528.0 130.3L532.0 130.5L536.0 130.7L540.0 130.9L544.0 131.0L548.0 131.2L552.0 131.3L556.0 131.5L560.0 131.6L564.0 131.8L568.0 131.9L572.0 132.1L576.0 132.2L580.0 132.4L584.0 132.5L588.0 132.6"/><rect class="bp-f" x="70" y="50.0" width="90" height="100.0"/><rect class="bp-d" x="70" y="50.0" width="90" height="100.0"/><circle class="bp-fs" cx="160" cy="50.0" r="4.5"/><rect class="bp-f" x="70" y="120.0" width="300" height="30.0"/><rect class="bp-d" x="70" y="120.0" width="300" height="30.0"/><circle class="bp-fs" cx="370" cy="120.0" r="4.5"/><text class="bp-ts" x="430" y="70">même aire k</text><text class="bp-t" x="604" y="164">x</text><text class="bp-t" x="56" y="26">y</text></svg></figure>
       <p>Uniswap v2 impose qu'après chaque échange (frais mis à part), le produit des réserves reste le même :</p>
       <div class="math">\[ x \cdot y = k \]</div>
       <p>Si un trader apporte \(\Delta x\) ETH, il reçoit \(\Delta y\) <a class="lexref" href="#lex-usdc" title="Jeton conçu pour valoir 1 dollar américain.">USDC</a> tel que \((x+\Delta x)(y-\Delta y) = k\). On isole \(\Delta y\) :</p>
       <div class="math deriv">\[ \begin{aligned} (x+\Delta x)(y-\Delta y) &= k \\[3pt] xy - x\,\Delta y + \Delta x\,y - \Delta x\,\Delta y &= k && \small\text{on développe} \\[3pt] -x\,\Delta y + \Delta x\,y - \Delta x\,\Delta y &= 0 && \small\text{on soustrait } xy = k \text{ des deux côtés} \\[3pt] \Delta x\,y &= x\,\Delta y + \Delta x\,\Delta y && \small\text{on fait passer les termes en } \Delta y \text{ à droite} \\[3pt] \Delta x\,y &= \Delta y\,(x+\Delta x) && \small\text{on met } \Delta y \text{ en évidence} \\[3pt] \Delta y &= \frac{y\,\Delta x}{x+\Delta x} && \small\text{on divise par } x+\Delta x \end{aligned} \]</div>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>Avec \(x = 10\) et \(y = 20\,000\) :<div class="math">\[ k = 10 \times 20\,000 = 200\,000 \]</div>Un trader apporte 1 ETH. La réserve d'ETH passe à 11, donc la réserve d'USDC doit devenir \(200\,000 / 11 \approx 18\,181{,}82\) pour que le produit reste égal à \(k\). Le trader repart avec la différence :<div class="math">\[ \Delta y = 20\,000 - 18\,181{,}82 = 1\,818{,}18 \text{ USDC} \]</div>La formule donne le même résultat : \(\Delta y = \dfrac{20\,000 \times 1}{10 + 1} = 1\,818{,}18\).</div>
+      <div class="panel swapanim" id="swapAnim">
+        <div class="sa-head"><span class="sa-tag">Animation</span><span class="sa-title">Un échange, étape par étape</span></div>
+        <div class="sa-stage">
+          <div class="sa-wallet"><span class="sa-who">Trader</span><span class="sa-row"><b id="saTE">1</b> ETH</span><span class="sa-row"><b id="saTU">0</b> USDC</span></div>
+          <div class="sa-flow" aria-hidden="true">
+            <div class="sa-lane" id="saIn"><span class="sa-lbl">1 ETH →</span><i></i></div>
+            <div class="sa-lane sa-out" id="saOut"><span class="sa-lbl">← 1 818,18 USDC</span><i></i></div>
+          </div>
+          <div class="sa-pool"><span class="sa-who">Pool</span>
+            <div class="sa-bars">
+              <div class="sa-bar"><div class="sa-fill sa-eth" id="saBE"></div><span><b id="saPE">10</b> ETH</span></div>
+              <div class="sa-bar"><div class="sa-fill sa-usd" id="saBU"></div><span><b id="saPU">20 000</b> USDC</span></div>
+            </div>
+          </div>
+          <svg class="sa-curve" viewBox="0 0 230 170" aria-hidden="true">
+            <path class="sa-ax" d="M24 8 V150 H222"/><text class="sa-axt" x="8" y="14">y</text><text class="sa-axt" x="214" y="166">x</text>
+            <path class="sa-hyp" id="saHyp" d=""/>
+            <g id="saPt"><path class="sa-proj" id="saProj" d=""/><circle class="sa-dot" r="5.5" id="saDot" cx="0" cy="0"/></g>
+            <text class="sa-k" x="120" y="28">x · y = 200 000</text>
+          </svg>
+        </div>
+        <p class="sa-text" id="saText" aria-live="polite"></p>
+        <div class="sa-ctrl">
+          <button type="button" id="saPrev">← Étape précédente</button>
+          <span class="sa-count" id="saCount">0 / 4</span>
+          <button type="button" id="saNext" class="on">Étape suivante →</button>
+          <button type="button" id="saPlay">▶ Lecture automatique</button>
+        </div>
+      </div>
       <h3 id="sec-2-1">2.1 Le prix est une pente</h3>
       <p>Pour un échange infiniment petit, le prix est le rapport \(-\,dy/dx\). On exprime \(y\) en fonction de \(x\), puis on dérive :</p>
       <div class="math deriv">\[ \begin{aligned} xy = k \;\Longrightarrow\; y &= \frac{k}{x} = k\,x^{-1} && \small\text{on divise par } x \\[3pt] \frac{dy}{dx} &= -k\,x^{-2} = -\frac{k}{x^2} && \small\text{dérivée de } x^{-1} \text{ : } -x^{-2} \\[3pt] P = -\frac{dy}{dx} &= \frac{k}{x^2} && \small\text{on change le signe} \\[3pt] &= \frac{xy}{x^2} && \small\text{on remplace } k \text{ par } xy \\[3pt] &= \frac{y}{x} && \small\text{on simplifie par } x \end{aligned} \]</div>
@@ -681,6 +810,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>3</div>
     <div class="prose">
       <h2>La liquidité concentrée (Uniswap v3)</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 3 · Une position v3 n'utilise qu'un morceau de l'hyperbole</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M70 20 V150 H600"/><path class="bp-g" d="M136.0 13.6L140.0 21.4L144.0 28.4L148.0 34.6L152.0 40.2L156.0 45.3L160.0 50.0L164.0 54.3L168.0 58.2L172.0 61.8L176.0 65.1L180.0 68.2L184.0 71.1L188.0 73.7L192.0 76.2L196.0 78.6L200.0 80.8L204.0 82.8L208.0 84.8L212.0 86.6L216.0 88.4L220.0 90.0L224.0 91.6L228.0 93.0L232.0 94.4L236.0 95.8L240.0 97.1L244.0 98.3L248.0 99.4L252.0 100.5L256.0 101.6L260.0 102.6L264.0 103.6L268.0 104.5L272.0 105.4L276.0 106.3L280.0 107.1L284.0 107.9L288.0 108.7L292.0 109.5L296.0 110.2L300.0 110.9L304.0 111.5L308.0 112.2L312.0 112.8L316.0 113.4L320.0 114.0L324.0 114.6L328.0 115.1L332.0 115.6L336.0 116.2L340.0 116.7L344.0 117.2L348.0 117.6L352.0 118.1L356.0 118.5L360.0 119.0L364.0 119.4L368.0 119.8L372.0 120.2L376.0 120.6L380.0 121.0L384.0 121.3L388.0 121.7L392.0 122.0L396.0 122.4L400.0 122.7L404.0 123.1L408.0 123.4L412.0 123.7L416.0 124.0L420.0 124.3L424.0 124.6L428.0 124.9L432.0 125.1L436.0 125.4L440.0 125.7L444.0 125.9L448.0 126.2L452.0 126.4L456.0 126.7L460.0 126.9L464.0 127.2L468.0 127.4L472.0 127.6L476.0 127.8L480.0 128.0L484.0 128.3L488.0 128.5L492.0 128.7L496.0 128.9L500.0 129.1L504.0 129.3L508.0 129.5L512.0 129.6L516.0 129.8L520.0 130.0L524.0 130.2L528.0 130.3L532.0 130.5L536.0 130.7L540.0 130.9L544.0 131.0L548.0 131.2L552.0 131.3L556.0 131.5L560.0 131.6L564.0 131.8L568.0 131.9L572.0 132.1L576.0 132.2L580.0 132.4L584.0 132.5L588.0 132.6"/><path class="bp-a" d="M180.0 68.2L182.0 69.6L184.0 71.1L186.0 72.4L188.0 73.7L190.0 75.0L192.0 76.2L194.0 77.4L196.0 78.6L198.0 79.7L200.0 80.8L202.0 81.8L204.0 82.8L206.0 83.8L208.0 84.8L210.0 85.7L212.0 86.6L214.0 87.5L216.0 88.4L218.0 89.2L220.0 90.0L222.0 90.8L224.0 91.6L226.0 92.3L228.0 93.0L230.0 93.8L232.0 94.4L234.0 95.1L236.0 95.8L238.0 96.4L240.0 97.1L242.0 97.7L244.0 98.3L246.0 98.9L248.0 99.4L250.0 100.0L252.0 100.5L254.0 101.1L256.0 101.6L258.0 102.1L260.0 102.6L262.0 103.1L264.0 103.6L266.0 104.1L268.0 104.5L270.0 105.0L272.0 105.4L274.0 105.9L276.0 106.3L278.0 106.7L280.0 107.1L282.0 107.5L284.0 107.9L286.0 108.3L288.0 108.7L290.0 109.1L292.0 109.5L294.0 109.8L296.0 110.2L298.0 110.5L300.0 110.9L302.0 111.2L304.0 111.5L306.0 111.9L308.0 112.2L310.0 112.5L312.0 112.8L314.0 113.1L316.0 113.4L318.0 113.7L320.0 114.0L322.0 114.3L324.0 114.6L326.0 114.8L328.0 115.1L330.0 115.4"/><path class="bp-d" d="M180 20 V150"/><path class="bp-d" d="M70 115.4 H600"/><circle class="bp-fs" cx="180" cy="68.2" r="4.5"/><circle class="bp-fs" cx="330" cy="115.4" r="4.5"/><text class="bp-ta" x="188" y="62.2">p_b</text><text class="bp-ta" x="338" y="107.4">p_a</text><text class="bp-t" x="390" y="40">vrais axes de la position (pointillés)</text><text class="bp-ts" x="350" y="88">seul ce morceau est déposé</text></svg></figure>
       <p>Uniswap v3 laisse chaque <a class="lexref" href="#lex-lp" title="Liquidity provider, fournisseur de liquidité : celui qui dépose des jetons dans la pool.">LP</a> choisir un intervalle de prix \([p_a\,;\,p_b]\). L'idée est de ne déposer que ce qui sera consommé si le prix reste dans cet intervalle.</p>
       <p>Partons de la courbe v2 \(X \cdot Y = L^2\), avec \(X = L/\sqrt{P}\) et \(Y = L\sqrt{P}\) (formules du <a class="chref" href="#sec-2-2">2.2</a>). Les majuscules désignent maintenant des réserves <strong>virtuelles</strong>.</p>
       <ul>
@@ -724,6 +854,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>4</div>
     <div class="prose">
       <h2>Pourquoi tout s'écrit avec √P</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 4 · En √P, les échanges deviennent linéaires</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M60 60 H600"/><path class="bp-l" d="M60 120 H600"/><text class="bp-ta" x="40" y="64">P</text><text class="bp-ta" x="32" y="124">√P</text><path class="bp-l" d="M60 114 V126"/><path class="bp-l" d="M60.0 54 V66"/><path class="bp-d" d="M60.0 66 L60 114"/><path class="bp-l" d="M125 114 V126"/><path class="bp-l" d="M68.4 54 V66"/><path class="bp-d" d="M68.4 66 L125 114"/><path class="bp-l" d="M190 114 V126"/><path class="bp-l" d="M93.8 54 V66"/><path class="bp-d" d="M93.8 66 L190 114"/><path class="bp-l" d="M255 114 V126"/><path class="bp-l" d="M135.9 54 V66"/><path class="bp-d" d="M135.9 66 L255 114"/><path class="bp-l" d="M320 114 V126"/><path class="bp-l" d="M195.0 54 V66"/><path class="bp-d" d="M195.0 66 L320 114"/><path class="bp-l" d="M385 114 V126"/><path class="bp-l" d="M270.9 54 V66"/><path class="bp-d" d="M270.9 66 L385 114"/><path class="bp-l" d="M450 114 V126"/><path class="bp-l" d="M363.8 54 V66"/><path class="bp-d" d="M363.8 66 L450 114"/><path class="bp-l" d="M515 114 V126"/><path class="bp-l" d="M473.4 54 V66"/><path class="bp-d" d="M473.4 66 L515 114"/><path class="bp-l" d="M580 114 V126"/><path class="bp-l" d="M600.0 54 V66"/><path class="bp-d" d="M600.0 66 L580 114"/><text class="bp-t" x="330" y="150" text-anchor="middle">pas réguliers en √P : Δy = L · Δ√P</text><text class="bp-t" x="330" y="40" text-anchor="middle">pas irréguliers en P</text></svg></figure>
       <p>Dans une plage où \(L\) est constant, les formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> donnent des relations <strong>linéaires</strong> :</p>
       <div class="math deriv">\[ \begin{aligned} \Delta y = y(P') - y(P) &= L\left(\sqrt{P'} - \sqrt{p_a}\right) - L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } y(P) \text{ et } y(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\sqrt{P'} - \sqrt{P}\right) = L\,\Delta\sqrt{P} && \small\text{les } \sqrt{p_a} \text{ s'annulent} \\[3pt] \Delta x = x(P') - x(P) &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{p_b}}\right) - L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) && \small\text{on remplace } x(P) \text{ et } x(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) && \small\text{les } 1/\sqrt{p_b} \text{ s'annulent} \end{aligned} \]</div>
       <p>Pour exécuter un échange, le contrat n'a donc pas besoin de résoudre d'équation : une addition et une division suffisent. Si un trader vend \(\Delta x\) ETH, la réserve d'ETH augmente de \(\Delta x\). On en déduit le nouveau prix \(P'\) :</p>
@@ -891,6 +1022,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>7</div>
     <div class="prose">
       <h2>Ticks, liquidité active et frais</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 7 · La liquidité de toutes les positions, empilée tick par tick</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M60 150 H600"/><rect class="bp-f" x="70" y="140" width="34" height="10"/><rect class="bp-d" x="70" y="140" width="34" height="10"/><path class="bp-l" d="M70 150 V156"/><rect class="bp-f" x="108" y="140" width="34" height="10"/><rect class="bp-d" x="108" y="140" width="34" height="10"/><path class="bp-l" d="M108 150 V156"/><rect class="bp-f" x="146" y="122" width="34" height="28"/><rect class="bp-d" x="146" y="122" width="34" height="28"/><path class="bp-l" d="M146 150 V156"/><rect class="bp-f" x="184" y="122" width="34" height="28"/><rect class="bp-d" x="184" y="122" width="34" height="28"/><path class="bp-l" d="M184 150 V156"/><rect class="bp-f" x="222" y="104" width="34" height="46"/><rect class="bp-d" x="222" y="104" width="34" height="46"/><path class="bp-l" d="M222 150 V156"/><rect class="bp-f" x="260" y="80" width="34" height="70"/><rect class="bp-d" x="260" y="80" width="34" height="70"/><path class="bp-l" d="M260 150 V156"/><rect class="bp-f" x="298" y="58" width="34" height="92"/><rect class="bp-d" x="298" y="58" width="34" height="92"/><path class="bp-l" d="M298 150 V156"/><rect class="bp-f" x="336" y="58" width="34" height="92"/><rect class="bp-d" x="336" y="58" width="34" height="92"/><path class="bp-l" d="M336 150 V156"/><rect class="bp-f" x="374" y="80" width="34" height="70"/><rect class="bp-d" x="374" y="80" width="34" height="70"/><path class="bp-l" d="M374 150 V156"/><rect class="bp-f" x="412" y="104" width="34" height="46"/><rect class="bp-d" x="412" y="104" width="34" height="46"/><path class="bp-l" d="M412 150 V156"/><rect class="bp-f" x="450" y="122" width="34" height="28"/><rect class="bp-d" x="450" y="122" width="34" height="28"/><path class="bp-l" d="M450 150 V156"/><rect class="bp-f" x="488" y="140" width="34" height="10"/><rect class="bp-d" x="488" y="140" width="34" height="10"/><path class="bp-l" d="M488 150 V156"/><rect class="bp-f" x="526" y="140" width="34" height="10"/><rect class="bp-d" x="526" y="140" width="34" height="10"/><path class="bp-l" d="M526 150 V156"/><path class="bp-l" d="M564 150 V156"/><path class="bp-a" d="M334 30 V150"/><text class="bp-ta" x="342" y="40">prix actuel</text><text class="bp-t" x="70" y="40">liquidité active, tick après tick</text></svg></figure>
       <h3 id="sec-7-1">7.1 Les ticks et la liquidité active</h3>
       <p>Les bornes d'une position ne peuvent pas être quelconques. Le prix est découpé en <strong><a class="lexref" href="#lex-tick" title="Échelon de prix 1,0001^i. Les bornes des positions tombent sur des ticks.">ticks</a></strong> :</p>
       <div class="math">\[ p(i) = 1{,}0001^{\,i}, \qquad i \in \mathbb{Z} \]</div>
@@ -948,6 +1080,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>8</div>
     <div class="prose">
       <h2>Les risques de la concentration</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 8 · La position LP reste toujours sous HODL, sauf au prix de départ</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M60 20 V150 H600"/><path class="bp-f" d="M69.0 95.2 L78.0 94.0 L87.0 92.9 L96.0 91.7 L105.0 90.5 L114.0 89.3 L123.0 88.1 L132.0 86.9 L141.0 85.7 L150.0 84.5 L159.0 83.3 L168.0 82.1 L177.0 81.0 L186.0 79.8 L195.0 78.6 L204.0 77.4 L213.0 76.2 L222.0 75.0 L231.0 73.8 L240.0 72.6 L249.0 71.4 L258.0 70.2 L267.0 69.0 L276.0 67.9 L285.0 66.7 L294.0 65.5 L303.0 64.3 L312.0 63.1 L321.0 61.9 L330.0 60.7 L339.0 59.5 L348.0 58.3 L357.0 57.1 L366.0 56.0 L375.0 54.8 L384.0 53.6 L393.0 52.4 L402.0 51.2 L411.0 50.0 L420.0 48.8 L429.0 47.6 L438.0 46.4 L447.0 45.2 L456.0 44.0 L465.0 42.9 L474.0 41.7 L483.0 40.5 L492.0 39.3 L501.0 38.1 L510.0 36.9 L519.0 35.7 L528.0 34.5 L537.0 33.3 L546.0 32.1 L555.0 31.0 L564.0 29.8 L573.0 28.6 L582.0 27.4 L591.0 26.2 L591.0 38.8 L582.0 39.2 L573.0 39.6 L564.0 40.1 L555.0 40.6 L546.0 41.1 L537.0 41.6 L528.0 42.1 L519.0 42.7 L510.0 43.3 L501.0 43.9 L492.0 44.5 L483.0 45.2 L474.0 45.9 L465.0 46.6 L456.0 47.3 L447.0 48.1 L438.0 48.9 L429.0 49.7 L420.0 50.5 L411.0 51.4 L402.0 52.3 L393.0 53.3 L384.0 54.2 L375.0 55.2 L366.0 56.2 L357.0 57.3 L348.0 58.4 L339.0 59.5 L330.0 60.7 L321.0 61.9 L312.0 63.2 L303.0 64.5 L294.0 65.8 L285.0 67.2 L276.0 68.6 L267.0 70.1 L258.0 71.6 L249.0 73.1 L240.0 74.7 L231.0 76.4 L222.0 78.1 L213.0 79.9 L204.0 81.8 L195.0 83.7 L186.0 85.6 L177.0 87.7 L168.0 89.8 L159.0 91.9 L150.0 94.2 L141.0 96.5 L132.0 99.0 L123.0 101.5 L114.0 104.1 L105.0 106.8 L96.0 109.6 L87.0 112.6 L78.0 115.6 L69.0 118.8 Z"/><path class="bp-g" d="M69.0 95.2L78.0 94.0L87.0 92.9L96.0 91.7L105.0 90.5L114.0 89.3L123.0 88.1L132.0 86.9L141.0 85.7L150.0 84.5L159.0 83.3L168.0 82.1L177.0 81.0L186.0 79.8L195.0 78.6L204.0 77.4L213.0 76.2L222.0 75.0L231.0 73.8L240.0 72.6L249.0 71.4L258.0 70.2L267.0 69.0L276.0 67.9L285.0 66.7L294.0 65.5L303.0 64.3L312.0 63.1L321.0 61.9L330.0 60.7L339.0 59.5L348.0 58.3L357.0 57.1L366.0 56.0L375.0 54.8L384.0 53.6L393.0 52.4L402.0 51.2L411.0 50.0L420.0 48.8L429.0 47.6L438.0 46.4L447.0 45.2L456.0 44.0L465.0 42.9L474.0 41.7L483.0 40.5L492.0 39.3L501.0 38.1L510.0 36.9L519.0 35.7L528.0 34.5L537.0 33.3L546.0 32.1L555.0 31.0L564.0 29.8L573.0 28.6L582.0 27.4L591.0 26.2" style="stroke-dasharray:none;opacity:.6;stroke-width:1.6"/><path class="bp-a" d="M69.0 118.8L78.0 115.6L87.0 112.6L96.0 109.6L105.0 106.8L114.0 104.1L123.0 101.5L132.0 99.0L141.0 96.5L150.0 94.2L159.0 91.9L168.0 89.8L177.0 87.7L186.0 85.6L195.0 83.7L204.0 81.8L213.0 79.9L222.0 78.1L231.0 76.4L240.0 74.7L249.0 73.1L258.0 71.6L267.0 70.1L276.0 68.6L285.0 67.2L294.0 65.8L303.0 64.5L312.0 63.2L321.0 61.9L330.0 60.7L339.0 59.5L348.0 58.4L357.0 57.3L366.0 56.2L375.0 55.2L384.0 54.2L393.0 53.3L402.0 52.3L411.0 51.4L420.0 50.5L429.0 49.7L438.0 48.9L447.0 48.1L456.0 47.3L465.0 46.6L474.0 45.9L483.0 45.2L492.0 44.5L501.0 43.9L510.0 43.3L519.0 42.7L528.0 42.1L537.0 41.6L546.0 41.1L555.0 40.6L564.0 40.1L573.0 39.6L582.0 39.2L591.0 38.8"/><circle class="bp-fs" cx="330.0" cy="60.7" r="4.5"/><text class="bp-t" x="320.0" y="166">P₀</text><text class="bp-t" x="532.5" y="25.9" text-anchor="end">HODL</text><text class="bp-ta" x="532.5" y="59.9" text-anchor="end">LP</text><text class="bp-ts" x="442.5" y="60.7">écart = IL</text></svg></figure>
       <h3 id="sec-8-1">8.1 La perte impermanente (IL)</h3>
       <p>Comparons la position avec le fait de simplement garder ses jetons. Pour une position v2 déposée au prix \(P_0\), le prix devient \(P = r\,P_0\). Valeur de la position (formule \(V_{v2} = 2L\sqrt{P}\) du <a class="chref" href="#sec-3-3">3.3</a>) :</p>
       <div class="math deriv">\[ \begin{aligned} V_{\text{LP}} &= 2L\sqrt{P} = 2L\sqrt{r\,P_0} = 2L\sqrt{r}\,\sqrt{P_0} && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \end{aligned} \]</div>
@@ -974,6 +1107,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     <div class="chap-n"><span>Chapitre</span>9</div>
     <div class="prose">
       <h2>Un exemple complet : le mois d'Alice</h2>
+      <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 9 · Le mois d'Alice : sa plage et trois chemins possibles du prix</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><rect class="bp-f" x="60" y="60" width="540" height="56"/><path class="bp-d" d="M60 60 H600 M60 116 H600"/><path class="bp-l" d="M60 20 V150 H600"/><text class="bp-ta" x="64" y="54">2 200</text><text class="bp-ta" x="64" y="132">1 800</text><path class="bp-a" d="M60 88 C90 70 110 104 140 92 S190 74 220 96 S270 108 300 86 S350 78 370 90"/><path class="bp-a" d="M370 90 C420 100 470 76 530 88 S580 92 600 88"/><text class="bp-ta" x="604" y="92">A</text><path class="bp-a" d="M370 90 C400 60 430 40 470 38 S560 34 600 36" style="opacity:.75"/><text class="bp-ta" x="604" y="40">B</text><path class="bp-a" d="M370 90 C400 120 430 140 470 140 S560 142 600 144" style="opacity:.75"/><text class="bp-ta" x="604" y="148">C</text><path class="bp-g" d="M370 20 V150"/><text class="bp-t" x="374" y="30">jour 20</text><text class="bp-t" x="600" y="164" text-anchor="end">30 jours</text></svg></figure>
       <p>Ce chapitre rassemble tout le cours dans une seule histoire. Les prix et les frais sont <strong>inventés pour l'exemple</strong>, mais tous les calculs utilisent les formules des chapitres précédents.</p>
       <h3 id="sec-9-1">9.1 Le dépôt</h3>
       <p>L'ETH vaut 2 000 $. Alice a 10 000 $ et pense que le prix va rester calme pendant un mois. Elle choisit la plage <strong>[1 800 ; 2 200]</strong>, soit environ ± 10 %, dans la <a class="lexref" href="#lex-pool" title="Réserve commune de deux jetons, ici ETH et USDC.">pool</a> ETH / <a class="lexref" href="#lex-usdc" title="Jeton conçu pour valoir 1 dollar américain.">USDC</a> à 0,05 % de frais.</p>
@@ -1008,8 +1142,53 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     </div>
   </section>
 
-  <section class="chap" id="arbre">
+  <section class="chap" id="reel">
     <div class="chap-n"><span>Chapitre</span>10</div>
+    <div class="prose">
+      <h2>Dans la réalité</h2>
+      <p>Les chapitres précédents utilisent des chiffres ronds. Voici ce que donnent les vraies pools d'Uniswap, puis une comparaison avec un placement suisse classique.</p>
+      <h3 id="sec-10-1">10.1 La vraie pool ETH / USDC</h3>
+      <p>La pool la plus utilisée pour échanger de l'ETH contre des dollars est la pool <strong>ETH / USDC à 0,05 %</strong> d'Uniswap v3, sur Ethereum. À côté, la pool Uniswap v2 de la même paire (frais 0,3 %) existe toujours. Voici leurs chiffres relevés sur l'interface d'Uniswap le <strong>5 novembre 2026</strong> :</p>
+      <div class="tw"><table class="alice reel">
+        <thead><tr><th></th><th>Pool v3 ETH / USDC 0,05 %</th><th>Pool v2 ETH / USDC 0,3 %</th></tr></thead>
+        <tbody>
+          <tr><td>Réserves</td><td>≈ 10 000 ETH + 57,9 M USDC</td><td>≈ 4 300 ETH + 9,6 M USDC</td></tr>
+          <tr><td>Capital déposé (<a class="lexref" href="#lex-tvl">TVL</a>)</td><td>80,4 M $</td><td>19,3 M $</td></tr>
+          <tr><td>Volume échangé en 24 h</td><td>65,6 M $</td><td>0,97 M $</td></tr>
+          <tr><td>Frais versés aux LP en 24 h</td><td>24,6 k $</td><td>2,4 k $</td></tr>
+          <tr><td>Rendement annualisé affiché (APR)</td><td><strong>11,0 %</strong></td><td><strong>4,5 %</strong></td></tr>
+        </tbody></table></div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>On peut retrouver ces chiffres avec les formules du cours.
+        <ul>
+          <li><strong>Les frais.</strong> Depuis la réforme « UNIfication » d'Uniswap, un quart des frais des pools à 0,05 % va au protocole ; les LP touchent donc 0,0375 % de chaque échange : \(65{,}6 \text{ M\$} \times 0{,}000375 \approx 24{,}6 \text{ k\$}\) par jour.</li>
+          <li><strong>Le rendement.</strong> \(\dfrac{24{,}6 \text{ k\$} \times 365}{80{,}4 \text{ M\$}} \approx 11{,}2\,\%\) par an, comme affiché.</li>
+          <li><strong>Le prix.</strong> Une transaction du jour échange 0,06485 ETH contre 146,15 USDC : \(P \approx 146{,}15 / 0{,}06485 \approx 2\,254\) USDC par ETH.</li>
+        </ul></div>
+      <div class="box concret"><span class="lbl">Concrètement · ce que montrent ces chiffres</span>
+        La pool v3 contient seulement 4 fois plus de capital que la pool v2, mais elle traite <strong>près de 70 fois plus de volume</strong>. Chaque dollar déposé en v3 est échangé environ 0,8 fois par jour, contre 0,05 fois en v2. C'est l'efficacité du capital du <a class="chref" href="#sec-3-3">3.3</a> observée en vrai : les traders vont là où la liquidité est concentrée, car ils y obtiennent de meilleurs prix.<br><br>
+        Le rendement de 11 % est une <strong>moyenne pour toute la pool</strong>. Un LP avec une plage étroite, comme Alice au <a class="chref" href="#alice">chapitre 9</a>, gagne plus tant que le prix reste dans sa plage, et rien en dehors. Et ce chiffre ne compte pas la perte impermanente, qui peut l'effacer (voir l'étude citée au <a class="chref" href="#sources">chapitre 13</a>).</div>
+      <h3 id="sec-10-2">10.2 v2, v3 ou obligation de la Confédération ?</h3>
+      <p>Comparons trois façons de placer <strong>10 000</strong> pendant un an. Pour un placement sans risque en Suisse, on prend une <strong>obligation de la Confédération à 10 ans</strong> : la Banque nationale suisse (BNS) fixe le taux directeur, actuellement à <strong>0 %</strong>, mais elle ne vend pas d'obligations au public ; ce sont celles de la Confédération qui servent de référence. Leur rendement était d'environ <strong>0,45 %</strong> par an le 5 novembre 2026.</p>
+      <p>On ignore ici le taux de change entre franc et dollar. Les frais v2 et v3 utilisent les rendements réels du 10.1 ; la position v3 est celle d'Alice, sur la plage [1 800 ; 2 200].</p>
+      <div class="tw"><table class="alice cmp">
+        <thead><tr><th></th><th>Obligation de la Confédération</th><th>Pool v2 ETH / USDC</th><th>Position v3 [1 800 ; 2 200]</th></tr></thead>
+        <tbody>
+          <tr><td>Rendement de base</td><td>≈ 0,45 % / an, connu à l'avance</td><td>≈ 4,5 % / an de frais (variable)</td><td>≥ 11 % / an de frais, <em>seulement dans la plage</em></td></tr>
+          <tr><td>D'où vient le gain</td><td>Intérêts payés par l'État</td><td>Frais payés par les traders</td><td>Frais payés par les traders</td></tr>
+          <tr><td>Si l'ETH reste à 2 000</td><td>10 045</td><td>10 000 + 446 de frais = <strong>10 446</strong></td><td>10 000 + ≥ 1 100 de frais = <strong>≥ 11 100</strong></td></tr>
+          <tr><td>Si l'ETH monte de 20 % (2 400)</td><td>10 045</td><td>10 954 + frais</td><td>10 232 (100 % USDC) + frais reçus avant la sortie de plage</td></tr>
+          <tr><td>Si l'ETH baisse de 20 % (1 600)</td><td>10 045</td><td>8 944 + frais</td><td>8 227 (100 % ETH) + frais reçus avant la sortie de plage</td></tr>
+          <tr><td>Risques principaux</td><td>Très faibles (État suisse) ; le prix varie si on revend avant l'échéance</td><td>Prix de l'ETH, perte impermanente, piratage du contrat</td><td>Les mêmes, plus une IL amplifiée et la sortie de plage</td></tr>
+          <tr><td>Gestion nécessaire</td><td>Aucune</td><td>Aucune</td><td>Surveiller le prix, rééquilibrer (coût en gas)</td></tr>
+        </tbody></table></div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Les valeurs v2 viennent de la formule du <a class="chref" href="#sec-8-1">8.1</a> : une position v2 vaut \(V_0\sqrt{r}\) quand le prix est multiplié par \(r\). Pour \(r = 0{,}8\) : \(10\,000\sqrt{0{,}8} \approx 8\,944\) ; pour \(r = 1{,}2\) : \(10\,000\sqrt{1{,}2} \approx 10\,954\). Les valeurs v3 viennent des formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> avec \(L \approx 2\,285\) : sous 1 800, Alice détient 5,142 ETH, soit \(5{,}142 \times 1\,600 \approx 8\,227\) ; au-dessus de 2 200, elle détient 10 232 USDC.</div>
+      <div class="box concret"><span class="lbl">Concrètement · que retenir ?</span>
+        L'obligation rapporte peu mais presque à coup sûr. Les pools rapportent beaucoup plus, mais ce supplément est la <strong>rémunération d'un risque</strong> : si le prix de l'ETH bouge fortement, la perte peut dépasser de loin les frais. La position v3 pousse ce choix encore plus loin : plus de frais quand tout va bien, plus de pertes et de travail quand le prix s'échappe. Il n'existe pas de rendement élevé sans risque.</div>
+    </div>
+  </section>
+
+  <section class="chap" id="arbre">
+    <div class="chap-n"><span>Chapitre</span>11</div>
     <div class="prose wide">
       <h2>L'arbre des formules</h2>
       <p>Toutes les formules du cours descendent de la même règle, \(x \cdot y = k\). Chaque branche est une étape de calcul : la petite phrase sous une formule dit comment on l'obtient à partir de sa formule « parente ». Le lien en haut à droite de chaque carte renvoie à la partie du cours où elle est démontrée.</p>
@@ -1018,7 +1197,7 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
   </section>
 
   <section class="chap" id="lexique">
-    <div class="chap-n"><span>Chapitre</span>11</div>
+    <div class="chap-n"><span>Chapitre</span>12</div>
     <div class="prose">
       <h2>Lexique</h2>
       <dl class="gloss">
@@ -1035,10 +1214,29 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
         <dt id="lex-hodl">HODL</dt><dd>Stratégie de référence : garder ses jetons sans rien faire.</dd>
         <dt id="lex-il">Perte impermanente (IL)</dt><dd>De l'anglais <i>impermanent loss</i>. Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.</dd>
         <dt id="lex-gas">Gas</dt><dd>Frais payés au réseau Ethereum pour chaque opération (dépôt, retrait, échange).</dd>
-        <dt id="lex-arbitragiste">Arbitragiste</dt><dd>Trader qui profite d'un écart de prix entre deux plateformes ; c'est lui qui aligne le prix de la pool sur celui du marché.</dd><dt id="lex-teneur">Teneur de marché</dt><dd>Celui qui propose en permanence d'acheter et de vendre (<i>market maker</i>) ; un LP joue ce rôle de façon automatique.</dd><dt id="lex-plage">Plage de prix</dt><dd>Intervalle \([p_a\,;\,p_b]\) choisi par un LP v3 ; sa liquidité ne travaille, et ne touche des frais, que dans cet intervalle.</dd><dt id="lex-apr">Rendement annualisé (APR)</dt><dd>Gain exprimé en pourcentage du capital, ramené à une année.</dd><dt id="lex-reequilibrage">Rééquilibrage</dt><dd>Retirer une position sortie de sa plage pour en ouvrir une nouvelle autour du prix actuel.</dd><dt id="lex-usdc">USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
+        <dt id="lex-arbitragiste">Arbitragiste</dt><dd>Trader qui profite d'un écart de prix entre deux plateformes ; c'est lui qui aligne le prix de la pool sur celui du marché.</dd><dt id="lex-teneur">Teneur de marché</dt><dd>Celui qui propose en permanence d'acheter et de vendre (<i>market maker</i>) ; un LP joue ce rôle de façon automatique.</dd><dt id="lex-plage">Plage de prix</dt><dd>Intervalle \([p_a\,;\,p_b]\) choisi par un LP v3 ; sa liquidité ne travaille, et ne touche des frais, que dans cet intervalle.</dd><dt id="lex-apr">Rendement annualisé (APR)</dt><dd>Gain exprimé en pourcentage du capital, ramené à une année.</dd><dt id="lex-reequilibrage">Rééquilibrage</dt><dd>Retirer une position sortie de sa plage pour en ouvrir une nouvelle autour du prix actuel.</dd><dt id="lex-obligation">Obligation</dt><dd>Prêt fait à un État ou à une entreprise, qui verse des intérêts fixés à l'avance et rembourse le capital à l'échéance.</dd><dt id="lex-tvl">TVL</dt><dd><i>Total value locked</i> : valeur totale des jetons déposés dans une pool ou un protocole.</dd><dt id="lex-usdc">USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
       </dl>
     </div>
   </section>
+
+  <section class="chap" id="sources">
+    <div class="chap-n"><span>Chapitre</span>13</div>
+    <div class="prose">
+      <h2>Sources et pour aller plus loin</h2>
+      <p>Les documents ci-dessous ont servi à construire ce site. Ils permettent aussi d'aller plus loin, du plus accessible au plus technique.</p>
+      <h3 id="sec-13-1">13.1 Les textes fondateurs</h3>
+      <ul class="sources"><li><a class="src-link" href="https://uniswap.org/whitepaper-v3.pdf" target="_blank" rel="noopener">Uniswap v3 Core (livre blanc)</a><span class="src-a">H. Adams, N. Zinsmeister, M. Salem, R. Keefer, D. Robinson, 2021</span><span class="src-w">Le document officiel qui introduit la liquidité concentrée, les ticks et les réserves virtuelles. La source de presque toutes les formules des chapitres 3, 4 et 7.</span></li><li><a class="src-link" href="https://uniswap.org/whitepaper.pdf" target="_blank" rel="noopener">Uniswap v2 Core (livre blanc)</a><span class="src-a">H. Adams, N. Zinsmeister, D. Robinson, 2020</span><span class="src-w">La version précédente, fondée sur le produit constant x · y = k du chapitre 2.</span></li></ul>
+      <h3 id="sec-13-2">13.2 Comprendre les mathématiques</h3>
+      <ul class="sources"><li><a class="src-link" href="https://blog.uniswap.org/uniswap-v3-math-primer-2" target="_blank" rel="noopener">A Primer on Uniswap v3 Math (2e partie)</a><span class="src-a">Blog d'Uniswap Labs</span><span class="src-w">Une introduction pas à pas aux calculs de prix, de ticks et de liquidité, écrite par l'équipe d'Uniswap.</span></li><li><a class="src-link" href="https://rareskills.io/uniswap-v3-book" target="_blank" rel="noopener">The Uniswap V3 Book</a><span class="src-a">RareSkills</span><span class="src-w">Un livre en ligne gratuit, plus technique, qui détaille chaque formule et le code des contrats.</span></li><li><a class="src-link" href="https://developers.uniswap.org/docs" target="_blank" rel="noopener">Documentation développeurs d'Uniswap</a><span class="src-a">Uniswap Labs</span><span class="src-w">La documentation officielle, avec la page sur les frais et les frais de protocole utilisée au chapitre 10.</span></li></ul>
+      <h3 id="sec-13-3">13.3 Études sur la rentabilité des LP</h3>
+      <ul class="sources"><li><a class="src-link" href="https://arxiv.org/abs/2111.09192" target="_blank" rel="noopener">Impermanent Loss in Uniswap v3</a><span class="src-a">S. Loesch, N. Hindman, M. B. Richardson, N. Welch, 2021</span><span class="src-w">Sur 17 grandes pools, les LP ont touché environ 199 M$ de frais mais subi environ 260 M$ de perte impermanente : globalement, garder ses jetons aurait rapporté davantage.</span></li></ul>
+      <h3 id="sec-13-4">13.4 Données utilisées</h3>
+      <ul class="sources"><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640" target="_blank" rel="noopener">Pool ETH / USDC 0,05 % (Uniswap v3)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Réserves, TVL, volume, frais et rendement du chapitre 10.</span></li><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" target="_blank" rel="noopener">Pool ETH / USDC 0,3 % (Uniswap v2)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Les chiffres de la colonne v2 du chapitre 10.</span></li><li><a class="src-link" href="https://blog.uniswap.org/unification" target="_blank" rel="noopener">UNIfication</a><span class="src-a">Blog d'Uniswap Labs, 10 novembre 2025</span><span class="src-w">La réforme qui fait passer un quart des frais des pools à 0,05 % au protocole.</span></li><li><a class="src-link" href="https://countryeconomy.com/bonds/switzerland" target="_blank" rel="noopener">Taux d'intérêt de la Confédération à 10 ans</a><span class="src-a">countryeconomy.com</span><span class="src-w">Le rendement de 0,45 % utilisé dans la comparaison du 10.2.</span></li><li><a class="src-link" href="https://www.snb.ch/fr/" target="_blank" rel="noopener">Décision de politique monétaire de septembre 2026</a><span class="src-a">Banque nationale suisse</span><span class="src-w">Le taux directeur de la BNS, maintenu à 0 %.</span></li></ul>
+      <h3 id="sec-13-5">13.5 Design</h3>
+      <ul class="sources"><li><a class="src-link" href="https://aave.com/design/building-glass-for-the-web" target="_blank" rel="noopener">Building Glass for the Web</a><span class="src-a">Aave Labs</span><span class="src-w">La technique de « verre liquide » qui a inspiré les curseurs et l'interrupteur de ce site.</span></li></ul>
+    </div>
+  </section>
+
   <footer class="foot">Outil pédagogique réalisé dans le cadre d'un travail de maturité. Les montants sont illustratifs et les frais de réseau (gas) ne sont pas modélisés. Ce document ne constitue pas un conseil financier. Projet indépendant, sans lien avec Uniswap Labs ; seule l'apparence s'inspire de sa documentation.</footer>
     </div>
   </div>
@@ -1320,7 +1518,12 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
   function tip(ctx,x,y,w,h,rows){
     ctx.font='11px '+col('--f-mono'); const lw=Math.max(...rows.map(r=>ctx.measureText(r[0]).width))+16, bw=lw+12, bh=rows.length*17+10;
     let bx=x+12; if(bx+bw>w-6) bx=x-12-bw; let by=Math.max(6,Math.min(y-bh/2,h-bh-6));
-    ctx.fillStyle=col('--surface'); ctx.strokeStyle=col('--line'); ctx.lineWidth=1; ctx.beginPath(); ctx.rect(bx,by,bw,bh); ctx.fill(); ctx.stroke();
+    const dk=matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light'||document.documentElement.dataset.theme==='dark';
+    ctx.save(); ctx.shadowColor='rgba(140,20,105,.25)'; ctx.shadowBlur=18; ctx.shadowOffsetY=6;
+    ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,10); ctx.fillStyle=dk?'rgba(40,34,44,.82)':'rgba(255,255,255,.80)'; ctx.fill(); ctx.restore();
+    const gr=ctx.createLinearGradient(0,by,0,by+bh); gr.addColorStop(0,dk?'rgba(255,255,255,.10)':'rgba(255,255,255,.75)'); gr.addColorStop(.5,'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,10); ctx.fillStyle=gr; ctx.fill(); ctx.strokeStyle=dk?'rgba(255,255,255,.18)':'rgba(255,255,255,.95)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(bx+.5,by+.5,bw-1,bh-1,10); ctx.strokeStyle=dk?'rgba(252,114,255,.22)':'rgba(245,15,180,.18)'; ctx.stroke();
     rows.forEach((r,i)=>{ ctx.fillStyle=r[1]; ctx.fillRect(bx+8,by+10+i*17,8,8); ctx.fillStyle=col('--ink'); ctx.textAlign='left'; ctx.fillText(r[0],bx+22,by+18+i*17); });
   }
   function drawValue(m){
@@ -1508,6 +1711,51 @@ header nav.toc a:hover b,header nav.toc a:focus-visible b{color:var(--uni-1)}
     let from=null;
     document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('a.lexref'); if(!a) return; from=a; back.hidden=false; });
     back.addEventListener('click',()=>{ if(from){ from.scrollIntoView({behavior:'smooth',block:'center'}); from.classList.add('lex-flash'); const f=from; setTimeout(()=>f.classList.remove('lex-flash'),1400); } back.hidden=true; from=null; });
+  })();
+
+  // en-tête : un point glisse sur l'hyperbole x·y = k, avec le rectangle d'aire k et la tangente
+  (function(){
+    const path=document.getElementById('hcPath'); if(!path) return;
+    const dot=document.getElementById('hcDot'), rect=document.getElementById('hcRect'), tan=document.getElementById('hcTan'), lab=document.getElementById('hcP');
+    const X0=30, Y0=190, K=5200, sx=v=>X0+v, sy=v=>Y0-v;
+    let d=''; for(let i=0;i<=80;i++){ const x=28+i*(270/80), y=K/x; if(y>178) continue; d+=(d?'L':'M')+sx(x).toFixed(1)+' '+sy(y).toFixed(1); } path.setAttribute('d',d);
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function frame(t){ const u=reduce?0.35:(0.5+0.5*Math.sin(t/2600)); const x=40+u*170, y=K/x;
+      dot.setAttribute('cx',sx(x)); dot.setAttribute('cy',sy(y));
+      rect.setAttribute('x',X0); rect.setAttribute('y',sy(y)); rect.setAttribute('width',x); rect.setAttribute('height',y);
+      const m=-K/(x*x), L=48/Math.sqrt(1+m*m); tan.setAttribute('x1',sx(x-L)); tan.setAttribute('y1',sy(y-m*L)); tan.setAttribute('x2',sx(x+L)); tan.setAttribute('y2',sy(y+m*L));
+      lab.setAttribute('x',sx(x)+10); lab.setAttribute('y',sy(y)-10); lab.textContent='P = '+(K/(x*x)).toFixed(2).replace('.',',');
+      if(!reduce) requestAnimationFrame(frame); }
+    requestAnimationFrame(frame);
+  })();
+
+  // animation : un échange pas à pas
+  (function(){
+    const box=document.getElementById('swapAnim'); if(!box) return;
+    const $$=id=>document.getElementById(id);
+    const K=200000, X=v=>24+(v-6)*(196/11), Y=v=>150-(v-12000)*(140/22000);
+    let d=''; for(let x=6.4;x<=17;x+=.1){ const y=K/x; if(y>34000) continue; d+=(d?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1); } $$('saHyp').setAttribute('d',d);
+    const fr=n=>n.toLocaleString('fr-CH',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+    const S=[
+      {pe:10,pu:20000,te:1,tu:0,x:10,lane:null,t:"<b>Départ.</b> La pool contient 10 ETH et 20 000 USDC. Le produit vaut k = 10 × 20 000 = 200 000, et le prix est de 20 000 / 10 = 2 000 USDC par ETH. Un trader veut vendre 1 ETH."},
+      {pe:11,pu:20000,te:0,tu:0,x:10,lane:'in',t:"<b>Étape 1.</b> Le trader envoie son 1 ETH à la pool. La réserve d'ETH passe de 10 à 11."},
+      {pe:11,pu:20000,te:0,tu:0,x:11,lane:null,t:"<b>Étape 2.</b> La pool calcule combien d'USDC elle doit garder pour que le produit reste égal à k : y = 200 000 / 11 ≈ 18 181,82 USDC. Le point glisse le long de la courbe."},
+      {pe:11,pu:18181.82,te:0,tu:1818.18,x:11,lane:'out',t:"<b>Étape 3.</b> Elle rend la différence au trader : 20 000 − 18 181,82 = 1 818,18 USDC. Il a vendu son ETH 1 818,18 $, moins que les 2 000 affichés au départ : c'est le glissement."},
+      {pe:11,pu:18181.82,te:0,tu:1818.18,x:11,lane:null,t:"<b>Étape 4.</b> Nouveau prix dans la pool : 18 181,82 / 11 ≈ 1 652,89 USDC par ETH. L'ETH y est devenu moins cher qu'ailleurs : des arbitragistes vont en racheter jusqu'à revenir au prix du marché. En réalité, le trader paie aussi des frais (0,05 % ou 0,3 %), versés aux LP."}
+    ];
+    let i=0, timer=0;
+    function show(n,anim){ i=Math.max(0,Math.min(S.length-1,n)); const st=S[i];
+      $$('saBE').style.height=(st.pe/12*100)+'%'; $$('saBU').style.height=(st.pu/24000*100)+'%';
+      $$('saPE').textContent=fr(st.pe); $$('saPU').textContent=fr(st.pu); $$('saTE').textContent=fr(st.te); $$('saTU').textContent=fr(st.tu);
+      const px=X(st.x), py=Y(K/st.x); $$('saPt').style.transform='translate('+px+'px,'+py+'px)'; $$('saProj').setAttribute('d','M0 0 V'+(150-py)+' M0 0 H'+(24-px));
+      ['saIn','saOut'].forEach(id=>$$(id).classList.remove('act')); if(anim&&st.lane){ const el=$$(st.lane==='in'?'saIn':'saOut'); void el.offsetWidth; el.classList.add('act'); }
+      $$('saText').innerHTML=st.t; $$('saCount').textContent=i+' / '+(S.length-1);
+      $$('saPrev').disabled=i===0; $$('saNext').textContent=i===S.length-1?'↺ Recommencer':'Étape suivante →'; }
+    $$('saNext').addEventListener('click',()=>{ stop(); show(i===S.length-1?0:i+1,true); });
+    $$('saPrev').addEventListener('click',()=>{ stop(); show(i-1,false); });
+    function stop(){ clearInterval(timer); timer=0; $$('saPlay').textContent='▶ Lecture automatique'; $$('saPlay').classList.remove('on'); }
+    $$('saPlay').addEventListener('click',()=>{ if(timer){ stop(); return; } $$('saPlay').textContent='❚❚ Pause'; $$('saPlay').classList.add('on'); show(0,false); timer=setInterval(()=>{ if(i>=S.length-1){ stop(); return; } show(i+1,true); },3200); });
+    show(0,false);
   })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
