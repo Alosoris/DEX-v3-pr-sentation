@@ -700,6 +700,9 @@ ul.sources li{display:flex;flex-direction:column;gap:2px;padding:12px 16px;borde
 @media (max-width:640px){.cmp-ends{grid-template-columns:minmax(0,1fr)}}
 .cmp-ends .stat .v{font-size:1.15rem}
 ul.cmp-notes{margin:6px 0 14px}
+
+.cmp-ends.cmp-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.cmp-ends.cmp-two{grid-template-columns:minmax(0,1fr)}}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -1160,7 +1163,7 @@ ul.cmp-notes{margin:6px 0 14px}
     <div class="chap-n"><span>Chapitre</span>10</div>
     <div class="prose">
       <h2>Dans la réalité</h2>
-      <p>Les chapitres précédents utilisent des chiffres ronds. Voici ce que donnent les vraies pools d'Uniswap, puis une comparaison avec un placement suisse classique.</p>
+      <p>Les chapitres précédents utilisent des chiffres ronds. Voici ce que donnent les vraies pools d'Uniswap, puis une comparaison entre une position v2 et une position v3.</p>
       <h3 id="sec-10-1">10.1 La vraie pool ETH / USDC</h3>
       <p>La pool la plus utilisée pour échanger de l'ETH contre des dollars est la pool <strong>ETH / USDC à 0,05 %</strong> d'Uniswap v3, sur Ethereum. À côté, la pool Uniswap v2 de la même paire (frais 0,3 %) existe toujours. Voici leurs chiffres relevés sur l'interface d'Uniswap le <strong>5 novembre 2026</strong> :</p>
       <div class="tw"><table class="alice reel">
@@ -1181,42 +1184,38 @@ ul.cmp-notes{margin:6px 0 14px}
       <div class="box concret"><span class="lbl">Concrètement · ce que montrent ces chiffres</span>
         La pool v3 contient seulement 4 fois plus de capital que la pool v2, mais elle traite <strong>près de 70 fois plus de volume</strong>. Chaque dollar déposé en v3 est échangé environ 0,8 fois par jour, contre 0,05 fois en v2. C'est l'efficacité du capital du <a class="chref" href="#sec-3-3">3.3</a> observée en vrai : les traders vont là où la liquidité est concentrée, car ils y obtiennent de meilleurs prix.<br><br>
         Le rendement de 11 % est une <strong>moyenne pour toute la pool</strong>. Un LP avec une plage étroite, comme Alice au <a class="chref" href="#alice">chapitre 9</a>, gagne plus tant que le prix reste dans sa plage, et rien en dehors. Et ce chiffre ne compte pas la perte impermanente, qui peut l'effacer (voir l'étude citée au <a class="chref" href="#sources">chapitre 13</a>).</div>
-      <h3 id="sec-10-2">10.2 v2, v3 ou obligation de la Confédération ?</h3>
-      <p>Comparons trois façons de placer <strong>10 000</strong> pendant un an. Pour un placement sans risque en Suisse, on prend une <strong>obligation de la Confédération à 10 ans</strong> : la Banque nationale suisse (BNS) fixe le taux directeur, actuellement à <strong>0 %</strong>, mais elle ne vend pas d'obligations au public ; ce sont celles de la Confédération qui servent de référence. Leur rendement était d'environ <strong>0,45 %</strong> par an le 5 novembre 2026.</p>
-      <p>On ignore ici le taux de change entre franc et dollar. Les frais v2 et v3 utilisent les rendements réels du 10.1, supposés constants ; la position v3 est celle d'Alice, sur la plage [1 800 ; 2 200]. Le graphique suit les trois placements pendant 5 ans.</p>
+      <h3 id="sec-10-2">10.2 v2 ou v3 ?</h3>
+      <p>Comparons deux façons de placer <strong>1 000 $</strong> dans la pool ETH / USDC pendant 5 ans : une position v2 et la position v3 d'Alice, sur la plage [1 800 ; 2 200]. Avec 1 000 $, la valeur des positions et le prix de l'ETH sont du même ordre de grandeur et tiennent sur la même échelle en dollars.</p>
+      <p>Les frais utilisent les rendements réels du 10.1, supposés constants : 4,5 % par an en v2, 11 % par an en v3 tant que le prix reste dans la plage. Dans les scénarios « hausse » et « baisse », l'ETH sort de la plage en quelques mois puis <strong>stagne</strong>.</p>
       <div class="panel chart-card cmp-card">
         <div class="chart-top">
-          <div><h4>Valeur de 10 000 au fil des années</h4><p class="sub">Intérêts et frais réinvestis chaque jour (intérêts composés). Choisissez comment évolue le prix de l'ETH.</p></div>
+          <div><h4>Valeur de 1 000 $ au fil des années</h4><p class="sub">Frais réinvestis chaque jour (intérêts composés). Choisissez comment évolue le prix de l'ETH.</p></div>
           <div class="presets" role="group" aria-label="Évolution du prix de l'ETH" id="cmpSc">
-            <button type="button" data-g="1" class="on">ETH stable</button><button type="button" data-g="1.2">ETH +20 % / an</button><button type="button" data-g="0.8">ETH −20 % / an</button>
+            <button type="button" data-g="1" class="on">ETH stable à 2 000</button><button type="button" data-g="1.2">ETH monte à 2 400 puis stagne</button><button type="button" data-g="0.8">ETH baisse à 1 600 puis stagne</button>
           </div>
         </div>
         <div class="legend">
-          <span><i style="background:var(--good)"></i>Obligation de la Confédération (0,45 %)</span>
           <span><i style="background:var(--usd)"></i>Pool v2 (frais 4,5 %)</span>
           <span><i style="background:var(--accent)"></i>Position v3 [1 800 ; 2 200] (frais 11 % dans la plage)</span>
-          <span><i style="background:var(--hold)"></i>Prix de l'ETH (tendance)</span>
+          <span><i style="background:var(--hold)"></i>Prix de l'ETH (même échelle, en $)</span>
         </div>
-        <canvas id="cCmp" class="c-cmp drag" aria-label="Comparaison obligation, pool v2 et position v3 sur 5 ans"></canvas>
-        <div class="stats cmp-ends">
-          <div class="stat"><span class="k">Obligation après 5 ans</span><span class="v" id="cmpB"></span><span class="s" id="cmpBs"></span></div>
+        <canvas id="cCmp" class="c-cmp drag" aria-label="Comparaison pool v2 et position v3 sur 5 ans"></canvas>
+        <div class="stats cmp-ends cmp-two">
           <div class="stat"><span class="k">Pool v2 après 5 ans</span><span class="v" id="cmpV2"></span><span class="s" id="cmpV2s"></span></div>
           <div class="stat"><span class="k">Position v3 après 5 ans</span><span class="v" id="cmpV3"></span><span class="s" id="cmpV3s"></span></div>
         </div>
       </div>
       <ul class="cmp-notes">
-        <li><strong>Obligation :</strong> gain connu à l'avance, risque très faible (État suisse), aucune gestion. Son prix varie seulement si on la revend avant l'échéance.</li>
-        <li><strong>Pool v2 :</strong> frais variables, exposition au prix de l'ETH et à la perte impermanente, risque de piratage du contrat ; aucune gestion.</li>
-        <li><strong>Position v3 :</strong> les mêmes risques, avec une IL amplifiée et aucun frais hors de la plage. Il faut surveiller le prix et rééquilibrer, ce qui coûte du gas (non compté ici).</li>
+        <li><strong>Pool v2 :</strong> elle touche des frais quoi qu'il arrive, mais peu, car sa liquidité est étalée sur tous les prix. Exposition au prix de l'ETH et à la perte impermanente ; aucune gestion.</li>
+        <li><strong>Position v3 :</strong> beaucoup plus de frais tant que le prix reste dans la plage, plus aucun en dehors, et une IL amplifiée. Il faut surveiller le prix et rééquilibrer, ce qui coûte du gas (non compté ici).</li>
       </ul>
-      <div class="box ex"><span class="lbl">Exemple chiffré</span>Avec des intérêts composés, un capital \(V_0\) placé au taux \(a\) pendant \(t\) années vaut \(V_0\,(1+a)^t\). Si l'ETH reste stable pendant 5 ans :
-        <ul><li>obligation : \(10\,000 \times 1{,}0045^5 \approx 10\,227\) ;</li>
-        <li>pool v2 : \(10\,000 \times 1{,}045^5 \approx 12\,462\) ;</li>
-        <li>position v3, toujours dans sa plage : \(10\,000 \times 1{,}11^5 \approx 16\,851\).</li></ul>
-        Les frais réinvestis augmentent la liquidité \(L\) de la position, qui touche donc à son tour plus de frais. Si le prix sort de la plage, la position v3 cesse de grandir.</div>
-      <div class="box ex"><span class="lbl">Exemple chiffré</span>Les valeurs v2 viennent de la formule du <a class="chref" href="#sec-8-1">8.1</a> : une position v2 vaut \(V_0\sqrt{r}\) quand le prix est multiplié par \(r\). Pour \(r = 0{,}8\) : \(10\,000\sqrt{0{,}8} \approx 8\,944\) ; pour \(r = 1{,}2\) : \(10\,000\sqrt{1{,}2} \approx 10\,954\). Les valeurs v3 viennent des formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> avec \(L \approx 2\,285\) : sous 1 800, Alice détient 5,142 ETH, soit \(5{,}142 \times 1\,600 \approx 8\,227\) ; au-dessus de 2 200, elle détient 10 232 USDC.</div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Avec des intérêts composés, un capital \(V_0\) placé au taux \(a\) pendant \(t\) années vaut \(V_0\,(1+a)^t\). Si l'ETH reste à 2 000 pendant 5 ans :
+        <ul><li>pool v2 : \(1\,000 \times 1{,}045^5 \approx 1\,246\) $ ;</li>
+        <li>position v3, toujours dans sa plage : \(1\,000 \times 1{,}11^5 \approx 1\,685\) $.</li></ul>
+        Les frais réinvestis augmentent la liquidité \(L\) de la position, qui touche donc à son tour plus de frais.</div>
+      <div class="box ex"><span class="lbl">Exemple chiffré</span>Quand le prix est multiplié par \(r\), une position v2 vaut \(V_0\sqrt{r}\) (formule du <a class="chref" href="#sec-8-1">8.1</a>) : \(1\,000\sqrt{1{,}2} \approx 1\,095\) $ à 2 400 et \(1\,000\sqrt{0{,}8} \approx 894\) $ à 1 600, avant les frais. La position v3 suit les formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> : au-dessus de 2 200, elle ne contient plus que 1 023 USDC ; sous 1 800, plus que 0,514 ETH, soit \(0{,}514 \times 1\,600 \approx 823\) $. Ensuite, comme le prix stagne hors de la plage, elle ne touche plus rien, alors que la v2 continue de gagner 4,5 % par an.</div>
       <div class="box concret"><span class="lbl">Concrètement · que retenir ?</span>
-        L'obligation rapporte peu mais presque à coup sûr. Les pools rapportent beaucoup plus, mais ce supplément est la <strong>rémunération d'un risque</strong> : si le prix de l'ETH bouge fortement, la perte peut dépasser de loin les frais. La position v3 pousse ce choix encore plus loin : plus de frais quand tout va bien, plus de pertes et de travail quand le prix s'échappe. Il n'existe pas de rendement élevé sans risque.</div>
+        Quand le prix est calme, la v3 rapporte bien plus que la v2 : c'est l'effet de la concentration. Mais dès que le prix sort de la plage et y reste, elle s'arrête de travailler, alors que la v2 continue tranquillement. Le supplément de la v3 se paie donc par plus de risque et par de la <strong>gestion</strong> : pour en profiter, il faut suivre le prix et déplacer sa plage au bon moment, ce qui est exactement le sujet des stratégies.</div>
     </div>
   </section>
 
@@ -1247,7 +1246,7 @@ ul.cmp-notes{margin:6px 0 14px}
         <dt id="lex-hodl">HODL</dt><dd>Stratégie de référence : garder ses jetons sans rien faire.</dd>
         <dt id="lex-il">Perte impermanente (IL)</dt><dd>De l'anglais <i>impermanent loss</i>. Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.</dd>
         <dt id="lex-gas">Gas</dt><dd>Frais payés au réseau Ethereum pour chaque opération (dépôt, retrait, échange).</dd>
-        <dt id="lex-arbitragiste">Arbitragiste</dt><dd>Trader qui profite d'un écart de prix entre deux plateformes ; c'est lui qui aligne le prix de la pool sur celui du marché.</dd><dt id="lex-teneur">Teneur de marché</dt><dd>Celui qui propose en permanence d'acheter et de vendre (<i>market maker</i>) ; un LP joue ce rôle de façon automatique.</dd><dt id="lex-plage">Plage de prix</dt><dd>Intervalle \([p_a\,;\,p_b]\) choisi par un LP v3 ; sa liquidité ne travaille, et ne touche des frais, que dans cet intervalle.</dd><dt id="lex-apr">Rendement annualisé (APR)</dt><dd>Gain exprimé en pourcentage du capital, ramené à une année.</dd><dt id="lex-reequilibrage">Rééquilibrage</dt><dd>Retirer une position sortie de sa plage pour en ouvrir une nouvelle autour du prix actuel.</dd><dt id="lex-obligation">Obligation</dt><dd>Prêt fait à un État ou à une entreprise, qui verse des intérêts fixés à l'avance et rembourse le capital à l'échéance.</dd><dt id="lex-tvl">TVL</dt><dd><i>Total value locked</i> : valeur totale des jetons déposés dans une pool ou un protocole.</dd><dt id="lex-usdc">USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
+        <dt id="lex-arbitragiste">Arbitragiste</dt><dd>Trader qui profite d'un écart de prix entre deux plateformes ; c'est lui qui aligne le prix de la pool sur celui du marché.</dd><dt id="lex-teneur">Teneur de marché</dt><dd>Celui qui propose en permanence d'acheter et de vendre (<i>market maker</i>) ; un LP joue ce rôle de façon automatique.</dd><dt id="lex-plage">Plage de prix</dt><dd>Intervalle \([p_a\,;\,p_b]\) choisi par un LP v3 ; sa liquidité ne travaille, et ne touche des frais, que dans cet intervalle.</dd><dt id="lex-apr">Rendement annualisé (APR)</dt><dd>Gain exprimé en pourcentage du capital, ramené à une année.</dd><dt id="lex-reequilibrage">Rééquilibrage</dt><dd>Retirer une position sortie de sa plage pour en ouvrir une nouvelle autour du prix actuel.</dd><dt id="lex-tvl">TVL</dt><dd><i>Total value locked</i> : valeur totale des jetons déposés dans une pool ou un protocole.</dd><dt id="lex-usdc">USDC</dt><dd>Jeton conçu pour valoir 1 dollar américain.</dd>
       </dl>
     </div>
   </section>
@@ -1264,7 +1263,7 @@ ul.cmp-notes{margin:6px 0 14px}
       <h3 id="sec-13-3">13.3 Études sur la rentabilité des LP</h3>
       <ul class="sources"><li><a class="src-link" href="https://arxiv.org/abs/2111.09192" target="_blank" rel="noopener">Impermanent Loss in Uniswap v3</a><span class="src-a">S. Loesch, N. Hindman, M. B. Richardson, N. Welch, 2021</span><span class="src-w">Sur 17 grandes pools, les LP ont touché environ 199 M$ de frais mais subi environ 260 M$ de perte impermanente : globalement, garder ses jetons aurait rapporté davantage.</span></li></ul>
       <h3 id="sec-13-4">13.4 Données utilisées</h3>
-      <ul class="sources"><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640" target="_blank" rel="noopener">Pool ETH / USDC 0,05 % (Uniswap v3)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Réserves, TVL, volume, frais et rendement du chapitre 10.</span></li><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" target="_blank" rel="noopener">Pool ETH / USDC 0,3 % (Uniswap v2)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Les chiffres de la colonne v2 du chapitre 10.</span></li><li><a class="src-link" href="https://blog.uniswap.org/unification" target="_blank" rel="noopener">UNIfication</a><span class="src-a">Blog d'Uniswap Labs, 10 novembre 2025</span><span class="src-w">La réforme qui fait passer un quart des frais des pools à 0,05 % au protocole.</span></li><li><a class="src-link" href="https://countryeconomy.com/bonds/switzerland" target="_blank" rel="noopener">Taux d'intérêt de la Confédération à 10 ans</a><span class="src-a">countryeconomy.com</span><span class="src-w">Le rendement de 0,45 % utilisé dans la comparaison du 10.2.</span></li><li><a class="src-link" href="https://www.snb.ch/fr/" target="_blank" rel="noopener">Décision de politique monétaire de septembre 2026</a><span class="src-a">Banque nationale suisse</span><span class="src-w">Le taux directeur de la BNS, maintenu à 0 %.</span></li></ul>
+      <ul class="sources"><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640" target="_blank" rel="noopener">Pool ETH / USDC 0,05 % (Uniswap v3)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Réserves, TVL, volume, frais et rendement du chapitre 10.</span></li><li><a class="src-link" href="https://app.uniswap.org/explore/pools/ethereum/0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" target="_blank" rel="noopener">Pool ETH / USDC 0,3 % (Uniswap v2)</a><span class="src-a">Interface Uniswap, données du 5 novembre 2026</span><span class="src-w">Les chiffres de la colonne v2 du chapitre 10.</span></li><li><a class="src-link" href="https://blog.uniswap.org/unification" target="_blank" rel="noopener">UNIfication</a><span class="src-a">Blog d'Uniswap Labs, 10 novembre 2025</span><span class="src-w">La réforme qui fait passer un quart des frais des pools à 0,05 % au protocole.</span></li></ul>
       <h3 id="sec-13-5">13.5 Design</h3>
       <ul class="sources"><li><a class="src-link" href="https://aave.com/design/building-glass-for-the-web" target="_blank" rel="noopener">Building Glass for the Web</a><span class="src-a">Aave Labs</span><span class="src-w">La technique de « verre liquide » qui a inspiré les curseurs et l'interrupteur de ce site.</span></li></ul>
     </div>
@@ -1656,34 +1655,33 @@ ul.cmp-notes{margin:6px 0 14px}
   // 10.2 : comparaison sur 5 ans avec intérêts composés
   let cmpG=1, invC=null, hovC=null;
   function cmpSeries(){
-    const P0=2000, pa=1800, pb=2200, sa=Math.sqrt(pa), sb=Math.sqrt(pb), V0=10000;
-    const Lu=1/((1/Math.sqrt(P0)-1/sb)*P0+Math.sqrt(P0)-sa); // liquidité pour 1 $
+    const P0=2000, pa=1800, pb=2200, sa=Math.sqrt(pa), sb=Math.sqrt(pb), V0=1000, P1=P0*cmpG, T1=0.5;
+    const Lu=1/((1/Math.sqrt(P0)-1/sb)*P0+Math.sqrt(P0)-sa);
     const val3=P=>{ const s=Math.min(Math.max(Math.sqrt(P),sa),sb); return V0*Lu*((1/s-1/sb)*P+(s-sa)); };
-    const out=[]; let grow3=1; const N=60;
-    for(let m=0;m<=N;m++){ const t=m/12, P=P0*Math.pow(cmpG,t);
-      if(m>0){ const Pm=P0*Math.pow(cmpG,(m-.5)/12); if(Pm>=pa&&Pm<=pb) grow3*=Math.pow(1.11,1/12); }
-      out.push({t,P,b:V0*Math.pow(1.0045,t),v2:V0*Math.sqrt(P/P0)*Math.pow(1.045,t),v3:val3(P)*grow3}); }
+    const price=t=>t>=T1?P1:P0*Math.pow(P1/P0,t/T1); // l'ETH rejoint son nouveau niveau en 6 mois, puis stagne
+    const out=[]; let grow3=1, grow2=1; const N=240;
+    for(let m=0;m<=N;m++){ const t=m*5/N, P=price(t);
+      if(m>0){ const dt=5/N, Pm=price(t-dt/2); grow2*=Math.pow(1.045,dt); if(Pm>=pa&&Pm<=pb) grow3*=Math.pow(1.11,dt); }
+      out.push({t,P,v2:V0*Math.sqrt(P/P0)*grow2,v3:val3(P)*grow3}); }
     return out; }
   function drawCmp(){
     const c=document.getElementById('cCmp'); if(!c) return; const {ctx,w,h}=prep(c), S=cmpSeries();
-    let ymin=Infinity,ymax=-Infinity; S.forEach(o=>{ ymin=Math.min(ymin,o.b,o.v2,o.v3); ymax=Math.max(ymax,o.b,o.v2,o.v3); }); const pd=(ymax-ymin)*.08||500; ymin-=pd; ymax+=pd;
-    const F=frame(ctx,w,h,[0,5],[ymin,ymax],{xl:'années →',yl:'valeur',fx:v=>String(v).replace('.',',')+' an'+(v>1?'s':''),l:62}); invC=F.inv;
-    const pmax=Math.max(...S.map(o=>o.P)), pmin=Math.min(...S.map(o=>o.P)), Yp=v=>F.pad.t+(1-(v-pmin*0.9)/((pmax*1.1)-(pmin*0.9)))*(h-F.pad.t-F.pad.b);
-    ctx.fillStyle=col('--accent-soft'); S.forEach((o,k)=>{ if(k&&o.P>=1800&&o.P<=2200){ ctx.fillRect(F.X(S[k-1].t),F.pad.t,F.X(o.t)-F.X(S[k-1].t),h-F.pad.t-F.pad.b); } });
-    line(ctx,S.map(o=>[F.X(o.t),Yp(o.P)]),col('--hold'),1.4,[4,4]);
-    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.b)]),col('--good'),2.2);
+    let ymin=Infinity,ymax=-Infinity; S.forEach(o=>{ ymin=Math.min(ymin,o.v2,o.v3,o.P); ymax=Math.max(ymax,o.v2,o.v3,o.P); }); const pd=(ymax-ymin)*.08||100; ymin=Math.max(0,ymin-pd); ymax+=pd;
+    const F=frame(ctx,w,h,[0,5],[ymin,ymax],{xl:'années →',yl:'$',fx:v=>String(v).replace('.',',')+' an'+(v>1?'s':''),l:62}); invC=F.inv;
+    ctx.fillStyle=col('--accent-soft'); const y1=F.Y(2200), y2=F.Y(1800); ctx.fillRect(F.X(0),Math.max(F.pad.t,y1),F.X(5)-F.X(0),Math.min(h-F.pad.b,y2)-Math.max(F.pad.t,y1));
+    tag(ctx,F.X(5)-4,Math.max(F.pad.t,y1)+12,'plage [1 800 ; 2 200]',col('--accent'),'right');
+    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.P)]),col('--hold'),1.6,[5,4]);
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--usd'),2.4);
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v3)]),col('--accent'),3);
-    const e=S[S.length-1]; [['b','--good'],['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
-    tag(ctx,F.X(5)-4,Yp(e.P)-6,'ETH '+f(e.P,0)+' $',col('--hold'),'right');
-    if(hovC!=null){ const k=Math.round(Math.max(0,Math.min(5,hovC))*12), o=S[k], hx=F.X(o.t);
+    const e=S[S.length-1]; [['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
+    tag(ctx,F.X(5)-4,F.Y(e.P)-6,'ETH '+f(e.P,0)+' $',col('--hold'),'right');
+    if(hovC!=null){ const k=Math.round(Math.max(0,Math.min(5,hovC))/5*(S.length-1)), o=S[k], hx=F.X(o.t);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],col('--muted'),1,[3,3]);
-      [['b','--good'],['v2','--usd'],['v3','--accent']].forEach(([kk,cl])=>dot(ctx,hx,F.Y(o[kk]),3.5,col(cl)));
-      tip(ctx,hx,F.Y(o.v3),w,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans')+' · ETH '+f(o.P,0)+' $',col('--ink')],['Oblig. '+f(o.b,0),col('--good')],['v2     '+f(o.v2,0),col('--usd')],['v3     '+f(o.v3,0),col('--accent')]]); }
-    const pc=v=>{ const r=v/10000-1; return (r>=0?'+':'')+f(r*100,1)+' %'; };
-    document.getElementById('cmpB').textContent=f(e.b,0); document.getElementById('cmpBs').textContent=pc(e.b);
-    document.getElementById('cmpV2').textContent=f(e.v2,0); document.getElementById('cmpV2s').textContent=pc(e.v2);
-    document.getElementById('cmpV3').textContent=f(e.v3,0); document.getElementById('cmpV3s').textContent=pc(e.v3)+(cmpG!==1?' · sort de la plage':'');
+      [['v2','--usd'],['v3','--accent'],['P','--hold']].forEach(([kk,cl])=>dot(ctx,hx,F.Y(o[kk]),3.5,col(cl)));
+      tip(ctx,hx,F.Y(o.v3),w,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--usd')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
+    const pc=v=>{ const r=v/1000-1; return (r>=0?'+':'')+f(r*100,1)+' %'; };
+    document.getElementById('cmpV2').textContent=f(e.v2,0)+' $'; document.getElementById('cmpV2s').textContent=pc(e.v2);
+    document.getElementById('cmpV3').textContent=f(e.v3,0)+' $'; document.getElementById('cmpV3s').textContent=pc(e.v3)+(cmpG!==1?' · hors de la plage':'');
   }
   (function(){ const g=document.getElementById('cmpSc'); if(!g) return;
     g.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); cmpG=+b.dataset.g; drawCmp(); });
