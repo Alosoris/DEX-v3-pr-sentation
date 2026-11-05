@@ -774,14 +774,12 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
 :root{--dcard:#ffffff;--dcard2:#ffffff;--ddot:rgba(245,15,180,.22)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(252,114,255,.16)}}
 :root[data-theme="dark"]{--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(252,114,255,.16)}
-.prose > .math.deriv{margin:10px 0 18px;padding:44px 22px 16px 62px;border-radius:24px;border:1px solid var(--line);
-  background:linear-gradient(90deg,transparent 30px,var(--accent) 30px,var(--accent) 32px,transparent 32px) 0 46px/100% calc(100% - 62px) no-repeat,
+.prose > .math.deriv{margin:10px 0 18px;padding:14px 22px 14px 62px;border-radius:8px;border:1px solid var(--line);
+  background:linear-gradient(90deg,transparent 30px,var(--accent) 30px,var(--accent) 32px,transparent 32px) 0 14px/100% calc(100% - 28px) no-repeat,
     radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),
     radial-gradient(circle,var(--ddot) 1px,transparent 1.4px) 0 0/14px 14px,linear-gradient(180deg,var(--lg-top),var(--lg-bot));
   -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border-color:var(--lg-rim);
   box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)}
-.prose > .math.deriv::before{content:"Étapes algébriques";position:absolute;top:14px;left:20px;font:600 .78rem/1 var(--f-display);letter-spacing:.01em;color:var(--muted);padding-left:14px}
-.prose > .math.deriv::after{content:"";position:absolute;top:17px;left:20px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
 .prose > .math.deriv .step-n{left:20px;box-shadow:0 0 0 3px color-mix(in srgb,var(--lg-top) 100%,transparent)}
 </style>
 
