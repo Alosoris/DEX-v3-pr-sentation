@@ -1185,7 +1185,7 @@ ul.cmp-notes{margin:6px 0 14px}
         La pool v3 contient seulement 4 fois plus de capital que la pool v2, mais elle traite <strong>près de 70 fois plus de volume</strong>. Chaque dollar déposé en v3 est échangé environ 0,8 fois par jour, contre 0,05 fois en v2. C'est l'efficacité du capital du <a class="chref" href="#sec-3-3">3.3</a> observée en vrai : les traders vont là où la liquidité est concentrée, car ils y obtiennent de meilleurs prix.<br><br>
         Le rendement de 11 % est une <strong>moyenne pour toute la pool</strong>. Un LP avec une plage étroite, comme Alice au <a class="chref" href="#alice">chapitre 9</a>, gagne plus tant que le prix reste dans sa plage, et rien en dehors. Et ce chiffre ne compte pas la perte impermanente, qui peut l'effacer (voir l'étude citée au <a class="chref" href="#sources">chapitre 13</a>).</div>
       <h3 id="sec-10-2">10.2 v2 ou v3 ?</h3>
-      <p>Comparons deux façons de placer <strong>1 000 $</strong> dans la pool ETH / USDC pendant 5 ans : une position v2 et la position v3 d'Alice, sur la plage [1 800 ; 2 200]. Avec 1 000 $, la valeur des positions et le prix de l'ETH sont du même ordre de grandeur et tiennent sur la même échelle en dollars.</p>
+      <p>Comparons deux façons de placer <strong>1 000 $</strong> dans la pool ETH / USDC pendant 5 ans : une position v2 et la position v3 d'Alice, sur la plage [1 800 ; 2 200]. La valeur des positions se lit sur l'échelle de gauche, le prix de l'ETH sur celle de droite.</p>
       <p>Les frais utilisent les rendements réels du 10.1, supposés constants : 4,5 % par an en v2, 11 % par an en v3 tant que le prix reste dans la plage. Dans les scénarios « hausse » et « baisse », l'ETH sort de la plage en quelques mois puis <strong>stagne</strong>.</p>
       <div class="panel chart-card cmp-card">
         <div class="chart-top">
@@ -1197,7 +1197,7 @@ ul.cmp-notes{margin:6px 0 14px}
         <div class="legend">
           <span><i style="background:var(--usd)"></i>Pool v2 (frais 4,5 %)</span>
           <span><i style="background:var(--accent)"></i>Position v3 [1 800 ; 2 200] (frais 11 % dans la plage)</span>
-          <span><i style="background:var(--hold)"></i>Prix de l'ETH (même échelle, en $)</span>
+          <span><i style="background:var(--hold)"></i>Prix de l'ETH (échelle de droite)</span>
         </div>
         <canvas id="cCmp" class="c-cmp drag" aria-label="Comparaison pool v2 et position v3 sur 5 ans"></canvas>
         <div class="stats cmp-ends cmp-two">
@@ -1490,7 +1490,7 @@ ul.cmp-notes{margin:6px 0 14px}
     const out=[]; for(let v=Math.ceil(min/st)*st; v<=max+st*1e-6; v+=st) out.push(+v.toPrecision(12)); return out;
   }
   function frame(ctx,w,h,xd,yd,opts){
-    const pad={l:opts.l||58,r:14,t:12,b:opts.b||34};
+    const pad={l:opts.l||58,r:opts.r||14,t:opts.t||12,b:opts.b||34};
     const X=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(w-pad.l-pad.r);
     const Y=v=>h-pad.b-(v-yd[0])/(yd[1]-yd[0])*(h-pad.t-pad.b);
     ctx.font='11px '+col('--f-mono'); ctx.fillStyle=col('--muted'); ctx.strokeStyle=col('--line'); ctx.lineWidth=1;
@@ -1501,7 +1501,7 @@ ul.cmp-notes{margin:6px 0 14px}
       ctx.textAlign='right'; ctx.fillText((opts.fy||compact)(v),pad.l-6,y+4); });
     ctx.fillStyle=col('--muted');
     if(opts.xl){ ctx.textAlign='right'; ctx.fillText(opts.xl,w-pad.r,h-4); }
-    if(opts.yl){ ctx.textAlign='left'; ctx.fillText(opts.yl,4,pad.t+2); }
+    if(opts.yl){ ctx.textAlign='left'; ctx.fillText(opts.yl,4,opts.t?12:pad.t+2); }
     return {X,Y,pad,inv:px=>xd[0]+(px-pad.l)/(w-pad.l-pad.r)*(xd[1]-xd[0])};
   }
   function line(ctx,pts,color,width,dash){ ctx.strokeStyle=color; ctx.lineWidth=width; ctx.setLineDash(dash||[]); ctx.beginPath();
@@ -1666,19 +1666,24 @@ ul.cmp-notes{margin:6px 0 14px}
     return out; }
   function drawCmp(){
     const c=document.getElementById('cCmp'); if(!c) return; const {ctx,w,h}=prep(c), S=cmpSeries();
-    let ymin=Infinity,ymax=-Infinity; S.forEach(o=>{ ymin=Math.min(ymin,o.v2,o.v3,o.P); ymax=Math.max(ymax,o.v2,o.v3,o.P); }); const pd=(ymax-ymin)*.08||100; ymin=Math.max(0,ymin-pd); ymax+=pd;
-    const F=frame(ctx,w,h,[0,5],[ymin,ymax],{xl:'années →',yl:'$',fx:v=>String(v).replace('.',',')+' an'+(v>1?'s':''),l:62}); invC=F.inv;
-    ctx.fillStyle=col('--accent-soft'); const y1=F.Y(2200), y2=F.Y(1800); ctx.fillRect(F.X(0),Math.max(F.pad.t,y1),F.X(5)-F.X(0),Math.min(h-F.pad.b,y2)-Math.max(F.pad.t,y1));
-    tag(ctx,F.X(5)-4,Math.max(F.pad.t,y1)+12,'plage [1 800 ; 2 200]',col('--accent'),'right');
-    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.P)]),col('--hold'),1.6,[5,4]);
+    let ymin=Infinity,ymax=-Infinity; S.forEach(o=>{ ymin=Math.min(ymin,o.v2,o.v3); ymax=Math.max(ymax,o.v2,o.v3); }); const pd=(ymax-ymin)*.1||50; ymin=Math.max(0,ymin-pd); ymax+=pd;
+    const F=frame(ctx,w,h,[0,5],[ymin,ymax],{xl:'années →',yl:'valeur ($)',fx:v=>String(v).replace('.',',')+' an'+(v>1?'s':''),l:62,r:64,t:30}); invC=F.inv;
+    // échelle de droite : prix de l'ETH
+    const pmin=1500, pmax=2600, YP=v=>h-F.pad.b-(v-pmin)/(pmax-pmin)*(h-F.pad.t-F.pad.b), xr=w-F.pad.r;
+    ctx.fillStyle=col('--accent-soft'); ctx.fillRect(F.pad.l,YP(2200),xr-F.pad.l,YP(1800)-YP(2200));
+    tag(ctx,xr-6,YP(2200)+13,'plage [1 800 ; 2 200]',col('--accent'),'right');
+    ctx.strokeStyle=col('--hold'); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(xr,F.pad.t); ctx.lineTo(xr,h-F.pad.b); ctx.stroke();
+    ctx.font='11px '+col('--f-mono'); ctx.fillStyle=col('--hold'); ctx.textAlign='left';
+    nice(pmin,pmax,5).forEach(v=>{ const y=YP(v); ctx.beginPath(); ctx.moveTo(xr,y); ctx.lineTo(xr+4,y); ctx.stroke(); ctx.fillText(compact(v),xr+7,y+4); });
+    ctx.textAlign='right'; ctx.fillText('prix ETH ($)',w-2,12);
+    line(ctx,S.map(o=>[F.X(o.t),YP(o.P)]),col('--hold'),1.6,[5,4]);
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--usd'),2.4);
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v3)]),col('--accent'),3);
     const e=S[S.length-1]; [['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
-    tag(ctx,F.X(5)-4,F.Y(e.P)-6,'ETH '+f(e.P,0)+' $',col('--hold'),'right');
     if(hovC!=null){ const k=Math.round(Math.max(0,Math.min(5,hovC))/5*(S.length-1)), o=S[k], hx=F.X(o.t);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],col('--muted'),1,[3,3]);
-      [['v2','--usd'],['v3','--accent'],['P','--hold']].forEach(([kk,cl])=>dot(ctx,hx,F.Y(o[kk]),3.5,col(cl)));
-      tip(ctx,hx,F.Y(o.v3),w,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--usd')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
+      dot(ctx,hx,F.Y(o.v2),3.5,col('--usd')); dot(ctx,hx,F.Y(o.v3),3.5,col('--accent')); dot(ctx,hx,YP(o.P),3.5,col('--hold'));
+      tip(ctx,hx,F.Y(o.v3),w-F.pad.r,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--usd')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
     const pc=v=>{ const r=v/1000-1; return (r>=0?'+':'')+f(r*100,1)+' %'; };
     document.getElementById('cmpV2').textContent=f(e.v2,0)+' $'; document.getElementById('cmpV2s').textContent=pc(e.v2);
     document.getElementById('cmpV3').textContent=f(e.v3,0)+' $'; document.getElementById('cmpV3s').textContent=pc(e.v3)+(cmpG!==1?' · hors de la plage':'');
