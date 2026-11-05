@@ -746,10 +746,13 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.06);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}}
 :root[data-theme="dark"]{--paper:#1d1a1f;--paper-grid:rgba(252,114,255,.06);--paper-line:rgba(252,114,255,.22);--co-a:rgba(252,114,255,.16);--co-b:rgba(160,110,255,.12);--co-hi:rgba(255,255,255,.07);--co-rim:rgba(255,255,255,.12);--co-lbl:#ff9cf0}
 /* exemple chiffré : papier millimétré */
-.prose .box.ex,.box.ex{background:radial-gradient(ellipse 60% 70% at 92% 8%,var(--paper) 15%,transparent 70%),radial-gradient(ellipse 45% 60% at 4% 96%,var(--paper) 10%,transparent 70%),radial-gradient(ellipse 35% 45% at 55% 60%,var(--paper) 0%,transparent 75%),linear-gradient(var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,linear-gradient(90deg,var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,var(--paper);
-  -webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--paper-line);border-radius:18px;box-shadow:0 12px 26px -20px var(--lg-shadow)}
+.prose .box.ex,.box.ex{background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),
+    radial-gradient(ellipse 60% 70% at 92% 8%,var(--lg-top) 15%,transparent 70%),radial-gradient(ellipse 45% 60% at 4% 96%,var(--lg-top) 10%,transparent 70%),radial-gradient(ellipse 35% 45% at 55% 60%,var(--lg-top) 0%,transparent 75%),
+    linear-gradient(var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,linear-gradient(90deg,var(--paper-grid) 1px,transparent 1px) 0 0/18px 18px,linear-gradient(180deg,var(--lg-top),var(--lg-bot));
+  -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border:1px solid var(--lg-rim);border-radius:24px;
+  box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)}
 .box.ex .lbl{color:var(--accent)}
-.box.ex .math,.box.ex table{background:color-mix(in srgb,var(--paper) 88%,transparent);border-color:var(--paper-line);box-shadow:none}
+.box.ex .math,.box.ex table{background:var(--lg-nest);border-color:var(--paper-line);box-shadow:inset 0 1px 0 var(--lg-rim)}
 /* concrètement : verre teinté rose-violet */
 .prose .box.concret,.box.concret{background:radial-gradient(520px circle at var(--mx) var(--my),var(--co-hi),transparent 55%),linear-gradient(135deg,var(--co-a),var(--co-b));
   -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border:1px solid var(--co-rim);border-radius:26px;
