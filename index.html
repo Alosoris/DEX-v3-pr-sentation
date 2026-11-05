@@ -763,14 +763,12 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
 .step-n{position:absolute;left:4px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 .68rem/1 var(--f-mono);color:var(--accent-ink);background:var(--accent);box-shadow:0 0 0 3px var(--bg);pointer-events:none}
 /* illustrations : liquid glass arrondi, repères d'angle arrondis */
 .blueprint,figure.blueprint{background:radial-gradient(420px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot));
-  -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border:1px solid var(--lg-rim);border-radius:24px;overflow:visible;
+  -webkit-backdrop-filter:blur(20px) saturate(185%);backdrop-filter:blur(20px) saturate(185%);border:1px solid var(--lg-rim);border-radius:8px;overflow:hidden;
   box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)}
-.blueprint::before,.blueprint::after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--accent);pointer-events:none;z-index:2;opacity:.85}
-.blueprint::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:24px}
-.blueprint::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:24px}
+.blueprint::before,.blueprint::after{content:none;display:none}
 .blueprint figcaption{color:var(--muted)}
 /* étapes algébriques : carte à quadrillage de points */
-:root{--dcard:#faf5f8;--dcard2:#f4edf2;--ddot:rgba(19,19,19,.11)}
+:root{--dcard:#ffffff;--dcard2:#ffffff;--ddot:rgba(19,19,19,.09)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(255,255,255,.075)}}
 :root[data-theme="dark"]{--dcard:#1e1c1f;--dcard2:#18161a;--ddot:rgba(255,255,255,.075)}
 .prose > .math.deriv{margin:10px 0 18px;padding:44px 22px 16px 62px;border-radius:24px;border:1px solid var(--line);
