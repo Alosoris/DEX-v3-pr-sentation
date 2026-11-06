@@ -784,7 +784,7 @@ button.on:hover,.exps button.on:hover,#reset:hover{color:var(--accent-ink);borde
 header::after{content:none!important;display:none!important}
 
 /* ================= DA « Mix Uniswap App + Unichain » ================= */
-:root{--bg:#ffffff;--mx-s2:#f9f9f9;--mx-s3:rgba(34,34,34,.08);--mx-pk:#f50db4;--mx-pk2:#ffeffa;--lg-top:#ffffff;--lg-bot:#ffffff;--lg-hi:transparent;--lg-rim:rgba(34,34,34,.08);--lg-edge:transparent;--lg-glow:transparent;--lg-shadow:transparent;--lg-tint:transparent;--lg-nest:#f9f9f9;--bp-top:#f9f9f9;--bp-bot:#f9f9f9;--blob1:transparent;--blob2:transparent;--blob3:transparent;--dcard:#ffffff;--ddot:rgba(245,15,180,.20);--f-display:"Inter Tight","Inter","Helvetica Neue",Arial,sans-serif}
+:root{--bg:#ffffff;--mx-s2:#f9f9f9;--mx-s3:rgba(34,34,34,.08);--mx-pk:#f50db4;--mx-pk2:#ffeffa;--lg-top:#ffffff;--lg-bot:#ffffff;--lg-hi:transparent;--lg-rim:rgba(34,34,34,.08);--lg-edge:transparent;--lg-glow:transparent;--lg-shadow:transparent;--lg-tint:transparent;--lg-nest:#f9f9f9;--bp-top:#f9f9f9;--bp-bot:#f9f9f9;--blob1:transparent;--blob2:transparent;--blob3:transparent;--dcard:#ffffff;--ddot:rgba(245,15,180,.20)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131313;--mx-s2:#1b1b1b;--mx-s3:rgba(255,255,255,.12);--mx-pk:#fc72ff;--mx-pk2:#361a37;--lg-top:#131313;--lg-bot:#131313;--lg-hi:transparent;--lg-rim:rgba(255,255,255,.12);--lg-edge:transparent;--lg-glow:transparent;--lg-shadow:transparent;--lg-tint:transparent;--lg-nest:#1b1b1b;--bp-top:#1b1b1b;--bp-bot:#1b1b1b;--blob1:transparent;--blob2:transparent;--blob3:transparent;--dcard:#131313;--ddot:rgba(252,114,255,.16)}}
 :root[data-theme="dark"]{--bg:#131313;--mx-s2:#1b1b1b;--mx-s3:rgba(255,255,255,.12);--mx-pk:#fc72ff;--mx-pk2:#361a37;--lg-top:#131313;--lg-bot:#131313;--lg-hi:transparent;--lg-rim:rgba(255,255,255,.12);--lg-edge:transparent;--lg-glow:transparent;--lg-shadow:transparent;--lg-tint:transparent;--lg-nest:#1b1b1b;--bp-top:#1b1b1b;--bp-bot:#1b1b1b;--blob1:transparent;--blob2:transparent;--blob3:transparent;--dcard:#131313;--ddot:rgba(252,114,255,.16)}
 body{background:var(--bg)!important}
@@ -800,12 +800,6 @@ body{background:var(--bg)!important}
 /* bannière : rose plein + grain, titres serrés */
 header{background:#f50db4!important;border-radius:24px}
 header::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")!important;background-size:160px 160px!important;opacity:.35;mix-blend-mode:overlay;-webkit-mask-image:none!important;mask-image:none!important}
-header h1{font-family:var(--f-display);font-weight:600;letter-spacing:-.045em}
-header h1 em{font-family:inherit;font-style:italic;font-weight:600}
-/* titres : grotesque serré, sans dégradé */
-.prose h2,.lab-head h2{background:none!important;-webkit-background-clip:border-box;background-clip:border-box;color:var(--ink)!important;-webkit-text-fill-color:currentColor;font-family:var(--f-display);font-weight:600;letter-spacing:-.035em}
-.prose h3,.lab-head h3.lab-sub,.chart-card h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.02em}
-.chap-n{font-family:var(--f-mono)!important;font-style:normal!important;font-weight:400!important;font-size:1.5rem!important;letter-spacing:0!important;background:none!important;color:var(--mx-pk)!important;-webkit-text-fill-color:var(--mx-pk)!important;line-height:1.1}
 /* étiquettes : police mono + point rose */
 .box .lbl{font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em}
 .box .lbl::before{content:""!important;display:inline-block;width:7px;height:7px;margin:0 8px 1px 0;border-radius:50%;background:currentColor!important;-webkit-mask:none!important;mask:none!important;clip-path:none!important;vertical-align:middle;transform:none!important;border-radius:50%!important}
@@ -2050,8 +2044,6 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
     addEventListener('resize',later); if(document.fonts) document.fonts.ready.then(later);
   })();
 
-  // numéros de chapitre sur deux chiffres (« 03 »)
-  document.querySelectorAll('.chap-n').forEach(el=>{ const t=[...el.childNodes].find(n=>n.nodeType===3&&n.textContent.trim()); if(t){ const v=t.textContent.trim(); if(/^\d$/.test(v)) t.textContent=' 0'+v; } });
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
