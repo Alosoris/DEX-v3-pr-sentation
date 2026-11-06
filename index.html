@@ -826,6 +826,17 @@ button.on,.exps button.on,#reset{box-shadow:none!important;-webkit-backdrop-filt
 nav.side{background:var(--bg)!important;border:1px solid var(--mx-s3)!important;border-radius:20px}
 .side-ind{background:var(--mx-pk2)!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
+
+/* ===== étapes algébriques : carte titrée façon Uniswap App ===== */
+.prose > .math.deriv{padding:0!important;border-radius:20px!important;border:1px solid var(--mx-s3)!important;background:var(--bg)!important;overflow:hidden}
+.prose > .math.deriv .step-n{display:none!important}
+.dv-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 18px;border-bottom:1px solid var(--mx-s3)}
+.dv-hd b{font:600 .92rem var(--f-body);color:var(--ink)}
+.dv-hd span{font:500 .74rem var(--f-body);color:var(--mx-pk);background:var(--mx-pk2);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.dv-bd{position:relative;padding:12px 22px 12px 44px;overflow-x:auto;background:linear-gradient(90deg,transparent 21px,var(--mx-pk) 21px,var(--mx-pk) 23px,transparent 23px) 0 16px/100% calc(100% - 32px) no-repeat}
+.dv-ft{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px;border-top:1px solid var(--mx-s3);background:var(--mx-s2);font-size:.84rem;color:var(--muted);overflow-x:auto}
+.dv-ft .dv-res{color:var(--ink)}
+.dv-ft .dv-res mjx-container{margin:0!important}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -1029,7 +1040,7 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
       <h2>Pourquoi tout s'écrit avec √P</h2>
       <figure class="blueprint" aria-hidden="true"><figcaption>Fig. 4 · En √P, les échanges deviennent linéaires</figcaption><svg viewBox="0 0 640 170" preserveAspectRatio="xMidYMid meet"><path class="bp-l" d="M60 60 H600"/><path class="bp-l" d="M60 120 H600"/><text class="bp-ta" x="40" y="64">P</text><text class="bp-ta" x="32" y="124">√P</text><path class="bp-l" d="M60 114 V126"/><path class="bp-l" d="M60.0 54 V66"/><path class="bp-d" d="M60.0 66 L60 114"/><path class="bp-l" d="M125 114 V126"/><path class="bp-l" d="M68.4 54 V66"/><path class="bp-d" d="M68.4 66 L125 114"/><path class="bp-l" d="M190 114 V126"/><path class="bp-l" d="M93.8 54 V66"/><path class="bp-d" d="M93.8 66 L190 114"/><path class="bp-l" d="M255 114 V126"/><path class="bp-l" d="M135.9 54 V66"/><path class="bp-d" d="M135.9 66 L255 114"/><path class="bp-l" d="M320 114 V126"/><path class="bp-l" d="M195.0 54 V66"/><path class="bp-d" d="M195.0 66 L320 114"/><path class="bp-l" d="M385 114 V126"/><path class="bp-l" d="M270.9 54 V66"/><path class="bp-d" d="M270.9 66 L385 114"/><path class="bp-l" d="M450 114 V126"/><path class="bp-l" d="M363.8 54 V66"/><path class="bp-d" d="M363.8 66 L450 114"/><path class="bp-l" d="M515 114 V126"/><path class="bp-l" d="M473.4 54 V66"/><path class="bp-d" d="M473.4 66 L515 114"/><path class="bp-l" d="M580 114 V126"/><path class="bp-l" d="M600.0 54 V66"/><path class="bp-d" d="M600.0 66 L580 114"/><text class="bp-t" x="330" y="150" text-anchor="middle">pas réguliers en √P : Δy = L · Δ√P</text><text class="bp-t" x="330" y="40" text-anchor="middle">pas irréguliers en P</text></svg></figure>
       <p>Dans une plage où \(L\) est constant, les formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> donnent des relations <strong>linéaires</strong> :</p>
-      <div class="math deriv">\[ \begin{aligned} \Delta y = y(P') - y(P) &= L\left(\sqrt{P'} - \sqrt{p_a}\right) - L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } y(P) \text{ et } y(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\sqrt{P'} - \sqrt{P}\right) = L\,\Delta\sqrt{P} && \small\text{les } \sqrt{p_a} \text{ s'annulent} \\[3pt] \Delta x = x(P') - x(P) &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{p_b}}\right) - L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) && \small\text{on remplace } x(P) \text{ et } x(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) && \small\text{les } 1/\sqrt{p_b} \text{ s'annulent} \end{aligned} \]</div>
+      <div class="math deriv" data-result="\Delta y = L\,\Delta\sqrt{P} \qquad \Delta x = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right)">\[ \begin{aligned} \Delta y = y(P') - y(P) &= L\left(\sqrt{P'} - \sqrt{p_a}\right) - L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } y(P) \text{ et } y(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\sqrt{P'} - \sqrt{P}\right) = L\,\Delta\sqrt{P} && \small\text{les } \sqrt{p_a} \text{ s'annulent} \\[3pt] \Delta x = x(P') - x(P) &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{p_b}}\right) - L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) && \small\text{on remplace } x(P) \text{ et } x(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) && \small\text{les } 1/\sqrt{p_b} \text{ s'annulent} \end{aligned} \]</div>
       <p>Pour exécuter un échange, le contrat n'a donc pas besoin de résoudre d'équation : une addition et une division suffisent. Si un trader vend \(\Delta x\) ETH, la réserve d'ETH augmente de \(\Delta x\). On en déduit le nouveau prix \(P'\) :</p>
       <div class="math deriv">\[ \begin{aligned} L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) &= \Delta x && \small\text{relation linéaire ci-dessus} \\[3pt] \frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}} &= \frac{\Delta x}{L} && \small\text{on divise par } L \\[3pt] \frac{1}{\sqrt{P'}} &= \frac{1}{\sqrt{P}} + \frac{\Delta x}{L} && \small\text{on ajoute } 1/\sqrt{P} \end{aligned} \]</div>
       <p>Le trader reçoit ensuite \(|\Delta y| = L\left(\sqrt{P} - \sqrt{P'}\right)\) <a class="lexref" href="#lex-usdc" title="Jeton conçu pour valoir 1 dollar américain.">USDC</a>.</p>
@@ -2044,6 +2055,43 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
     addEventListener('resize',later); if(document.fonts) document.fonts.ready.then(later);
   })();
 
+
+  // étapes algébriques : en-tête « N étapes » + pied « Résultat »
+  (function(){
+    function topSplit(t){ const out=[]; let d=0,cur=''; for(let k=0;k<t.length;k++){ const c=t[k]; if(c==='{')d++; else if(c==='}')d--; if(c==='='&&d===0&&t[k-1]!=='\\'){ out.push(cur); cur=''; } else cur+=c; } out.push(cur); return out.map(x=>x.trim()); }
+    const isEmpty=t=>!t.replace(/\\phantom\{[^}]*(\{[^}]*\})*[^}]*\}/g,'').replace(/\\[,;:! ]|\\q?quad/g,'').trim();
+    function result(tex){
+      const m=tex.match(/\\begin\{aligned\}([\s\S]*)\\end\{aligned\}/); if(!m) return null;
+      const rows=m[1].split(/\\\\(?:\[[^\]]*\])?/).map(r=>r.split('&&')[0]).filter(r=>r.trim());
+      if(rows.length<2) return {n:rows.length};
+      let lhs='', last=rows[rows.length-1];
+      const parts=last.split('&'); let L=parts.length>1?parts[0]:'', R=parts.length>1?parts.slice(1).join(''):parts[0];
+      if(parts.length===1){ const seg=R.split(/\\Longrightarrow|\\Rightarrow|\\iff/); R=seg[seg.length-1]; const sp=topSplit(R); if(sp.length<2) return {n:rows.length}; return {n:rows.length,tex:sp[0]+' = '+sp[sp.length-1]}; }
+      if(isEmpty(L)){ for(let k=rows.length-2;k>=0;k--){ const p=rows[k].split('&'); if(p.length>1&&!isEmpty(p[0])){ L=p[0]; break; } } }
+      if(isEmpty(L)) return {n:rows.length};
+      const ls=L.split(/\\Longrightarrow|\\Rightarrow|\\iff/); lhs=topSplit(ls[ls.length-1])[0];
+      if(/\\neq/.test(last)) return {n:rows.length};
+      const Rt=R.trim();
+      if(!/^=/.test(Rt)){ return lhs&&Rt?{n:rows.length,tex:lhs+' '+Rt}:{n:rows.length}; }
+      const rs=topSplit(Rt.replace(/^=/,'')); const rhs=rs[rs.length-1];
+      if(!lhs||!rhs) return {n:rows.length};
+      return {n:rows.length,tex:lhs+' = '+rhs};
+    }
+    function build(){
+      const doc=window.MathJax&&MathJax.startup&&MathJax.startup.document; if(!doc) return;
+      document.querySelectorAll('.prose > .math.deriv').forEach(box=>{
+        if(box.querySelector('.dv-bd')) return;
+        let tex=''; try{ const it=doc.getMathItemsWithin(box); if(it&&it[0]) tex=it[0].math; }catch(e){}
+        const info=result(tex)||{n:0}; if(box.dataset.result) info.tex=box.dataset.result;
+        const bd=document.createElement('div'); bd.className='dv-bd'; while(box.firstChild) bd.appendChild(box.firstChild);
+        const hd=document.createElement('div'); hd.className='dv-hd'; hd.innerHTML='<b>Étapes algébriques</b>'+(info.n>1?'<span>'+info.n+' étapes</span>':'');
+        box.appendChild(hd); box.appendChild(bd);
+        if(info.tex){ box.dataset.res=info.tex; const ft=document.createElement('div'); ft.className='dv-ft'; ft.innerHTML='<span>Résultat</span><span class="dv-res"></span>'; box.appendChild(ft);
+          MathJax.tex2svgPromise(info.tex,{display:false}).then(node=>{ ft.querySelector('.dv-res').appendChild(node); }).catch(()=>ft.remove()); }
+      });
+    }
+    if(window.__mjReady) build(); addEventListener('mathjax-ready',build);
+  })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
