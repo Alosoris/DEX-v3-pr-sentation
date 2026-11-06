@@ -900,14 +900,6 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .stat .v{font-family:var(--f-body)!important;font-weight:500!important;font-size:1.32rem!important;letter-spacing:-.025em!important;line-height:1.15;color:var(--ink)}
 .stat .s{font-family:var(--f-body)!important;font-size:.76rem!important;color:var(--muted)!important}
 #sL,#sEff,#wR,#qShare,#cmpV3{color:var(--mx-pk)!important}
-/* 2. champs façon écran d'échange */
-.ctl-head{flex-direction:column;align-items:stretch!important;gap:6px!important}
-.ctl-head label{font-size:.84rem;color:var(--muted);font-weight:500}
-.swapf{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:16px;background:var(--tile);border:1px solid transparent;cursor:text;transition:border-color .15s}
-.swapf:focus-within{border-color:var(--mx-pk)}
-.swapf input[type=number]{flex:1;min-width:0;width:auto!important;border:0!important;background:transparent!important;padding:0!important;text-align:left!important;font-family:var(--f-body)!important;font-size:1.55rem!important;font-weight:500;letter-spacing:-.02em;color:var(--ink);box-shadow:none!important;-moz-appearance:textfield}
-.swapf input::-webkit-outer-spin-button,.swapf input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.tokpill{display:inline-flex;align-items:center;gap:6px;flex:none;padding:4px 10px 4px 4px;border-radius:999px;background:var(--bg);box-shadow:0 0 0 1px var(--mx-s3);font:600 .82rem var(--f-body);color:var(--ink)}
 .tok{width:20px;height:20px;flex:none;display:inline-block;vertical-align:middle}
 .tokl{display:inline-flex;align-items:center;gap:5px;margin-left:6px}
 .tokl .tok{width:16px;height:16px}
@@ -915,7 +907,10 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .legend span{background:none!important;border:0!important;box-shadow:none!important;padding:0 6px 0 0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .legend i{width:8px!important;height:8px!important;border-radius:50%!important;margin-right:7px!important}
 /* 4. Concrètement façon tuiles d'action de l'Uniswap Wallet */
-.prose .box.concret,.box.concret{background:var(--mx-pk2)!important;color:var(--ink)!important;border:0!important;border-radius:20px!important;padding-top:16px}
+:root{--co-bg:radial-gradient(55% 90% at 12% 8%,rgba(255,255,255,.85),rgba(255,255,255,0) 62%),radial-gradient(45% 80% at 92% 100%,rgba(255,255,255,.6),rgba(255,255,255,0) 60%),radial-gradient(35% 60% at 70% 15%,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),linear-gradient(125deg,#ffe0f4,#ffc6eb 55%,#ffd3f0)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--co-bg:radial-gradient(55% 90% at 12% 8%,rgba(255,255,255,.10),rgba(255,255,255,0) 62%),radial-gradient(45% 80% at 92% 100%,rgba(255,255,255,.07),rgba(255,255,255,0) 60%),linear-gradient(125deg,#3a1736,#2c1029 55%,#361532)}}
+:root[data-theme="dark"]{--co-bg:radial-gradient(55% 90% at 12% 8%,rgba(255,255,255,.10),rgba(255,255,255,0) 62%),radial-gradient(45% 80% at 92% 100%,rgba(255,255,255,.07),rgba(255,255,255,0) 60%),linear-gradient(125deg,#3a1736,#2c1029 55%,#361532)}
+.prose .box.concret,.box.concret{background:var(--co-bg)!important;color:var(--ink)!important;border:0!important;border-radius:24px!important;padding-top:16px}
 .box.concret .lbl,.prose .box.concret .lbl{display:flex!important;flex-direction:column;align-items:flex-start;gap:8px;color:var(--mx-pk)!important;font-family:var(--f-body)!important;text-transform:none!important;letter-spacing:0!important;font-size:.92rem!important;font-weight:600!important;margin-bottom:6px}
 .box.concret .lbl::before{width:22px!important;height:22px!important;margin:0!important;border-radius:0!important;background:var(--mx-pk)!important;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2Zm-3 18h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1Z'/%3E%3C/svg%3E") center/contain no-repeat!important;
@@ -2194,11 +2189,6 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
     : '<svg class="tok" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="var(--usd)"/><circle cx="10" cy="10" r="7" fill="none" stroke="#fff" stroke-width="1.2" opacity=".85"/><text x="10" y="13.6" text-anchor="middle" font-size="10" font-weight="700" font-family="Inter,Arial,sans-serif" fill="var(--eth)">$</text></svg>'; }
   window.tokIcon=tokIcon;
   document.querySelectorAll('.swapanim .sa-row, .swapanim .sa-bar > span').forEach(el=>{ [...el.childNodes].forEach(nd=>{ if(nd.nodeType===3){ const m=nd.textContent.match(/^(\s*)(ETH|USDC)\s*$/); if(m){ const sp=document.createElement('span'); sp.className='tokl'; sp.innerHTML=' '+tokIcon(m[2])+m[2]; nd.replaceWith(sp); } } }); });
-  // champs de saisie façon écran d'échange : grand chiffre + pastille du jeton
-  [['p0n','USDC'],['v0n','USDC'],['pan','USDC'],['pbn','USDC'],['pn','USDC']].forEach(([id,t])=>{ const inp=document.getElementById(id); if(!inp||inp.parentElement.classList.contains('swapf')) return;
-    const wrap=document.createElement('div'); wrap.className='swapf'; inp.parentElement.insertBefore(wrap,inp); wrap.appendChild(inp);
-    const pill=document.createElement('span'); pill.className='tokpill'; pill.innerHTML=tokIcon(t)+t; wrap.appendChild(pill);
-    wrap.addEventListener('click',e=>{ if(e.target!==inp) inp.focus(); }); });
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
