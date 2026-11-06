@@ -797,9 +797,6 @@ body{background:var(--bg)!important}
 :root[data-theme="dark"] .box.ex{--lg-top:rgba(46,40,48,.60);--lg-bot:rgba(26,24,28,.40);--lg-hi:rgba(252,140,255,.14);--lg-rim:rgba(255,255,255,.12);--lg-edge:rgba(252,114,255,.20);--lg-glow:rgba(252,114,255,.08);--lg-shadow:rgba(0,0,0,.5);--lg-tint:rgba(252,114,255,.12);--lg-nest:rgba(255,255,255,.05)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.ex{border-color:rgba(252,114,255,.16)!important}}
 :root[data-theme="dark"] .box.ex{border-color:rgba(252,114,255,.16)!important}
-/* bannière : rose plein + grain, titres serrés */
-header{background:#f50db4!important;border-radius:24px}
-header::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")!important;background-size:160px 160px!important;opacity:.35;mix-blend-mode:overlay;-webkit-mask-image:none!important;mask-image:none!important}
 /* étiquettes : police mono + point rose */
 .box .lbl{font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em}
 .box .lbl::before{content:""!important;display:inline-block;width:7px;height:7px;margin:0 8px 1px 0;border-radius:50%;background:currentColor!important;-webkit-mask:none!important;mask:none!important;clip-path:none!important;vertical-align:middle;transform:none!important;border-radius:50%!important}
@@ -838,9 +835,6 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .dv-ft .dv-res{color:var(--ink)}
 .dv-ft .dv-res mjx-container{margin:0!important}
 
-/* fin trait rose entre les chapitres */
-:is(section.chap,section.lab):not(#c1):not(#liq){position:relative;margin-top:30px}
-:is(section.chap,section.lab):not(#c1):not(#liq)::before{content:"";position:absolute;left:0;right:var(--sep-r,0px);top:-32px;height:1px;background:linear-gradient(90deg,transparent,var(--mx-pk) 10%,var(--mx-pk) 92%,transparent);opacity:.55;pointer-events:none}
 
 /* illustrations : fond blanc */
 :root{--fig-bg:#ffffff}
@@ -854,9 +848,6 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .prose .tw table{border-color:var(--mx-s3)!important}
 .prose table th,.prose table td{border-bottom-color:var(--mx-s3)}
 .box.ex table th{background:transparent}
-/* bannière : quadrillage d'origine */
-header::before{background-image:linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px)!important;background-size:40px 40px!important;opacity:1!important;mix-blend-mode:normal!important;
-  -webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 95%)!important;mask-image:linear-gradient(180deg,#000 10%,transparent 95%)!important}
 /* exemples chiffrés : quadrillage qui part d'un coin et s'estompe */
 .prose .box.ex,.box.ex{position:relative;isolation:isolate;background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot))!important}
 .box.ex::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
@@ -2121,11 +2112,6 @@ header::before{background-image:linear-gradient(rgba(255,255,255,.16) 1px,transp
     if(window.__mjReady) build(); addEventListener('mathjax-ready',build);
   })();
 
-  // trait entre chapitres : s'arrête au bord droit du texte
-  (function(){
-    function sep(){ let last=0; document.querySelectorAll('section.chap,section.lab').forEach(sec=>{ const pr=sec.querySelector(':scope > .prose'); const r=sec.getBoundingClientRect(); if(pr){ const q=pr.getBoundingClientRect(); last=Math.max(0,r.right-q.right); } sec.style.setProperty('--sep-r',last+'px'); }); }
-    sep(); addEventListener('resize',sep); addEventListener('load',sep);
-  })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
