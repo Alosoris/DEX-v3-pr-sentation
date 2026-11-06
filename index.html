@@ -792,11 +792,11 @@ body{background:var(--bg)!important}
 .prose .math,.box:not(.ex),.roles div,.formulas,.obs,.stat,.gloss,.refnote,.node,.panel,nav.side,.blueprint,.bp-box,.legend span,ul.sources li,.lex-back,button:not(.theme-sw){box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .box:not(.ex),.panel,.prose > .math:not(.deriv),.gloss,.refnote,.formulas,.obs{border-radius:20px}
 /* exemples chiffrés : on garde le liquid glass */
-.box.ex{--lg-top:rgba(255,255,255,.86);--lg-bot:rgba(255,255,255,.62);--lg-hi:rgba(255,255,255,.75);--lg-rim:rgba(255,255,255,.95);--lg-edge:rgba(245,15,180,.10);--lg-glow:rgba(245,15,180,.03);--lg-shadow:rgba(60,20,50,.14);--lg-tint:rgba(245,15,180,.10);--lg-nest:rgba(255,255,255,.55);border-color:rgba(245,15,180,.16)!important}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.ex{--lg-top:rgba(46,40,48,.60);--lg-bot:rgba(26,24,28,.40);--lg-hi:rgba(252,140,255,.14);--lg-rim:rgba(255,255,255,.12);--lg-edge:rgba(252,114,255,.20);--lg-glow:rgba(252,114,255,.08);--lg-shadow:rgba(0,0,0,.5);--lg-tint:rgba(252,114,255,.12);--lg-nest:rgba(255,255,255,.05)}}
-:root[data-theme="dark"] .box.ex{--lg-top:rgba(46,40,48,.60);--lg-bot:rgba(26,24,28,.40);--lg-hi:rgba(252,140,255,.14);--lg-rim:rgba(255,255,255,.12);--lg-edge:rgba(252,114,255,.20);--lg-glow:rgba(252,114,255,.08);--lg-shadow:rgba(0,0,0,.5);--lg-tint:rgba(252,114,255,.12);--lg-nest:rgba(255,255,255,.05)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.ex{border-color:rgba(252,114,255,.16)!important}}
-:root[data-theme="dark"] .box.ex{border-color:rgba(252,114,255,.16)!important}
+.box.interp{--lg-top:rgba(255,255,255,.86);--lg-bot:rgba(255,255,255,.62);--lg-hi:rgba(255,255,255,.75);--lg-rim:rgba(255,255,255,.95);--lg-edge:rgba(245,15,180,.10);--lg-glow:rgba(245,15,180,.03);--lg-shadow:rgba(60,20,50,.14);--lg-tint:rgba(245,15,180,.10);--lg-nest:rgba(255,255,255,.55);border-color:rgba(245,15,180,.16)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.interp{--lg-top:rgba(46,40,48,.60);--lg-bot:rgba(26,24,28,.40);--lg-hi:rgba(252,140,255,.14);--lg-rim:rgba(255,255,255,.12);--lg-edge:rgba(252,114,255,.20);--lg-glow:rgba(252,114,255,.08);--lg-shadow:rgba(0,0,0,.5);--lg-tint:rgba(252,114,255,.12);--lg-nest:rgba(255,255,255,.05)}}
+:root[data-theme="dark"] .box.interp{--lg-top:rgba(46,40,48,.60);--lg-bot:rgba(26,24,28,.40);--lg-hi:rgba(252,140,255,.14);--lg-rim:rgba(255,255,255,.12);--lg-edge:rgba(252,114,255,.20);--lg-glow:rgba(252,114,255,.08);--lg-shadow:rgba(0,0,0,.5);--lg-tint:rgba(252,114,255,.12);--lg-nest:rgba(255,255,255,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.interp{border-color:rgba(252,114,255,.16)!important}}
+:root[data-theme="dark"] .box.interp{border-color:rgba(252,114,255,.16)!important}
 /* étiquettes : police mono + point rose */
 .box .lbl{font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em}
 .box .lbl::before{content:""!important;display:inline-block;width:7px;height:7px;margin:0 8px 1px 0;border-radius:50%;background:currentColor!important;-webkit-mask:none!important;mask:none!important;clip-path:none!important;vertical-align:middle;transform:none!important;border-radius:50%!important}
@@ -848,14 +848,29 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .prose .tw table{border-color:var(--mx-s3)!important}
 .prose table th,.prose table td{border-bottom-color:var(--mx-s3)}
 .box.ex table th{background:transparent}
-/* exemples chiffrés : quadrillage qui part d'un coin et s'estompe */
-.prose .box.ex,.box.ex{position:relative;isolation:isolate;background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot))!important}
-.box.ex::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+/* interprétation : liquid glass + quadrillage qui part du coin inférieur droit */
+.prose .box.interp,.box.interp{position:relative;isolation:isolate;border-radius:24px;background:radial-gradient(400px circle at var(--mx) var(--my),var(--lg-hi),transparent 46%),linear-gradient(180deg,var(--lg-top),var(--lg-bot))!important;-webkit-backdrop-filter:blur(20px) saturate(185%)!important;backdrop-filter:blur(20px) saturate(185%)!important;border:1px solid rgba(245,15,180,.16)!important;box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 14px 32px -16px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)!important}
+.box.interp::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
   background-image:linear-gradient(var(--exg) 1px,transparent 1px),linear-gradient(90deg,var(--exg) 1px,transparent 1px);background-size:22px 22px;
-  -webkit-mask-image:radial-gradient(130% 110% at 0% 0%,#000 0%,rgba(0,0,0,.55) 30%,transparent 72%);mask-image:radial-gradient(130% 110% at 0% 0%,#000 0%,rgba(0,0,0,.55) 30%,transparent 72%)}
+  -webkit-mask-image:radial-gradient(130% 110% at 100% 100%,#000 0%,rgba(0,0,0,.55) 30%,transparent 72%);mask-image:radial-gradient(130% 110% at 100% 100%,#000 0%,rgba(0,0,0,.55) 30%,transparent 72%)}
 :root{--exg:rgba(245,15,180,.13)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--exg:rgba(252,114,255,.12)}}
 :root[data-theme="dark"]{--exg:rgba(252,114,255,.12)}
+
+/* exemples chiffrés : ancien style de l'interprétation (rose pâle plat) */
+:root{--ex-bg:#fff7fc;--ex-line:#ffd9f1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ex-bg:rgba(252,114,255,.06);--ex-line:rgba(252,114,255,.22)}}
+:root[data-theme="dark"]{--ex-bg:rgba(252,114,255,.06);--ex-line:rgba(252,114,255,.22)}
+.prose .box.ex,.box.ex{background:var(--ex-bg)!important;border:1px solid var(--ex-line)!important;border-radius:20px;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.box.ex::before{content:none!important}
+.box.ex .math,.box.ex table{background:var(--bg)!important;border-color:var(--ex-line)!important;box-shadow:none!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .box.interp{border-color:rgba(252,114,255,.16)!important}}
+:root[data-theme="dark"] .box.interp{border-color:rgba(252,114,255,.16)!important}
+/* curseurs des labos un peu plus petits */
+.gsl-knob{width:32px;height:19px;margin:-9.5px 0 0 -16px;border-radius:10px}
+.gsl-track,.gsl-copy-track{height:5px;margin-top:-2.5px}
+.gsl-lens{transform:scale(.68)}
+.gsl.active .gsl-lens{transform:scale(.86)}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -965,7 +980,7 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
       <div class="math deriv">\[ \begin{aligned} L_1 + L_2 &= 447{,}21 + 447{,}21 = 894{,}43 = \sqrt{20 \times 40\,000} = L_{\text{pool}} && \small\text{correct} \\[3pt] k_1 + k_2 &= 200\,000 + 200\,000 = 400\,000 \;\neq\; 20 \times 40\,000 = 800\,000 = k_{\text{pool}} && \small\text{faux} \end{aligned} \]</div>
       <p>Toute la mécanique de v3 repose sur cette addition : la <a class="lexref" href="#lex-liquidite-active" title="Somme des L des positions dont la plage contient le prix actuel.">liquidité active</a> est la <strong>somme</strong> des \(L\) des positions dont la plage contient le prix (<a class="chref" href="#c7">chapitre 7</a>), et chaque LP reçoit des frais au prorata de son \(L\). Avec \(k\), on ne pourrait ni additionner les positions ni calculer les parts aussi simplement.</p>
       <p><strong>3. Les formules deviennent linéaires.</strong> Avec \(k\), on aurait \(x = \sqrt{k/P}\) et \(y = \sqrt{kP}\) : la racine de \(k\) apparaît de toute façon. Avec \(L\), on obtient \(x = L/\sqrt{P}\), \(y = L\sqrt{P}\) et \(\Delta y = L\,\Delta\sqrt{P}\) (<a class="chref" href="#c4">chapitre 4</a>), des relations proportionnelles à \(L\).</p>
-      <div class="box"><span class="lbl">Interprétation</span>\(L = \sqrt{xy}\) est la <strong>moyenne géométrique</strong> des deux réserves. Si le prix valait 1, on aurait \(x = y = L\) : \(L\) serait simplement la quantité de chaque jeton dans la pool.</div>
+      <div class="box interp"><span class="lbl">Interprétation</span>\(L = \sqrt{xy}\) est la <strong>moyenne géométrique</strong> des deux réserves. Si le prix valait 1, on aurait \(x = y = L\) : \(L\) serait simplement la quantité de chaque jeton dans la pool.</div>
       <h3 id="sec-2-4">2.4 Le défaut de v2</h3>
       <p>Comme \(x = L/\sqrt{P}\) ne s'annule jamais, la pool garde des réserves pour tous les prix entre 0 et l'infini. Si l'ETH vaut 2000 USDC, une grande partie du capital attend un prix de 10 ou de 100 000 qui n'arrivera sans doute jamais. Ce capital immobilisé touche quand même sa part des frais, mais il dilue celle du capital vraiment utile.</p>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>Supposons que le prix reste entre 1 800 et 2 200, avec \(L = 447{,}21\). On utilise les formules du <a class="chref" href="#sec-2-2">2.2</a>, \(x = L/\sqrt{P}\) et \(y = L\sqrt{P}\).<br><br><strong>Le prix monte de 2 000 à 2 200.</strong> Les traders achètent de l'ETH : la pool cède la différence entre sa réserve d'ETH à 2 000 et à 2 200.<div class="math deriv">\[ \begin{aligned} x(2\,000) - x(2\,200) &= \frac{447{,}21}{\sqrt{2\,000}} - \frac{447{,}21}{\sqrt{2\,200}} && \small\text{car } x = L/\sqrt{P} \\[3pt] &= \frac{447{,}21}{44{,}72} - \frac{447{,}21}{46{,}90} && \small\text{on calcule les racines} \\[3pt] &= 10 - 9{,}535 && \small\text{on divise} \\[3pt] &= 0{,}465 \text{ ETH} \end{aligned} \]</div>Cela représente \(0{,}465 / 10 \approx\) <strong>4,7 %</strong> des 10 ETH de la pool.<br><br><strong>Le prix baisse de 2 000 à 1 800.</strong> Les traders achètent de l'USDC : la pool cède la différence entre sa réserve d'USDC à 2 000 et à 1 800.<div class="math deriv">\[ \begin{aligned} y(2\,000) - y(1\,800) &= 447{,}21\,\sqrt{2\,000} - 447{,}21\,\sqrt{1\,800} && \small\text{car } y = L\sqrt{P} \\[3pt] &= 447{,}21 \times 44{,}72 - 447{,}21 \times 42{,}43 && \small\text{on calcule les racines} \\[3pt] &= 20\,000 - 18\,973{,}67 && \small\text{on multiplie} \\[3pt] &= 1\,026{,}33 \text{ USDC} \end{aligned} \]</div>Cela représente \(1\,026{,}33 / 20\,000 \approx\) <strong>5,1 %</strong> des 20 000 USDC de la pool.<br><br>Au prix de 2 000, la partie utile vaut \(0{,}465 \times 2\,000 + 1\,026{,}33 \approx 1\,957\) $. Environ 95 % des 40 000 $ déposés ne servent donc jamais dans ce scénario.</div>
