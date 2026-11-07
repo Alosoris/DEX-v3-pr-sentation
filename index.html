@@ -919,7 +919,7 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .box.concret b,.box.concret strong,.box.concret em{color:var(--ink)}
 .box.concret .math{background:var(--bg)!important;color:var(--ink)}
 /* 5. numéros des sous-chapitres */
-.h3n{font-family:var(--f-display);font-weight:700;font-size:1.08em;color:var(--mx-pk);margin-right:.45em;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.h3n{font-family:var(--f-display);font-weight:700;font-size:1em;color:color-mix(in srgb,var(--mx-pk) 72%,var(--bg));margin-right:.45em;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 /* 10. lueur rose en haut de page en mode sombre */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:radial-gradient(70% 520px at 55% -60px,rgba(252,114,255,.30),rgba(252,114,255,.08) 55%,transparent 80%) no-repeat,var(--bg)!important}}
 :root[data-theme="dark"] body{background:radial-gradient(70% 520px at 55% -60px,rgba(252,114,255,.30),rgba(252,114,255,.08) 55%,transparent 80%) no-repeat,var(--bg)!important}
@@ -2194,7 +2194,7 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 
 
   // numéros des sous-chapitres en mono rose
-  document.querySelectorAll('.prose h3').forEach(h=>{ const t=h.firstChild; if(t&&t.nodeType===3){ const m=t.textContent.match(/^\s*(\d+\.\d+)\s+/); if(m){ t.textContent=t.textContent.slice(m[0].length); const n=document.createElement('span'); n.className='h3n'; n.textContent=m[1]; h.insertBefore(n,t); } } });
+  document.querySelectorAll('.prose h3, .lab-head h3.lab-sub').forEach(h=>{ const t=h.firstChild; if(t&&t.nodeType===3){ const m=t.textContent.match(/^\s*(\d+\.\d+)\s+/); if(m){ t.textContent=t.textContent.slice(m[0].length); const n=document.createElement('span'); n.className='h3n'; n.textContent=m[1]; h.insertBefore(n,t); } } });
   // icônes de jetons (déclinaisons de rose)
   function tokIcon(t){ return t==='ETH'
     ? '<svg class="tok" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="var(--eth)"/><path d="M10 3.6 6.3 10 10 12.2 13.7 10Z" fill="#fff"/><path d="M10 13 6.3 10.8 10 16.4 13.7 10.8Z" fill="#fff" opacity=".8"/></svg>'
