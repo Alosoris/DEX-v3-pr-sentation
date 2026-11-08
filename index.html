@@ -962,6 +962,9 @@ header::before{-webkit-mask-image:linear-gradient(45deg,rgba(0,0,0,0.000) calc(v
 @keyframes glowA{from{--gx:180%}to{--gx:-80%}}
 @keyframes glowB{from{--gx2:180%}to{--gx2:-80%}}
 @media (prefers-reduced-motion:reduce){header{animation:none;--gx:90%;--gx2:-60%}}
+
+/* bannière : cases du quadrillage qui s'arrondissent autour de la souris (effet Unichain) */
+.grid-fx{position:absolute;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -2267,6 +2270,35 @@ header::before{-webkit-mask-image:linear-gradient(45deg,rgba(0,0,0,0.000) calc(v
     function hide(){ hideT=setTimeout(()=>{ tip.classList.remove('show'); if(cur) cur.removeAttribute('aria-describedby'); cur=null; },60); }
     items.forEach(a=>{ a.addEventListener('mouseenter',()=>show(a)); a.addEventListener('mouseleave',hide); a.addEventListener('focus',()=>show(a)); a.addEventListener('blur',hide); a.addEventListener('click',hide); });
     addEventListener('scroll',()=>{ if(cur) hide(); },{passive:true});
+  })();
+
+  // bannière : effet Unichain — les cases du quadrillage deviennent des carrés arrondis près de la souris
+  (function(){
+    const hd=document.querySelector('header'); if(!hd) return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const cv=document.createElement('canvas'); cv.className='grid-fx'; cv.setAttribute('aria-hidden','true'); hd.prepend(cv);
+    const ctx=cv.getContext("2d"); const C=40, R=260;
+    let W=0,H=0,cols=0,rows=0,v=[],mx=-9999,my=-9999,raf=0,active=false;
+    function size(){ const r=hd.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0); cols=Math.ceil(W/C)+1; rows=Math.ceil(H/C)+1; v=new Float32Array(cols*rows); }
+    function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+    function frame(){
+      raf=0; ctx.clearRect(0,0,W,H); let alive=false;
+      for(let j=0;j<rows;j++) for(let i=0;i<cols;i++){
+        const k=j*cols+i, cx=i*C+C/2, cy=j*C+C/2, d=Math.hypot(cx-mx,cy-my);
+        let tgt=active?Math.max(0,1-d/R):0; tgt=tgt*tgt*(3-2*tgt);
+        v[k]+= (tgt-v[k])*(tgt>v[k]?0.22:0.07);
+        const t=v[k]; if(t<0.01){ v[k]=0; continue; } alive=true;
+        const ins=1+t*1.5, rad=Math.min(C/2-ins, t*(C/2-ins)*1.1);
+        rr(i*C+ins,j*C+ins,C-2*ins,C-2*ins,rad);
+        ctx.fillStyle='rgba(255,255,255,'+(0.16*t).toFixed(3)+')'; ctx.fill();
+        ctx.strokeStyle='rgba(255,255,255,'+(0.22*t).toFixed(3)+')'; ctx.lineWidth=1; ctx.stroke();
+      }
+      if(alive||active) raf=requestAnimationFrame(frame);
+    }
+    const kick=()=>{ if(!raf) raf=requestAnimationFrame(frame); };
+    hd.addEventListener('pointermove',e=>{ if(e.pointerType!=='mouse') return; const r=hd.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top; active=true; kick(); });
+    hd.addEventListener('pointerleave',()=>{ active=false; kick(); });
+    size(); new ResizeObserver(()=>{ size(); kick(); }).observe(hd);
   })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
