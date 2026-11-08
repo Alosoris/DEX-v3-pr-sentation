@@ -2138,12 +2138,22 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
       {s:sb,P:2260,who:'Trader 2',te:0.2215,tu:0,lane:null,out:true,t:"<b>Étape 5.</b> Si le prix continue à monter, la position n'a plus d'ETH à vendre : elle est <b>hors de la plage</b>. Elle ne participe plus aux échanges et ne touche plus de frais. Ce sont les positions d'autres LP, placées plus haut, qui prennent le relais (<a class='chref' href='#c7'>chapitre 7</a>)."}
     ];
     let i=0, timer=0;
+    let curS=null, dotRaf=0;
+    function placeDot(sv){ const px=X(xr(sv)), py=Y(yr(sv)); $$('s3Pt').style.transform='translate('+px+'px,'+py+'px)'; $$('s3Proj').setAttribute('d','M0 0 V'+(150-py)+' M0 0 H'+(24-px)); }
+    function moveDot(target, anim){
+      cancelAnimationFrame(dotRaf);
+      const from=curS==null?target:curS, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(from===target||reduce){ curS=target; placeDot(target); return; }
+      const t0=performance.now(), D=900, ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+      const step=now=>{ const k=Math.min(1,(now-t0)/D); curS=from+(target-from)*ease(k); placeDot(curS); if(k<1) dotRaf=requestAnimationFrame(step); };
+      dotRaf=requestAnimationFrame(step);
+    }
     function show(n,anim){ i=Math.max(0,Math.min(S.length-1,n)); const st=S[i];
       const pe=xr(st.s), pu=yr(st.s)+(st.dy||0);
       $$('s3BE').style.height=(pe/1.1*100)+'%'; $$('s3BU').style.height=(pu/2200*100)+'%';
       $$('s3PE').textContent=fr(pe,4); $$('s3PU').textContent=fr(pu,2);
       $$('s3TE').textContent=st.te?fr(st.te,4):'0'; $$('s3TU').textContent=st.tu?fr(st.tu,0):'0'; $$('s3Who').textContent=st.who;
-      const px=X(pe), py=Y(yr(st.s)); $$('s3Pt').style.transform='translate('+px+'px,'+py+'px)'; $$('s3Proj').setAttribute('d','M0 0 V'+(150-py)+' M0 0 H'+(24-px));
+      moveDot(st.s, anim);
       $$('s3InL').textContent=st.inl||'500 USDC →'; $$('s3OutL').textContent=st.outl||'← 0,2439 ETH';
       const mk=$$('s3Mark'); mk.style.left=((st.P-1700)/600*100)+'%'; mk.classList.toggle('out',!!st.out); $$('s3P').textContent=st.out?'> 2 200':fr(st.P,st.P%1?2:0);
       ['s3In','s3Out'].forEach(id=>{ const el=$$(id); el.classList.remove('act'); el.style.removeProperty('--d'); });
