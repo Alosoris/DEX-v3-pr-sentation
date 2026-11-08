@@ -935,6 +935,21 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .box.concret a,.box.concret a.lexref,.box.concret a.chref{color:#fff!important;text-decoration-color:rgba(255,255,255,.7)!important;border-bottom-color:rgba(255,255,255,.7)!important}
 .box.concret .math{background:rgba(255,255,255,.16)!important;color:#fff!important;border-color:transparent!important}
 .box.concret mjx-container{color:#fff}
+
+/* infobulle des définitions */
+.deftip{position:fixed;z-index:60;max-width:300px;padding:12px 14px 11px;border-radius:14px;background:var(--bg);color:var(--ink);
+  box-shadow:0 0 0 1px var(--mx-s3),0 14px 34px -12px rgba(0,0,0,.25),0 3px 8px -4px rgba(0,0,0,.12);
+  font:400 .86rem/1.5 var(--f-body);pointer-events:none;opacity:0;transform:translateY(4px) scale(.98);transform-origin:var(--ox,50%) var(--oy,100%);
+  transition:opacity .16s ease,transform .18s cubic-bezier(.2,.9,.3,1.2)}
+.deftip.show{opacity:1;transform:none}
+.deftip b{display:flex;align-items:center;gap:7px;margin-bottom:3px;font:600 .8rem var(--f-body);color:var(--mx-pk)}
+.deftip b::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.deftip span{color:var(--text,var(--ink))}
+.deftip small{display:block;margin-top:7px;font-size:.74rem;color:var(--muted)}
+.deftip::after{content:"";position:absolute;left:var(--ax,50%);width:10px;height:10px;margin-left:-5px;background:var(--bg);transform:rotate(45deg);box-shadow:1px 1px 0 var(--mx-s3)}
+.deftip.below::after{top:-5px;box-shadow:-1px -1px 0 var(--mx-s3)}
+.deftip:not(.below)::after{bottom:-5px}
+@media (prefers-reduced-motion:reduce){.deftip{transition:opacity .1s linear;transform:none}}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -2203,6 +2218,34 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
     : '<svg class="tok" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="var(--usd)"/><circle cx="10" cy="10" r="7" fill="none" stroke="#fff" stroke-width="1.2" opacity=".85"/><text x="10" y="13.6" text-anchor="middle" font-size="10" font-weight="700" font-family="Inter,Arial,sans-serif" fill="var(--eth)">$</text></svg>'; }
   window.tokIcon=tokIcon;
   document.querySelectorAll('.swapanim .sa-row, .swapanim .sa-bar > span').forEach(el=>{ [...el.childNodes].forEach(nd=>{ if(nd.nodeType===3){ const m=nd.textContent.match(/^(\s*)(ETH|USDC)\s*$/); if(m){ const sp=document.createElement('span'); sp.className='tokl'; sp.innerHTML=' '+tokIcon(m[2])+m[2]; nd.replaceWith(sp); } } }); });
+
+  // infobulle des définitions (remplace l'info-bulle native du navigateur)
+  (function(){
+    const tip=document.createElement('div'); tip.className='deftip'; tip.setAttribute('role','tooltip'); tip.id='deftip'; document.body.appendChild(tip);
+    const items=[...document.querySelectorAll('a.lexref[title], a.ref[title]')];
+    items.forEach(a=>{ a.dataset.def=a.getAttribute('title'); a.removeAttribute('title'); });
+    let cur=null, hideT=0;
+    function show(a){
+      clearTimeout(hideT); cur=a;
+      let term='';
+      if(a.classList.contains('lexref')){ const dt=document.querySelector(a.getAttribute('href')); term=dt?dt.textContent.trim():a.textContent.trim(); }
+      else term='Renvoi';
+      tip.innerHTML='<b></b><span></span><small></small>';
+      tip.querySelector('b').textContent=term; tip.querySelector('span').textContent=a.dataset.def;
+      tip.querySelector('small').textContent=a.classList.contains('lexref')?'Cliquer pour ouvrir le lexique':'Cliquer pour y aller';
+      a.setAttribute('aria-describedby','deftip');
+      const r=a.getBoundingClientRect(); tip.classList.remove('below'); tip.style.left='0px'; tip.style.top='0px';
+      const tw=tip.offsetWidth, th=tip.offsetHeight, cx=r.left+r.width/2;
+      let left=Math.max(10,Math.min(innerWidth-tw-10,cx-tw/2)), top=r.top-th-12;
+      if(top<10){ top=r.bottom+12; tip.classList.add('below'); }
+      tip.style.left=left+'px'; tip.style.top=top+'px';
+      tip.style.setProperty('--ax',(cx-left)+'px'); tip.style.setProperty('--ox',(cx-left)+'px'); tip.style.setProperty('--oy',tip.classList.contains('below')?'0%':'100%');
+      requestAnimationFrame(()=>tip.classList.add('show'));
+    }
+    function hide(){ hideT=setTimeout(()=>{ tip.classList.remove('show'); if(cur) cur.removeAttribute('aria-describedby'); cur=null; },60); }
+    items.forEach(a=>{ a.addEventListener('mouseenter',()=>show(a)); a.addEventListener('mouseleave',hide); a.addEventListener('focus',()=>show(a)); a.addEventListener('blur',hide); a.addEventListener('click',hide); });
+    addEventListener('scroll',()=>{ if(cur) hide(); },{passive:true});
+  })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
