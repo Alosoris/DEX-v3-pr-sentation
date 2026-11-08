@@ -2277,7 +2277,7 @@ header::before{-webkit-mask-image:linear-gradient(45deg,rgba(0,0,0,0.000) calc(v
     const hd=document.querySelector('header'); if(!hd) return;
     if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const cv=document.createElement('canvas'); cv.className='grid-fx'; cv.setAttribute('aria-hidden','true'); hd.prepend(cv);
-    const ctx=cv.getContext("2d"); const C=40, R=260;
+    const ctx=cv.getContext("2d"); const C=40, R=330;
     let W=0,H=0,cols=0,rows=0,v=[],mx=-9999,my=-9999,raf=0,active=false;
     function size(){ const r=hd.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0); cols=Math.ceil(W/C)+1; rows=Math.ceil(H/C)+1; v=new Float32Array(cols*rows); }
     function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
