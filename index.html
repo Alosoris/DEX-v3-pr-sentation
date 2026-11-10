@@ -1056,6 +1056,14 @@ footer.site-foot.foot::before{-webkit-mask-image:linear-gradient(180deg,transpar
 footer.site-foot button.ft-top{background:var(--bg)!important;color:var(--ink)!important;box-shadow:0 4px 14px -6px rgba(140,20,105,.35)!important}
 footer.site-foot button.ft-top:hover{background:var(--hover)!important}
 footer.site-foot.foot{padding-top:64px}@media (max-width:640px){footer.site-foot.foot{padding-top:48px}}
+
+/* Téléphone : une formule en ligne trop large défile dans sa propre bande au lieu d'élargir la page */
+.prose mjx-container.mj-wide{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle;padding-bottom:3px;-webkit-overflow-scrolling:touch}
+/* Apparitions douces au défilement */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@media print{.rv{opacity:1!important;transform:none!important}}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -2463,6 +2471,23 @@ footer.site-foot.foot{padding-top:64px}@media (max-width:640px){footer.site-foot
   (function(){ const ft=document.querySelector('footer.site-foot'), fb=ft&&ft.querySelector('.ft-bottom'); if(!ft||!fb) return;
     const set=()=>ft.style.setProperty('--ftb',(fb.getBoundingClientRect().top-ft.getBoundingClientRect().top)+'px');
     set(); new ResizeObserver(set).observe(ft); })();
+
+  // formules en ligne trop larges (téléphone) : bande défilante
+  (function(){ let t;
+    const fit=()=>document.querySelectorAll('.prose mjx-container:not([display="true"])').forEach(m=>{
+      m.classList.remove('mj-wide'); const p=m.parentElement; if(!p) return;
+      if(m.getBoundingClientRect().right>p.getBoundingClientRect().right+1) m.classList.add('mj-wide'); });
+    if(window.__mjReady) fit(); addEventListener('mathjax-ready',fit);
+    addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(fit,150)}); })();
+
+  // apparitions douces : encadrés, figures, étapes, tableaux et cartes des labos
+  (function(){ if(!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const sel='.prose > .box, .prose > figure, .prose > .math.deriv, .prose > .tw, .prose > .timeline, .prose > .roles, .prose > .obs, .lab .panel, .lab .stats, .src-a, .tree-wrap';
+    const vh=innerHeight, els=[...document.querySelectorAll(sel)].filter(e=>e.getBoundingClientRect().top>vh*0.9);
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+    els.forEach(e=>{ e.classList.add('rv'); io.observe(e); });
+    addEventListener('hashchange',()=>{ const t=document.querySelector(location.hash); if(t) t.querySelectorAll('.rv').forEach(e=>e.classList.add('in')); });
+    addEventListener('beforeprint',()=>els.forEach(e=>e.classList.add('in'))); })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
