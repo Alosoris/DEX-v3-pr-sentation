@@ -2455,9 +2455,11 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
         v[k]+= (tgt-v[k])*(tgt>v[k]?0.22:0.07);
         const t=v[k]; if(t<0.01){ v[k]=0; continue; } alive=true;
         const ins=1+t*1.5, rad=Math.min(C/2-ins, t*(C/2-ins)*1.1);
+        // comme Unichain : l'espace autour du carré s'éclaircit, le carré garde le rose du fond
+        ctx.fillStyle='rgba(255,255,255,'+(0.30*t).toFixed(3)+')'; ctx.fillRect(i*C,j*C,C,C);
         rr(i*C+ins,j*C+ins,C-2*ins,C-2*ins,rad);
-        ctx.fillStyle='rgba(255,255,255,'+(0.16*t).toFixed(3)+')'; ctx.fill();
-        ctx.strokeStyle='rgba(255,255,255,'+(0.22*t).toFixed(3)+')'; ctx.lineWidth=1; ctx.stroke();
+        ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='#000'; ctx.fill(); ctx.globalCompositeOperation='source-over';
+        ctx.strokeStyle='rgba(255,255,255,'+(0.18*t).toFixed(3)+')'; ctx.lineWidth=1; ctx.stroke();
       }
       ha+=((active?1:0)-ha)*(active?0.22:0.07); if(ha<0.005) ha=0;
       hd.style.setProperty('--fr',(R*ha).toFixed(1)+'px'); hd.style.setProperty('--fx',mx+'px'); hd.style.setProperty('--fy',my+'px');
