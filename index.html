@@ -928,9 +928,9 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .box.concret .lbl::before,.prose .box.concret .lbl::before{content:none!important;display:none!important}
 
 /* Concrètement : rose plus foncé, texte blanc, lueurs blanches */
-:root{--co-bg:#f871cf!important}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--co-bg:#f871cf!important}}
-:root[data-theme="dark"]{--co-bg:#f871cf!important}
+:root{--co-bg:#d6168f!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--co-bg:#d6168f!important}}
+:root[data-theme="dark"]{--co-bg:#d6168f!important}
 .prose .box.concret,.box.concret,.box.concret b,.box.concret strong,.box.concret em,.box.concret .lbl,.prose .box.concret .lbl{color:#fff!important}
 .box.concret a,.box.concret a.lexref,.box.concret a.chref{color:#fff!important;text-decoration-color:rgba(255,255,255,.7)!important;border-bottom-color:rgba(255,255,255,.7)!important}
 .box.concret .math{background:rgba(255,255,255,.16)!important;color:#fff!important;border-color:transparent!important}
@@ -1070,6 +1070,22 @@ footer.site-foot.foot{padding-top:64px}@media (max-width:640px){footer.site-foot
 
 /* Pied de page : l'effet « carrés Unichain » ne monte pas au-delà de 4 cases depuis le bas */
 footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 120px,transparent 160px)!important;mask-image:linear-gradient(0deg,#000 0,#000 120px,transparent 160px)!important}
+
+/* Étapes algébriques secondaires : repliables */
+.prose > .math.deriv.sec .dv-hd{cursor:pointer;user-select:none}
+.prose > .math.deriv.sec .dv-hd:hover{background:var(--mx-s2,var(--field))}
+.prose > .math.deriv.sec .dv-hd:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.prose > .math.deriv.sec:not(.open) .dv-bd{display:none}
+.prose > .math.deriv.sec:not(.open) .dv-hd{border-bottom:0}
+.dv-tg{margin-left:auto;font:500 .78rem var(--f-body);font-style:normal;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.dv-tg::after{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.open > .dv-hd .dv-tg::after{transform:translateY(1px) rotate(-135deg)}
+.dv-hd span{margin-left:auto}
+.dv-hd span + .dv-tg{margin-left:10px}
+/* Titres d'encadrés : tous en chasse fixe majuscule */
+.dv-hd b{font:500 .7rem var(--f-mono)!important;letter-spacing:.08em;text-transform:uppercase}
+.box.concret .lbl,.prose .box.concret .lbl{display:block!important;font-family:var(--f-mono)!important;font-size:.7rem!important;font-weight:400!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.5!important;margin-bottom:8px!important}
+.box.concret .lbl::before,.prose .box.concret .lbl::before{content:""!important;display:inline-block!important;width:7px!important;height:7px!important;margin:0 8px 1px 0!important;border-radius:50%!important;background:currentColor!important;-webkit-mask:none!important;mask:none!important;clip-path:none!important;vertical-align:middle!important;transform:none!important;box-shadow:none!important}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -1171,7 +1187,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       </div>
       <h3 id="sec-2-1">2.1 Le prix est une pente</h3>
       <p>Pour un échange infiniment petit, le prix est le rapport \(-\,dy/dx\). On exprime \(y\) en fonction de \(x\), puis on dérive :</p>
-      <div class="math deriv">\[ \begin{aligned} xy = k \;\Longrightarrow\; y &= \frac{k}{x} = k\,x^{-1} && \small\text{on divise par } x \\[3pt] \frac{dy}{dx} &= -k\,x^{-2} = -\frac{k}{x^2} && \small\text{dérivée de } x^{-1} \text{ : } -x^{-2} \\[3pt] P = -\frac{dy}{dx} &= \frac{k}{x^2} && \small\text{on change le signe} \\[3pt] &= \frac{xy}{x^2} && \small\text{on remplace } k \text{ par } xy \\[3pt] &= \frac{y}{x} && \small\text{on simplifie par } x \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} xy = k \;\Longrightarrow\; y &= \frac{k}{x} = k\,x^{-1} && \small\text{on divise par } x \\[3pt] \frac{dy}{dx} &= -k\,x^{-2} = -\frac{k}{x^2} && \small\text{dérivée de } x^{-1} \text{ : } -x^{-2} \\[3pt] P = -\frac{dy}{dx} &= \frac{k}{x^2} && \small\text{on change le signe} \\[3pt] &= \frac{xy}{x^2} && \small\text{on remplace } k \text{ par } xy \\[3pt] &= \frac{y}{x} && \small\text{on simplifie par } x \end{aligned} \]</div>
       <p>Le prix est donc la valeur absolue de la pente de l'hyperbole au point où se trouve la <a class="lexref" href="#lex-pool" title="Réserve commune de deux jetons, ici ETH et USDC.">pool</a>. Plus un échange est gros, plus on glisse le long de la courbe et plus le prix moyen obtenu s'éloigne du prix de départ : c'est le <strong><a class="lexref" href="#lex-glissement" title="Écart entre le prix affiché et le prix moyen obtenu lors d&#x27;un gros échange.">glissement</a></strong> (<i>slippage</i>).</p>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>Avant l'échange, \(P = 20\,000 / 10 = 2\,000\) USDC par ETH. Comparons deux tailles d'échange :<div class="tw"><table><thead><tr><th>ETH apportés</th><th>USDC reçus</th><th>Prix moyen obtenu</th><th>Nouveau prix y/x</th></tr></thead><tbody><tr><td>0,1</td><td>198,02</td><td>1 980,20</td><td>1 960,59</td></tr><tr><td>1</td><td>1 818,18</td><td>1 818,18</td><td>1 652,89</td></tr></tbody></table></div>Avec 0,1 ETH, le trader perd 1 % par rapport au prix affiché. Avec 1 ETH (10 % de la réserve), il perd plus de 9 %. Le glissement grandit avec la taille de l'échange par rapport aux réserves.</div>
       <div class="box concret"><span class="lbl">Concrètement · qui fixe vraiment le prix ?</span>La formule fixe le prix <em>dans la pool</em>, mais ce prix suit en réalité celui des grandes plateformes (comme Binance ou Coinbase). Si l'ETH vaut 2 100 $ ailleurs et seulement 2 000 $ dans la pool, des <strong><a class="lexref" href="#lex-arbitragiste" title="Trader qui profite d&#x27;un écart de prix entre deux plateformes ; c&#x27;est lui qui aligne le prix de la pool sur celui du marché.">arbitragistes</a></strong> achètent l'ETH bon marché dans la pool pour le revendre plus cher ailleurs. Chaque achat fait monter le prix de la pool, jusqu'à ce que l'écart disparaisse.<br><br>Le glissement explique aussi pourquoi les <a class="lexref" href="#lex-lp" title="Liquidity provider, fournisseur de liquidité : celui qui dépose des jetons dans la pool.">LP</a> sont utiles aux traders : plus une pool contient de jetons, moins un gros échange fait bouger le prix, donc meilleur est le prix obtenu. Une pool « profonde » attire plus de traders, et donc plus de commissions pour ses LP.</div>
@@ -1185,10 +1201,10 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       <h3 id="pourquoi-l">2.3 Pourquoi choisir L = √k plutôt que k ?</h3>
       <p>On pourrait tout écrire avec \(k\). On préfère \(L = \sqrt{k}\) pour trois raisons.</p>
       <p><strong>1. L est proportionnel à ce qu'on dépose.</strong> \(k\) est le produit de deux quantités : si l'on multiplie les deux réserves par un même nombre \(c\), \(k\) est multiplié par \(c^2\), alors que \(L\) n'est multiplié que par \(c\) :</p>
-      <div class="math deriv">\[ \begin{aligned} k' &= (c\,x)(c\,y) = c^2\,xy = c^2\,k && \small\text{on remplace } x, y \text{ par } cx, cy \\[3pt] L' &= \sqrt{c^2\,k} = \sqrt{c^2}\,\sqrt{k} = c\,L && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \text{ et } c > 0 \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} k' &= (c\,x)(c\,y) = c^2\,xy = c^2\,k && \small\text{on remplace } x, y \text{ par } cx, cy \\[3pt] L' &= \sqrt{c^2\,k} = \sqrt{c^2}\,\sqrt{k} = c\,L && \small\text{car } \sqrt{ab} = \sqrt{a}\sqrt{b} \text{ et } c > 0 \end{aligned} \]</div>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>On double les réserves de la pool (\(c = 2\)) :<div class="tw"><table><thead><tr><th></th><th>Réserves</th><th>k</th><th>L = √k</th></tr></thead><tbody><tr><td>Départ</td><td>10 ETH + 20 000 USDC</td><td>200 000</td><td>447,21</td></tr><tr><td>Tout × 2</td><td>20 ETH + 40 000 USDC</td><td>800 000 (× 4)</td><td>894,43 (× 2)</td></tr></tbody></table></div>Le capital double, \(L\) double, mais \(k\) est multiplié par 4.</div>
       <p><strong>2. Les L s'additionnent, pas les k.</strong> Deux LP déposent chacun 10 ETH et 20 000 USDC. La pool totale contient 20 ETH et 40 000 USDC :</p>
-      <div class="math deriv">\[ \begin{aligned} L_1 + L_2 &= 447{,}21 + 447{,}21 = 894{,}43 = \sqrt{20 \times 40\,000} = L_{\text{pool}} && \small\text{correct} \\[3pt] k_1 + k_2 &= 200\,000 + 200\,000 = 400\,000 \;\neq\; 20 \times 40\,000 = 800\,000 = k_{\text{pool}} && \small\text{faux} \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} L_1 + L_2 &= 447{,}21 + 447{,}21 = 894{,}43 = \sqrt{20 \times 40\,000} = L_{\text{pool}} && \small\text{correct} \\[3pt] k_1 + k_2 &= 200\,000 + 200\,000 = 400\,000 \;\neq\; 20 \times 40\,000 = 800\,000 = k_{\text{pool}} && \small\text{faux} \end{aligned} \]</div>
       <p>Toute la mécanique de v3 repose sur cette addition : la <a class="lexref" href="#lex-liquidite-active" title="Somme des L des positions dont la plage contient le prix actuel.">liquidité active</a> est la <strong>somme</strong> des \(L\) des positions dont la plage contient le prix (<a class="chref" href="#c7">chapitre 7</a>), et chaque LP reçoit des frais au prorata de son \(L\). Avec \(k\), on ne pourrait ni additionner les positions ni calculer les parts aussi simplement.</p>
       <p><strong>3. Les formules deviennent linéaires.</strong> Avec \(k\), on aurait \(x = \sqrt{k/P}\) et \(y = \sqrt{kP}\) : la racine de \(k\) apparaît de toute façon. Avec \(L\), on obtient \(x = L/\sqrt{P}\), \(y = L\sqrt{P}\) et \(\Delta y = L\,\Delta\sqrt{P}\) (<a class="chref" href="#c4">chapitre 4</a>), des relations proportionnelles à \(L\).</p>
       <div class="box interp"><span class="lbl">Interprétation</span>\(L = \sqrt{xy}\) est la <strong>moyenne géométrique</strong> des deux réserves. Si le prix valait 1, on aurait \(x = y = L\) : \(L\) serait simplement la quantité de chaque jeton dans la pool.</div>
@@ -1264,7 +1280,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       <div class="math deriv">\[ \begin{aligned} V &= x\,P_0 + y && \small\text{valeur = ETH × prix + USDC} \\[3pt] V &= L\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + L\left(\sqrt{P_0} - \sqrt{p_a}\right) && \small\text{on remplace } x(P_0) \text{ et } y(P_0) \\[3pt] V &= L\left[\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}\right] && \small\text{on met } L \text{ en évidence} \\[3pt] L &= \frac{V}{\left(\frac{1}{\sqrt{P_0}} - \frac{1}{\sqrt{p_b}}\right)P_0 + \sqrt{P_0} - \sqrt{p_a}} && \small\text{on divise par le crochet} \end{aligned} \]</div>
       <h3 id="sec-3-3">3.3 Le gain d'efficacité</h3>
       <p>On compare deux positions de même liquidité \(L\) : une v3 sur \([p_a\,;\,p_b]\) et une v2. On se place au prix central \(P = \sqrt{p_a p_b}\) (moyenne géométrique des bornes). Une propriété utile de ce prix :</p>
-      <div class="math deriv">\[ \begin{aligned} \frac{P}{\sqrt{p_b}} &= \frac{\sqrt{p_a}\,\sqrt{p_b}}{\sqrt{p_b}} = \sqrt{p_a} && \small\text{car } \sqrt{p_a p_b} = \sqrt{p_a}\sqrt{p_b} \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} \frac{P}{\sqrt{p_b}} &= \frac{\sqrt{p_a}\,\sqrt{p_b}}{\sqrt{p_b}} = \sqrt{p_a} && \small\text{car } \sqrt{p_a p_b} = \sqrt{p_a}\sqrt{p_b} \end{aligned} \]</div>
       <p>Valeur de la position v3 :</p>
       <div class="math deriv">\[ \begin{aligned} V_{v3} &= x\,P + y \\[3pt] &= L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right)P + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } x(P) \text{ et } y(P) \text{ (formules du 3.1)} \\[3pt] &= L\left(\frac{P}{\sqrt{P}} - \frac{P}{\sqrt{p_b}}\right) + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on distribue } P \\[3pt] &= L\left(\sqrt{P} - \sqrt{p_a}\right) + L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{car } P/\sqrt{P} = \sqrt{P} \text{ et } P/\sqrt{p_b} = \sqrt{p_a} \\[3pt] &= 2L\left(\sqrt{P} - \sqrt{p_a}\right) \end{aligned} \]</div>
       <p>Valeur de la position v2 :</p>
@@ -1315,7 +1331,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       <p>Dans une plage où \(L\) est constant, les formules \(x(P)\) et \(y(P)\) du <a class="chref" href="#sec-3-1">3.1</a> donnent des relations <strong>linéaires</strong> :</p>
       <div class="math deriv" data-result="\Delta y = L\,\Delta\sqrt{P} \qquad \Delta x = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right)">\[ \begin{aligned} \Delta y = y(P') - y(P) &= L\left(\sqrt{P'} - \sqrt{p_a}\right) - L\left(\sqrt{P} - \sqrt{p_a}\right) && \small\text{on remplace } y(P) \text{ et } y(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\sqrt{P'} - \sqrt{P}\right) = L\,\Delta\sqrt{P} && \small\text{les } \sqrt{p_a} \text{ s'annulent} \\[3pt] \Delta x = x(P') - x(P) &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{p_b}}\right) - L\left(\frac{1}{\sqrt{P}} - \frac{1}{\sqrt{p_b}}\right) && \small\text{on remplace } x(P) \text{ et } x(P') \text{ (formule du 3.1)} \\[3pt] &= L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) = L\,\Delta\!\left(\frac{1}{\sqrt{P}}\right) && \small\text{les } 1/\sqrt{p_b} \text{ s'annulent} \end{aligned} \]</div>
       <p>Pour exécuter un échange, le contrat n'a donc pas besoin de résoudre d'équation : une addition et une division suffisent. Si un trader vend \(\Delta x\) ETH, la réserve d'ETH augmente de \(\Delta x\). On en déduit le nouveau prix \(P'\) :</p>
-      <div class="math deriv">\[ \begin{aligned} L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) &= \Delta x && \small\text{relation linéaire ci-dessus} \\[3pt] \frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}} &= \frac{\Delta x}{L} && \small\text{on divise par } L \\[3pt] \frac{1}{\sqrt{P'}} &= \frac{1}{\sqrt{P}} + \frac{\Delta x}{L} && \small\text{on ajoute } 1/\sqrt{P} \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} L\left(\frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}}\right) &= \Delta x && \small\text{relation linéaire ci-dessus} \\[3pt] \frac{1}{\sqrt{P'}} - \frac{1}{\sqrt{P}} &= \frac{\Delta x}{L} && \small\text{on divise par } L \\[3pt] \frac{1}{\sqrt{P'}} &= \frac{1}{\sqrt{P}} + \frac{\Delta x}{L} && \small\text{on ajoute } 1/\sqrt{P} \end{aligned} \]</div>
       <p>Le trader reçoit ensuite \(|\Delta y| = L\left(\sqrt{P} - \sqrt{P'}\right)\) <a class="lexref" href="#lex-usdc" title="Jeton conçu pour valoir 1 dollar américain.">USDC</a>.</p>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>Un trader vend 0,1 ETH à la position v3 du <a class="chref" href="#c3">chapitre 3</a> (\(L = 447{,}21\), \(P = 2\,000\)) :<div class="math">\[ \frac{1}{\sqrt{P'}} = \frac{1}{44{,}721} + \frac{0{,}1}{447{,}21} = 0{,}022361 + 0{,}000224 = 0{,}022585 \]</div>donc \(\sqrt{P'} \approx 44{,}278\) et \(P' \approx 1\,960{,}59\). Le trader reçoit \(\Delta y = 447{,}21 \times (44{,}721 - 44{,}278) \approx 198{,}02\) USDC.<br><br>C'est exactement le résultat de la <a class="lexref" href="#lex-pool" title="Réserve commune de deux jetons, ici ETH et USDC.">pool</a> v2 du <a class="chref" href="#c2">chapitre 2</a>, car les deux ont le même \(L\). La différence : la position v3 ne mobilise que 1 957 $ au lieu de 40 000 $.</div>
       <p>C'est pourquoi Uniswap v3 stocke \(\sqrt{P}\) et non \(P\). Il le stocke en nombre à virgule fixe, \(\sqrt{P} \cdot 2^{96}\), parce que la blockchain ne manipule que des entiers. Le <a class="chref" href="#swap">chapitre 6</a> applique exactement cette formule.</p>
@@ -1548,7 +1564,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       <p>Rapport des deux :</p>
       <div class="math deriv">\[ \begin{aligned} \frac{V_{\text{LP}}}{V_{\text{HODL}}} &= \frac{2L\sqrt{r}\,\sqrt{P_0}}{L\sqrt{P_0}\,(1+r)} = \frac{2\sqrt{r}}{1+r} && \small\text{on simplifie par } L\sqrt{P_0} \end{aligned} \]</div>
       <p>Ce rapport ne dépasse jamais 1 :</p>
-      <div class="math deriv">\[ \begin{aligned} \left(\sqrt{r} - 1\right)^2 &\ge 0 && \small\text{un carré est toujours positif} \\[3pt] r - 2\sqrt{r} + 1 &\ge 0 && \small\text{on développe} \\[3pt] 1 + r &\ge 2\sqrt{r} && \small\text{on ajoute } 2\sqrt{r} \\[3pt] \frac{2\sqrt{r}}{1+r} &\le 1 && \small\text{on divise par } 1+r > 0 \end{aligned} \]</div>
+      <div class="math deriv sec">\[ \begin{aligned} \left(\sqrt{r} - 1\right)^2 &\ge 0 && \small\text{un carré est toujours positif} \\[3pt] r - 2\sqrt{r} + 1 &\ge 0 && \small\text{on développe} \\[3pt] 1 + r &\ge 2\sqrt{r} && \small\text{on ajoute } 2\sqrt{r} \\[3pt] \frac{2\sqrt{r}}{1+r} &\le 1 && \small\text{on divise par } 1+r > 0 \end{aligned} \]</div>
       <p>Il y a égalité seulement si \(\sqrt{r} = 1\), donc si \(r = 1\). La position est donc toujours en retard sur <a class="lexref" href="#lex-hodl" title="Stratégie de référence : garder ses jetons sans rien faire.">HODL</a> dès que le prix bouge. La perte est dite <strong>impermanente</strong> parce qu'elle disparaît si le prix revient à \(P_0\).</p>
       <div class="box ex"><span class="lbl">Exemple chiffré</span>La <a class="lexref" href="#lex-pool" title="Réserve commune de deux jetons, ici ETH et USDC.">pool</a> v2 du <a class="chref" href="#c2">chapitre 2</a> (10 ETH, 20 000 USDC) voit le prix passer de 2 000 à 2 420, soit \(r = 1{,}21\).<ul><li><strong>HODL</strong> : \(10 \times 2\,420 + 20\,000 = 44\,200\) $.</li><li><strong>Pool</strong> : \(x = 447{,}21 / \sqrt{2\,420} \approx 9{,}091\) ETH et \(y = 447{,}21 \times \sqrt{2\,420} = 22\,000\) USDC, donc \(9{,}091 \times 2\,420 + 22\,000 = 44\,000\) $.</li></ul>L'écart vaut −200 $, soit −0,45 %. La formule donne bien \(\frac{2\sqrt{1{,}21}}{2{,}21} - 1 = \frac{2{,}2}{2{,}21} - 1 \approx -0{,}45\,\%\).</div>
       <p>En v3, la position se comporte comme une position v2 avec une <a class="lexref" href="#lex-liquidite" title="√k en v2 ; mesure de la profondeur d&#x27;une position. Fixe tant qu&#x27;on ne dépose ni ne retire rien.">liquidité</a> multipliée par l'efficacité (voir <a class="chref" href="#sec-3-3">3.3</a>). La <a class="lexref" href="#lex-il" title="De l&#x27;anglais impermanent loss. Écart de valeur entre la position et HODL, nul si le prix revient au prix de dépôt.">perte impermanente</a> est donc amplifiée dans le même rapport. Les frais doivent compenser cet écart pour que la stratégie soit rentable.</p>
@@ -1637,7 +1653,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
           </div>
         </div>
         <div class="legend">
-          <span><i style="background:var(--v2)"></i>Pool v2 (frais 4,5 %)</span>
+          <span><i style="background:var(--usd)"></i>Pool v2 (frais 4,5 %)</span>
           <span><i style="background:var(--accent)"></i>Position v3 [1 800 ; 2 200] (frais 11 % dans la plage)</span>
           <span><i style="background:var(--hold)"></i>Prix de l'ETH (échelle de droite)</span>
         </div>
@@ -1723,7 +1739,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
       <div class="ft-col">
         <span class="ft-h">Le projet</span>
         <a href="https://github.com/Alosoris/DEX-v3-pr-sentation" target="_blank" rel="noopener">Code source sur GitHub ↗</a>
-        <span>Dernière mise à jour : 13 novembre 2026</span>
+        <span>Dernière mise à jour : 14 novembre 2026</span>
       </div>
       <div class="ft-col">
         <span class="ft-h">Réalisation</span>
@@ -2142,7 +2158,7 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
     nice(pmin,pmax,5).forEach(v=>{ const y=YP(v); ctx.beginPath(); ctx.moveTo(xr,y); ctx.lineTo(xr+4,y); ctx.stroke(); ctx.fillText(compact(v),xr+7,y+4); });
     ctx.textAlign='right'; ctx.fillText('prix ETH ($)',w-2,12);
     line(ctx,S.map(o=>[F.X(o.t),YP(o.P)]),col('--hold'),1.6,[5,4]);
-    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--v2'),2.4);
+    line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v2)]),col('--usd'),2.4);
     area(ctx,S.map(o=>[F.X(o.t),F.Y(o.v3)]),h-F.pad.b,col('--accent'));
     line(ctx,S.map(o=>[F.X(o.t),F.Y(o.v3)]),col('--accent'),3);
     const e=S[S.length-1]; [['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
@@ -2393,7 +2409,13 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
         let tex=''; try{ const it=doc.getMathItemsWithin(box); if(it&&it[0]) tex=it[0].math; }catch(e){}
         const info=result(tex)||{n:0}; if(box.dataset.result) info.tex=box.dataset.result;
         const bd=document.createElement('div'); bd.className='dv-bd'; while(box.firstChild) bd.appendChild(box.firstChild);
-        const hd=document.createElement('div'); hd.className='dv-hd'; hd.innerHTML='<b>Étapes algébriques</b>'+(info.n>1?'<span>'+info.n+' étapes</span>':'');
+        const hd=document.createElement('div'); hd.className='dv-hd'; hd.innerHTML='<b>Étapes algébriques'+(box.classList.contains('sec')?' · détail':'')+'</b>'+(info.n>1?'<span>'+info.n+' étapes</span>':'');
+        if(box.classList.contains('sec')){
+          hd.insertAdjacentHTML('beforeend','<i class="dv-tg">Afficher</i>');
+          hd.setAttribute('role','button'); hd.tabIndex=0; hd.setAttribute('aria-expanded','false');
+          const tg=()=>{ const o=box.classList.toggle('open'); hd.setAttribute('aria-expanded',o); hd.querySelector('.dv-tg').textContent=o?'Masquer':'Afficher'; };
+          hd.addEventListener('click',tg); hd.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); tg(); } });
+        }
         box.appendChild(hd); box.appendChild(bd);
         /* pied « Résultat » retiré */
       });
