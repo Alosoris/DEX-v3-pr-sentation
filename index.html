@@ -589,8 +589,8 @@ table.alice td,table.alice th{vertical-align:top}
 a.lexref{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:help}
 a.lexref:hover{color:var(--accent);text-decoration-style:solid}
 #lexique dt{scroll-margin-top:40vh;border-radius:8px;transition:background-color .6s ease}
-#lexique dt:target,#lexique dt:target + dd{background:var(--accent-soft)}
-#lexique dt:target{padding:0 6px;margin-left:-6px}
+#lexique dt.lex-hit,#lexique dt.lex-hit + dd{background:var(--accent-soft)}
+#lexique dt.lex-hit{padding:0 6px;margin-left:-6px}
 
 .lex-back{position:fixed;z-index:45;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 72%,transparent);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);color:var(--ink);font-family:var(--f-body);font-weight:600;font-size:.9rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px -10px rgba(0,0,0,.35);cursor:pointer}
 .lex-back:hover{color:var(--accent)}
@@ -928,9 +928,9 @@ nav.side a.cur,nav.side a.cur b{color:var(--mx-pk)}
 .box.concret .lbl::before,.prose .box.concret .lbl::before{content:none!important;display:none!important}
 
 /* Concrètement : rose plus foncé, texte blanc, lueurs blanches */
-:root{--co-bg:#d6168f!important}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--co-bg:#d6168f!important}}
-:root[data-theme="dark"]{--co-bg:#d6168f!important}
+:root{--co-bg:#f50db4!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--co-bg:#f50db4!important}}
+:root[data-theme="dark"]{--co-bg:#f50db4!important}
 .prose .box.concret,.box.concret,.box.concret b,.box.concret strong,.box.concret em,.box.concret .lbl,.prose .box.concret .lbl{color:#fff!important}
 .box.concret a,.box.concret a.lexref,.box.concret a.chref{color:#fff!important;text-decoration-color:rgba(255,255,255,.7)!important;border-bottom-color:rgba(255,255,255,.7)!important}
 .box.concret .math{background:rgba(255,255,255,.16)!important;color:#fff!important;border-color:transparent!important}
@@ -1086,6 +1086,9 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
 .dv-hd b{font:500 .7rem var(--f-mono)!important;letter-spacing:.08em;text-transform:uppercase}
 .box.concret .lbl,.prose .box.concret .lbl{display:block!important;font-family:var(--f-mono)!important;font-size:.7rem!important;font-weight:400!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.5!important;margin-bottom:8px!important}
 .box.concret .lbl::before,.prose .box.concret .lbl::before{content:""!important;display:inline-block!important;width:7px!important;height:7px!important;margin:0 8px 1px 0!important;border-radius:50%!important;background:currentColor!important;-webkit-mask:none!important;mask:none!important;clip-path:none!important;vertical-align:middle!important;transform:none!important;box-shadow:none!important}
+
+/* Titres d'encadrés sans point */
+.box .lbl::before,.prose .box .lbl::before,.box.concret .lbl::before,.prose .box.concret .lbl::before{content:none!important;display:none!important}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -2513,6 +2516,16 @@ footer.site-foot .grid-fx{-webkit-mask-image:linear-gradient(0deg,#000 0,#000 12
     els.forEach(e=>{ e.classList.add('rv'); io.observe(e); });
     addEventListener('hashchange',()=>{ const t=document.querySelector(location.hash); if(t) t.querySelectorAll('.rv').forEach(e=>e.classList.add('in')); });
     addEventListener('beforeprint',()=>els.forEach(e=>e.classList.add('in'))); })();
+
+  // lexique : le mot visé reste en rose seulement tant qu'on est dans le lexique
+  (function(){ const lx=document.getElementById('lexique'); if(!lx) return;
+    const clear=()=>lx.querySelectorAll('dt.lex-hit').forEach(d=>d.classList.remove('lex-hit'));
+    const mark=()=>{ const h=decodeURIComponent(location.hash||''); if(!/^#lex-/.test(h)) return; const d=document.getElementById(h.slice(1)); if(d&&lx.contains(d)){ clear(); d.classList.add('lex-hit'); } };
+    document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#lex-"]'); if(a) setTimeout(mark,0); });
+    addEventListener('hashchange',mark); mark();
+    let seen=false;
+    new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ seen=true; return; } if(!seen) return;
+      clear(); if(/^#lex-/.test(location.hash)){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(_){} } }),{threshold:0}).observe(lx); })();
   new ResizeObserver(redraw).observe(document.body);
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
   new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
