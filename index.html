@@ -1494,7 +1494,7 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
             <div class="legend">
               <span><i style="background:var(--accent)"></i>Position v3</span>
               <span><i style="background:var(--hold)"></i>Garder (<a class="lexref" href="#lex-hodl" title="Stratégie de référence : garder ses jetons sans rien faire.">HODL</a>)</span>
-              <span><i style="background:var(--v2)"></i>Position v2</span>
+              <span><i style="background:var(--usd)"></i>Position v2</span>
             </div>
             <canvas id="cValue" class="c-value drag" aria-label="Valeur de la position selon le prix"></canvas>
           </section>
@@ -2111,7 +2111,7 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
     const F=frame(ctx,w,h,[lo,hi],[ymin,ymax],{xl:'prix ETH →',yl:'valeur $'}); invV=F.inv;
     ctx.fillStyle=col('--accent-soft'); ctx.fillRect(F.X(S.pa),F.pad.t,F.X(S.pb)-F.X(S.pa),h-F.pad.t-F.pad.b);
     line(ctx,xs.map((x,i)=>[F.X(x),F.Y(ho[i])]),col('--hold'),1.6,[5,4]);
-    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(v2[i])]),col('--v2'),1.8);
+    line(ctx,xs.map((x,i)=>[F.X(x),F.Y(v2[i])]),col('--usd'),2.2);
     area(ctx,xs.map((x,i)=>[F.X(x),F.Y(lp[i])]),h-F.pad.b,col('--accent'));
     line(ctx,xs.map((x,i)=>[F.X(x),F.Y(lp[i])]),col('--accent'),3);
     line(ctx,[[F.X(S.P),F.pad.t],[F.X(S.P),h-F.pad.b]],col('--ink'),1,[2,3]);
@@ -2119,9 +2119,9 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
     tag(ctx,F.X(S.pa)+4,F.pad.t+12,'pₐ',col('--accent')); tag(ctx,F.X(S.pb)-4,F.pad.t+12,'p_b',col('--accent'),'right');
     if(hovV!=null && hovV>=lo && hovV<=hi){ const hx=F.X(hovV);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],hexA(col('--accent'),.55),1);
-      [[m.lpVal(hovV),col('--accent')],[m.hold(hovV),col('--hold')],[m.v2(hovV),col('--v2')]].forEach(q=>dot(ctx,hx,F.Y(q[0]),3.5,q[1]));
+      [[m.lpVal(hovV),col('--accent')],[m.hold(hovV),col('--hold')],[m.v2(hovV),col('--usd')]].forEach(q=>dot(ctx,hx,F.Y(q[0]),3.5,q[1]));
       const lp=m.lpVal(hovV), hd=m.hold(hovV);
-      tip(ctx,hx,F.Y(lp),w,h,[['P = '+f(hovV,0),col('--ink')],['v3   '+f(lp,0)+' $',col('--accent')],['HODL '+f(hd,0)+' $',col('--hold')],['v2   '+f(m.v2(hovV),0)+' $',col('--v2')],['écart '+fp(lp/hd-1),col('--bad')]]); }
+      tip(ctx,hx,F.Y(lp),w,h,[['P = '+f(hovV,0),col('--ink')],['v3   '+f(lp,0)+' $',col('--accent')],['HODL '+f(hd,0)+' $',col('--hold')],['v2   '+f(m.v2(hovV),0)+' $',col('--usd-ink')],['écart '+fp(lp/hd-1),col('--bad')]]); }
   }
   function drawMix(m){
     const c=$('cMix'), {ctx,w,h}=prep(c), [lo,hi]=dom;
@@ -2228,8 +2228,8 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
     const e=S[S.length-1]; [['v2','--usd'],['v3','--accent']].forEach(([k,cl])=>dot(ctx,F.X(5),F.Y(e[k]),4.5,col(cl),col('--surface')));
     if(hovC!=null){ const k=Math.round(Math.max(0,Math.min(5,hovC))/5*(S.length-1)), o=S[k], hx=F.X(o.t);
       line(ctx,[[hx,F.pad.t],[hx,h-F.pad.b]],hexA(col('--accent'),.55),1);
-      dot(ctx,hx,F.Y(o.v2),3.5,col('--v2')); dot(ctx,hx,F.Y(o.v3),3.5,col('--accent')); dot(ctx,hx,YP(o.P),3.5,col('--hold'));
-      tip(ctx,hx,F.Y(o.v3),w-F.pad.r,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--v2')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
+      dot(ctx,hx,F.Y(o.v2),3.5,col('--usd')); dot(ctx,hx,F.Y(o.v3),3.5,col('--accent')); dot(ctx,hx,YP(o.P),3.5,col('--hold'));
+      tip(ctx,hx,F.Y(o.v3),w-F.pad.r,h,[[(o.t<1?Math.round(o.t*12)+' mois':f(o.t,1)+' ans'),col('--ink')],['ETH  '+f(o.P,0)+' $',col('--hold')],['v2   '+f(o.v2,0)+' $',col('--usd-ink')],['v3   '+f(o.v3,0)+' $',col('--accent')]]); }
     const pc=v=>{ const r=v/1000-1; return (r>=0?'+':'')+f(r*100,1)+' %'; };
     document.getElementById('cmpV2').textContent=f(e.v2,0)+' $'; document.getElementById('cmpV2s').textContent=pc(e.v2);
     document.getElementById('cmpV3').textContent=f(e.v3,0)+' $'; document.getElementById('cmpV3s').textContent=pc(e.v3)+(cmpG!==1?' · hors de la plage':'');
