@@ -1119,6 +1119,11 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
 .sym-key{margin:.45rem 0 1.1rem;font-size:.84rem;line-height:1.55;color:var(--muted)}
 .sym-key mjx-container{color:var(--muted)}
 .box .sym-key{margin:.35rem 0 .8rem}
+.lex-back.lex-back{--mx:30%;--my:0%;background:radial-gradient(220px circle at var(--mx) var(--my),var(--lg-hi),transparent 55%),linear-gradient(180deg,var(--lg-top),var(--lg-bot))!important;-webkit-backdrop-filter:blur(22px) saturate(185%)!important;backdrop-filter:blur(22px) saturate(185%)!important;border:1px solid var(--lg-rim)!important;box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 0 0 22px var(--lg-glow),0 16px 36px -18px var(--lg-shadow),0 2px 6px -3px var(--lg-shadow)!important;border-radius:999px;color:var(--ink);transform:translateX(-50%);animation:lexBackIn .26s ease both;transition:opacity .26s ease,transform .26s ease}
+.lex-back.lex-back:hover{color:var(--accent);transform:translateX(-50%) translateY(-1px)}
+.lex-back.lex-back.out{opacity:0;transform:translateX(-50%) translateY(8px)}
+@keyframes lexBackIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.lex-back.lex-back{animation:none;transition:none}}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
@@ -2338,7 +2343,12 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
     const back=document.createElement('button'); back.type='button'; back.className='lex-back'; back.hidden=true; back.textContent='← Revenir au texte'; document.body.appendChild(back);
     let from=null;
     document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('a.lexref'); if(!a) return; from=a; back.hidden=false; });
-    back.addEventListener('click',()=>{ if(from){ from.scrollIntoView({behavior:'smooth',block:'center'}); from.classList.add('lex-flash'); const f=from; setTimeout(()=>f.classList.remove('lex-flash'),1400); } back.hidden=true; from=null; });
+    back.addEventListener('click',()=>{ if(from){ from.scrollIntoView({behavior:'smooth',block:'center'}); from.classList.add('lex-flash'); const f=from; setTimeout(()=>f.classList.remove('lex-flash'),1400); } hide(); });
+    // le bouton disparaît dès que le lecteur quitte le lexique
+    let seen=false, tm=null; const lx=document.getElementById('lexique');
+    function hide(){ from=null; seen=false; if(back.hidden) return; back.classList.add('out'); clearTimeout(tm); tm=setTimeout(()=>{ back.hidden=true; back.classList.remove('out'); },260); }
+    document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('a.lexref'); if(a){ clearTimeout(tm); back.classList.remove('out'); seen=false; setTimeout(()=>{ if(!lx||back.hidden) return; const r=lx.getBoundingClientRect(); if(r.top<innerHeight&&r.bottom>0) seen=true; },1200); } },true);
+    if(lx&&'IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(en=>{ if(back.hidden) return; if(en.isIntersecting) seen=true; else if(seen) hide(); }); },{threshold:0}).observe(lx); }
   })();
 
   // en-tête : un point glisse sur l'hyperbole x·y = k, avec le rectangle d'aire k et la tangente
