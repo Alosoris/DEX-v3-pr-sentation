@@ -1124,6 +1124,20 @@ nav.side .side-title{color:var(--accent)!important;font-family:"Inter Tight","In
 .lex-back.lex-back.out{opacity:0;transform:translateX(-50%) translateY(8px)}
 @keyframes lexBackIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.lex-back.lex-back{animation:none;transition:none}}
+
+/* Bouton « Revenir au texte » : verre presque transparent (même réglage que le site de la volatilité) */
+button.lex-back.lex-back,button.lex-back.lex-back:hover{--lg-top:rgba(255,255,255,.10);--lg-bot:rgba(255,255,255,.04);--lg-hi:rgba(255,255,255,.85);--lg-rim:rgba(255,255,255,.95);--lg-edge:rgba(245,15,180,.20);--lg-glow:rgba(245,15,180,.08);--lg-shadow:rgba(140,20,105,.22);
+  background:radial-gradient(160px circle at var(--mx,30%) var(--my,0%),var(--lg-hi),transparent 60%),linear-gradient(180deg,var(--lg-top),var(--lg-bot))!important;
+  -webkit-backdrop-filter:blur(1.5px) saturate(150%) brightness(1.04)!important;backdrop-filter:blur(1.5px) saturate(150%) brightness(1.04)!important;
+  border:1px solid var(--lg-rim)!important;border-radius:999px!important;color:var(--ink)!important;
+  box-shadow:inset 0 1.5px 1px -.5px var(--lg-rim),inset 0 -1.5px 1px -.5px var(--lg-edge),inset 6px 0 8px -6px var(--lg-rim),inset -6px 0 8px -6px var(--lg-rim),inset 0 0 10px var(--lg-glow),0 12px 28px -12px var(--lg-shadow),0 0 0 1px rgba(245,15,180,.10)!important;text-shadow:0 0 6px var(--bg),0 0 2px var(--bg)}
+button.lex-back.lex-back:hover{color:var(--accent)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.lex-back.lex-back{--lg-top:rgba(46,40,48,.10);--lg-bot:rgba(26,24,28,.04);--lg-hi:rgba(252,140,255,.16);--lg-rim:rgba(255,255,255,.14);--lg-edge:rgba(252,114,255,.22);--lg-glow:rgba(252,114,255,.10);--lg-shadow:rgba(0,0,0,.55)}}
+:root[data-theme="dark"] button.lex-back.lex-back{--lg-top:rgba(46,40,48,.10);--lg-bot:rgba(26,24,28,.04);--lg-hi:rgba(252,140,255,.16);--lg-rim:rgba(255,255,255,.14);--lg-edge:rgba(252,114,255,.22);--lg-glow:rgba(252,114,255,.10);--lg-shadow:rgba(0,0,0,.55)}
+@media (prefers-reduced-transparency:reduce){button.lex-back.lex-back{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--surface)!important}}
+/* Sommaire, mode sombre : pas de lueur en haut du chapitre en cours */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .side-ind::after{display:none}}
+:root[data-theme="dark"] .side-ind::after{display:none}
 </style>
 
 <button id="themeBtn" class="theme-sw" type="button" role="switch" aria-checked="false" aria-label="Passer en mode sombre" title="Mode sombre / mode clair"><span class="sw-track"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><span class="sw-thumb"><span class="sw-refr"><span class="sw-copy"><span class="sw-bg"></span><svg class="sw-ic sw-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="sw-ic sw-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></span></button>
